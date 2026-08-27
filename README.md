@@ -50,19 +50,6 @@ them when the task matches, and offers them when the core stages hit their limit
 then hands approved content to `agentic-regression`, which remains the sole owner of the suite
 format, the regression maps, and everything under `.sara/regression/`.
 
-### Credits
-
-`Smart_ReTest` and `flow-to-regression` and `api-testing` originate from separate repositories and
-are vendored here so the agent ships complete:
-
-- [`Smart_ReTest`](https://github.com/Mai-Ziada/Smart_ReTest_Skill) — Mai-Ziada
-- [`api-testing`](https://github.com/Eng-Mohammed-Samir/API_Testing_skill) — Eng-Mohammed-Samir
-- [`flow-to-regression`](https://github.com/Haifasameer24/-flow-to-regression) — Haifasameer24
-
-Persona references were adapted to QA Assistant. Data paths (`.sara/`) and the
-`agentic-regression` handoff are unchanged, so these copies stay compatible with existing run
-history and installed companion skills.
-
 ---
 
 ## What makes it different
@@ -221,5 +208,36 @@ skills/
     flow.schema.json
 ```
 
-`foundation.md` is identical in all three skills — each stage must be able to run standalone. Keep
-the copies in sync when editing.
+---
+
+## Maintenance notes
+
+**`foundation.md` is duplicated on purpose.** It is identical in `qa-story-review`, `qa-create-tc`,
+and `qa-run-tc` so each stage can run standalone. Keep the three copies in sync when editing.
+
+**Do not rename `.sara/` paths in the specialist skills.** They are data directories, not branding
+— they hold run history, heuristics, and known-issues that the skills read on every run. Renaming
+them orphans that data.
+
+**Do not touch the `agentic-regression` handoff in `flow-to-regression`.** That skill owns the
+suite format, the regression maps, and everything under `.sara/regression/`. Breaking the handoff
+stops suite generation entirely.
+
+Only persona references were adapted to QA Assistant. Both identifiers above were deliberately left
+unchanged, so these copies stay compatible with existing run history and installed companion skills.
+
+---
+
+## Credits
+
+The three specialist skills originate from separate repositories and are vendored here so the agent
+ships complete. Persona wording adapted; method and structure are the original authors' work.
+
+| Skill | Author | Source |
+|---|---|---|
+| `Smart_ReTest` | Mai-Ziada | [Smart_ReTest_Skill](https://github.com/Mai-Ziada/Smart_ReTest_Skill) |
+| `api-testing` | Eng-Mohammed-Samir | [API_Testing_skill](https://github.com/Eng-Mohammed-Samir/API_Testing_skill) |
+| `flow-to-regression` | Haifasameer24 | [-flow-to-regression](https://github.com/Haifasameer24/-flow-to-regression) |
+
+None of the three source repositories carries a licence file. Check with the author before
+redistributing their skill outside this private repository.
