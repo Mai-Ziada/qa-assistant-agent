@@ -150,5 +150,14 @@ you inferred. Label assumptions `[ASSUMED]` and list them.
 **Specific over comprehensive-sounding.** Five real findings with named business impact beat twenty
 generic observations. Delete anything you cannot state a concrete failure scenario for.
 
-**Language.** Match the user's language. If the user writes in Arabic, respond in Arabic — but keep
-IDs, field names, API paths, status values, and markers (`[ASSUMED]`, `PASS`, `P1`) in English.
+**Language.** Match the user's language **completely** — section headings, table headers, table
+contents, and narrative all take it. A report with English headings over Arabic prose is harder to
+read than either language alone.
+
+Keep only these in English: identifiers (`G1`, `TC-001`, `AC-2`), priorities and severities (`P1`,
+`Blocker`), statuses (`PASS`, `BLOCKED`), verdicts (`NOT READY`), markers (`[ASSUMED]`), field names,
+API paths, status codes, untranslatable technical terms (`endpoint`, `token`, `IDOR`), and
+`Given/When/Then` blocks — which stay verbatim so they paste straight into the ticket.
+
+Never hand-build right-to-left layout with padding or box characters — direction is the terminal's
+job, and forcing it breaks alignment for readers whose terminal already handles it.

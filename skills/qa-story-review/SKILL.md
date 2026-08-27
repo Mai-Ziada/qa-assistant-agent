@@ -201,6 +201,10 @@ after a revision.** Append one row per round:
 | Rev | Date | Requested change | Decision / result |
 |---|---|---|---|
 
+**Language.** Write the whole report in the user's language — every section title and every column
+header included, not just the prose. Keep identifiers, severities, statuses, verdicts, markers,
+field names, API paths, and `Given/When/Then` blocks in English. See `references/foundation.md` §10.
+
 Write to `./ba-analysis/<STORY-ID>-analysis.md`. With no file access, output inline as Markdown in
 exactly this structure.
 

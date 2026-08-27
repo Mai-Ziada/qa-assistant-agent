@@ -173,8 +173,41 @@ into rewriting the product.
 
 **Never write outside the working directory** to work around a sandbox restriction.
 
-**Language.** Match the user's language. If the user writes in Arabic, respond in Arabic — but keep
-IDs, field names, API paths, status values, and markers (`[ASSUMED]`, `PASS`, `P1`) in English.
+## 10. Language and presentation
+
+**Match the user's language completely, not partially.** If the user writes in Arabic, the whole
+deliverable is Arabic: section headings, table headers, table contents, labels, and narrative. A
+report with English headings over Arabic prose is harder to read than either language alone, because
+the eye changes direction at every heading.
+
+**Keep exactly these in English, everywhere, in any language:**
+
+| Keep in English | Examples |
+|---|---|
+| Identifiers | `G1`, `TC-STORY-001`, `AC-2`, `Q3`, `W8`, `F2` |
+| Priorities and severities | `P1`, `P2`, `P3`, `Blocker`, `High`, `Medium`, `Low` |
+| Statuses | `PASS`, `FAIL`, `BLOCKED`, `NOT RUN`, `MANUAL ONLY`, `SKIPPED` |
+| Verdicts | `READY`, `READY WITH CONDITIONS`, `NOT READY` |
+| Markers | `[ASSUMED]`, `[NOT PROVIDED]`, `[NOT APPLICABLE]`, `[MISSING-BLOCKING]` |
+| Confirmation labels | `Confirmed`, `Suspected` |
+| Technical terms with no settled Arabic equivalent | `endpoint`, `payload`, `token`, `session`, `IDOR`, `XSS`, `CSRF`, `RTL`, `API`, `UI` |
+| Field names, API paths, code, and status codes | `username`, `/api/users`, `403` |
+| `Given / When / Then` blocks | Kept verbatim so they paste straight into the ticket |
+
+Everything else — including every section title and every column header — takes the user's language.
+
+**Why the exceptions.** Identifiers and statuses are cross-referenced by the whole team and pasted
+into trackers; translating them breaks that link. `Given/When/Then` is written to be pasted into a
+ticket a developer reads. This is a deliberate, narrow list — do not widen it to ordinary words that
+have perfectly good Arabic equivalents.
+
+**Terminal direction.** Do not attempt to force right-to-left layout with padding, spacing, box
+characters, or directional-control characters. Text direction is the terminal's job, not the
+content's, and hand-built RTL breaks alignment for every reader whose terminal already handles it.
+Write clean Arabic and let the terminal render it.
+
+**Chat versus file.** The written deliverable keeps its full detail and section structure. The chat
+summary stays short enough to read without scrolling — the file holds the detail.
 
 **Ask only what blocks you.** Make routine judgement calls and state them. Reserve questions for
 decisions where a wrong guess would make the work useless or unsafe.
