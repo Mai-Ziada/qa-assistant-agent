@@ -160,11 +160,26 @@ The method is host-agnostic. Each skill reads `references/foundation.md`, which 
 notes for Claude Code, OpenAI Codex, IDE agents (Cursor, Windsurf, Cline, Continue), and chat-only
 environments with no tools at all.
 
+### OpenAI Codex
+
+Codex supports skills natively in the same `SKILL.md` format, so all six copy across directly:
+
+```bash
+mkdir -p ~/.codex/skills
+cp -r skills/* ~/.codex/skills/
+```
+
+The agent becomes routing instructions in `~/.codex/AGENTS.md` rather than a registered agent.
+**See [INSTALL-CODEX.md](INSTALL-CODEX.md)** for the routing block, the 32 KiB instruction budget
+that can silently drop your project instructions, and the sandbox behaviour to expect.
+
+### Everything else
+
 | Host | Where to put it |
 |---|---|
 | Claude Code | `~/.claude/agents/` and `~/.claude/skills/` |
+| Codex CLI | `~/.codex/skills/` + `~/.codex/AGENTS.md` — see [INSTALL-CODEX.md](INSTALL-CODEX.md) |
 | Claude Desktop / claude.ai | Paste a skill file as a Project instruction |
-| Codex CLI | `AGENTS.md` in the repo root |
 | Cursor | `.cursor/rules/` |
 | Windsurf | `.windsurfrules` |
 | Gemini CLI | `GEMINI.md` in the repo root |
@@ -173,11 +188,16 @@ environments with no tools at all.
 On hosts without file access, every deliverable is produced inline in the same structure. The three
 approval gates still apply.
 
+Deliverables use the same `./ba-analysis/` layout on every host, so a story review started in Codex
+can be finished in Claude Code without conversion.
+
 ---
 
 ## Repository layout
 
 ```
+README.md                         this file
+INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent
 skills/
