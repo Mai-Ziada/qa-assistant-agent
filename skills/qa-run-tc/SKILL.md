@@ -47,15 +47,17 @@ or deletes a real record because nobody asked is not a test pass — it is an in
 
 ## Step 2 — Scope
 
-Ask what to run:
+Ask what to run using `AskUserQuestion` — header `Scope`:
 
-```
-What should I run?
-  • All cases
-  • One category (Functional / Edge / Integration / API / Security)
-  • One priority (e.g. P1 only)
-  • A named subset — give me the TC IDs
-```
+| Option | Description |
+|---|---|
+| **P1 only** | The critical-path cases — fastest meaningful signal |
+| **All cases** | Everything in the file that passed the feasibility check |
+| **One category** | Functional / Edge / Integration / API / Security |
+| **A named subset** | The user supplies specific TC IDs |
+
+Present **P1 only** first when the suite is large or the feasibility check flagged side-effect risk.
+If the host does not provide `AskUserQuestion`, ask in plain text with the same choices.
 
 ## Step 3 — Execute
 
@@ -100,14 +102,18 @@ Close with:
 
 ## Step 5 — Follow-up 🚦
 
-For each failure, ask whether to file it as a bug in the tracker:
+For each failure, ask whether to file it as a bug using `AskUserQuestion` — header `File bugs`:
 
-```
-File these failures as bugs in the tracking tool? [Yes / No / Select which]
-```
+| Option | Description |
+|---|---|
+| **Do not file** | Report only — nothing is written to the tracker |
+| **File all failures** | Create a bug per failure — I will confirm the destination first |
+| **Let me pick** | Show the failures and file only the ones chosen |
+
+Present **Do not file** first: writing to the tracker is the irreversible choice.
 
 Same rule as publication: **one explicit confirmation before anything is written to the tracker.**
-If Yes, confirm the destination (project, issue type, parent story) before writing, then report
+If filing, confirm the destination (project, issue type, parent story) before writing, then report
 exactly what was created with IDs and links.
 
 If a failure looks like a specification gap rather than a defect, say so — it may belong back in
@@ -122,4 +128,5 @@ If a failure looks like a specification gap rather than a defect, say so — it 
 - **Never infer a pass.** Unobserved is never `PASS`.
 - **Never expose secrets in evidence.** Redact before storing, not after.
 - **Never write to the tracker** without an explicit confirmation for that specific write.
+- **Always present gates as selectable prompts** via `AskUserQuestion` where the host supports it, so a gate cannot be passed by an ambiguous reply.
 - **Report faithfully.** If tests failed, say so with the output. If a step was skipped, say that. An unstable run reported as clean is worse than no run at all.

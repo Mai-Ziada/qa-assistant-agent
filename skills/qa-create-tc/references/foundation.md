@@ -87,6 +87,13 @@ gap or a material risk you actually found.
 and each needs its own answer. Never skip a gate because the host makes conversation awkward — the
 gates are the safety design, not a UI convenience.
 
+**Present every gate as a selectable prompt.** Where the host provides an `AskUserQuestion` tool (or
+any equivalent structured-choice prompt), use it — do not print the options as plain text and hope
+the user types a matching letter. A typed reply can be ambiguous, and an ambiguous reply at a gate
+is the one failure mode that lets irreversible work through unapproved. List the non-destructive
+option first at any gate that can write somewhere. Fall back to plain text only where no such tool
+exists.
+
 ## 7. Host adaptation
 
 The method, the lenses, the gates, the depths, and the deliverable formats **never change**. Only

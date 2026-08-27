@@ -160,47 +160,52 @@ With no file access, output inline as Markdown in exactly this structure.
 
 ## Step 5 — Approval gate 2 🚦
 
-Present the coverage matrix, the counts, and anything untestable. Then stop:
+Present the coverage matrix, the counts, and anything untestable.
 
-```
-Review the test cases.
-  [A] Approve
-  [R] Reject — tell me what is wrong
-  [E] Edit   — tell me what to change, add, or remove
-```
+Then **present the gate as a selectable prompt using the `AskUserQuestion` tool** — never as plain
+text. One question, header `Test cases`:
 
-On **R** or **E**: revise in place and return to this gate.
+| Option | Description |
+|---|---|
+| **Approve** | The coverage is right — move to the publication decision |
+| **Reject** | Something is wrong — I will regenerate |
+| **Edit** | Keep them, but change, add, or remove specific cases |
+
+If the host does not provide `AskUserQuestion`, fall back to plain text with the same three choices.
+
+On **Reject** or **Edit**: ask what to change, revise in place, and return to this gate.
 
 ## Step 6 — Approval gate 3: publication 🚦
 
-After **A**, and only after A, ask **separately**:
+After **Approve**, and only after it, ask **separately** with `AskUserQuestion` — header `Publish`:
 
-```
-Push these test cases to the tracking tool? [Yes / No]
-```
+| Option | Description |
+|---|---|
+| **Keep local only** | The files on disk are the deliverable — nothing is written to the tracker |
+| **Push to the tracking tool** | Create the cases in the tracker — I will confirm the destination first |
+
+Default to presenting **Keep local only** first: publishing is the irreversible choice.
 
 **Approving the test cases is not approval to publish them.** Two distinct decisions, two answers.
+Never merge this question into the gate above, and never treat silence as consent.
 
-**If Yes** — confirm the exact destination (project, issue type, parent story, test-management tool
+**If Push to the tracking tool** — confirm the exact destination (project, issue type, parent story, test-management tool
 if any) **before writing anything**. Push, then report exactly what was created with IDs and links.
 If the integration is unavailable, say so and offer a CSV export at
 `./ba-analysis/<STORY-ID>-testcases.csv` for manual import.
 
-**If No** — stop. The files on disk are the deliverable.
+**If Keep local only** — stop. The files on disk are the deliverable.
 
 ## Step 7 — Chain to execution
 
-After the publication question is settled either way, ask:
+After the publication question is settled either way, ask with `AskUserQuestion` — header
+`Next step`, options **Run them now** and **Stop here**:
 
-```
-Run these test cases against an environment now? [Yes / No]
-```
-
-**If Yes** — invoke the `qa-run-tc` skill, passing the test-case file. Tell the user in one line:
+**If Run them now** — invoke the `qa-run-tc` skill, passing the test-case file. Tell the user in one line:
 `Running qa-run-tc — I will check execution feasibility before anything executes.`
 
-**If No** — stop. Remind the user in one line that `/qa-run-tc` will pick up the saved test cases
-whenever they are ready.
+**If Stop here** — stop. Remind the user in one line that `/qa-run-tc` will pick up the saved test
+cases whenever they are ready.
 
 **Never execute a test case inside this skill.** Execution lives in `qa-run-tc`, behind its own
 feasibility check.
@@ -214,3 +219,4 @@ feasibility check.
 - **Never invent test data or status codes.** Unknown contract → `[MISSING-BLOCKING]` or a labelled `[ASSUMED]`, plus an API contract gap.
 - **Never assert a layer you cannot verify.** No database access means no Persisted expectation.
 - **Never publish without gate 3.** Approval of the cases is not approval to write them anywhere.
+- **Always present gates as selectable prompts** via `AskUserQuestion` where the host supports it, so a gate cannot be passed by an ambiguous reply.

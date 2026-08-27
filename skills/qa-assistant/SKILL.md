@@ -44,7 +44,12 @@ Reply with a number, a name, or just describe what you need.
 
 ## Step 2 — Route
 
-Accept the answer in any form — a number, a skill name, or a plain sentence. Then invoke that skill.
+**Present the menu as a selectable prompt using the `AskUserQuestion` tool** where the host provides
+it — one question, header `Mode`, with the six modes as options. That is what "show the menu" means
+above; the plain-text block is the fallback for hosts without such a tool.
+
+Accept the answer in any form — a click, a number, a skill name, or a plain sentence. Then invoke
+that skill.
 
 | Answer | Invoke |
 |---|---|
@@ -77,6 +82,10 @@ work on this story and build on it rather than starting over.
 
 **Offer a specialist, never auto-run one.** Each has its own gates, environment, and cost — entering
 one is the user's call.
+
+**Every approval gate is a selectable prompt.** Use `AskUserQuestion` for gates and chain offers
+rather than printing options as text — an ambiguous typed reply at a gate is the one failure mode
+that lets irreversible work through unapproved. List the non-destructive option first.
 
 ---
 

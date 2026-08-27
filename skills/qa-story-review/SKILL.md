@@ -146,33 +146,35 @@ exactly this structure.
 ## Step 5 — Approval gate 1 🚦
 
 Present in chat: the verdict, gap counts by severity, the top 3 blockers, and the top 3 questions.
-Then stop:
 
-```
-Review the analysis. How do you want to proceed?
-  [A] Approve — continue to test-case generation
-  [R] Reject  — tell me what is wrong and I will redo the analysis
-  [E] Edit    — tell me what to change, add, or remove
-```
+Then **present the gate as a selectable prompt using the `AskUserQuestion` tool** — never as plain
+text the user has to answer by typing a letter. One question, header `Analysis`:
 
-On **R** or **E**: revise the report **in place**, add a revision-log row, and return to this gate.
+| Option | Description |
+|---|---|
+| **Approve** | The analysis is right — continue to test-case generation |
+| **Reject** | Something is wrong — I will redo the analysis |
+| **Edit** | Keep it, but change, add, or remove specific parts |
+
+If the host does not provide `AskUserQuestion`, fall back to asking in plain text with the same
+three choices.
+
+On **Reject** or **Edit**: ask what to change, revise the report **in place**, add a revision-log
+row, and return to this gate.
 
 ## Step 6 — Chain to test-case generation
 
-Only after **A**. Then ask:
+Only after **Approve**. Then ask with `AskUserQuestion` — header `Next step`, options
+**Generate test cases now** and **Stop here**:
 
-```
-Analysis approved. Generate test cases from it now? [Yes / No]
-```
-
-**If Yes** — invoke the `qa-create-tc` skill, passing the story and the approved analysis. Tell the
+**If Generate test cases now** — invoke the `qa-create-tc` skill, passing the story and the approved analysis. Tell the
 user in one line that you are handing over: `Running qa-create-tc against the approved analysis.`
 
-**If No** — stop. The analysis file is the deliverable. Remind the user in one line that they can
+**If Stop here** — stop. The analysis file is the deliverable. Remind the user in one line that they can
 run `/qa-create-tc` later and it will pick up the saved analysis.
 
 **Never generate a test case inside this skill.** Test-case generation lives in `qa-create-tc`, and
-it only runs after an explicit Yes here.
+it only runs after the user explicitly picks it here.
 
 ---
 
