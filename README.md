@@ -46,10 +46,6 @@ them when the task matches, and offers them when the core stages hit their limit
 | **`Smart_ReTest`** | A bug needs retesting after a fix — does it hold, is nearby functionality still intact, is the dependency chain covered | Quick Retest · Deep Retest (five evidence-driven stages) |
 | **`flow-to-regression`** | A feature, requirement, or live URL needs turning into a regression suite | Discovery → typed `flow.json` → Mermaid chart → journeys → plan, then hands off to `agentic-regression` |
 
-**Skill ownership is respected.** `flow-to-regression` orchestrates the flow model and its chart,
-then hands approved content to `agentic-regression`, which remains the sole owner of the suite
-format, the regression maps, and everything under `.sara/regression/`.
-
 ---
 
 ## What makes it different
