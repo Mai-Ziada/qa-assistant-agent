@@ -35,6 +35,36 @@ analysis today, pick up test cases tomorrow.
 
 ---
 
+## Specialist skills
+
+Three deeper skills handle work the core workflow deliberately keeps shallow. The agent routes to
+them when the task matches, and offers them when the core stages hit their limit.
+
+| Skill | Use when | Modes |
+|---|---|---|
+| **`api-testing`** | API work beyond the basic per-endpoint cases stage 2 writes | `API_SWEEP` endpoint bug-hunting · `API_JOURNEY` ordered business flows · `API_CONTRACT` live behaviour vs spec |
+| **`Smart_ReTest`** | A bug needs retesting after a fix — does it hold, is nearby functionality still intact, is the dependency chain covered | Quick Retest · Deep Retest (five evidence-driven stages) |
+| **`flow-to-regression`** | A feature, requirement, or live URL needs turning into a regression suite | Discovery → typed `flow.json` → Mermaid chart → journeys → plan, then hands off to `agentic-regression` |
+
+**Skill ownership is respected.** `flow-to-regression` orchestrates the flow model and its chart,
+then hands approved content to `agentic-regression`, which remains the sole owner of the suite
+format, the regression maps, and everything under `.sara/regression/`.
+
+### Credits
+
+`Smart_ReTest` and `flow-to-regression` and `api-testing` originate from separate repositories and
+are vendored here so the agent ships complete:
+
+- [`Smart_ReTest`](https://github.com/Mai-Ziada/Smart_ReTest_Skill) — Mai-Ziada
+- [`api-testing`](https://github.com/Eng-Mohammed-Samir/API_Testing_skill) — Eng-Mohammed-Samir
+- [`flow-to-regression`](https://github.com/Haifasameer24/-flow-to-regression) — Haifasameer24
+
+Persona references were adapted to QA Assistant. Data paths (`.sara/`) and the
+`agentic-regression` handoff are unchanged, so these copies stay compatible with existing run
+history and installed companion skills.
+
+---
+
 ## What makes it different
 
 **Six expert lenses, not one generic pass.** Business Analyst, Domain/Product,
@@ -91,10 +121,15 @@ Copy into your Claude Code configuration:
 
 ```bash
 # user-global — available in every project
-cp -r agents/qa-assistant.md   ~/.claude/agents/
-cp -r skills/qa-story-review   ~/.claude/skills/
-cp -r skills/qa-create-tc      ~/.claude/skills/
-cp -r skills/qa-run-tc         ~/.claude/skills/
+cp agents/qa-assistant.md ~/.claude/agents/
+cp -r skills/* ~/.claude/skills/
+```
+
+That installs the agent plus all six skills. To take only the core workflow:
+
+```bash
+cp agents/qa-assistant.md ~/.claude/agents/
+cp -r skills/qa-story-review skills/qa-create-tc skills/qa-run-tc ~/.claude/skills/
 ```
 
 For a single project, use `.claude/agents/` and `.claude/skills/` in the project root instead.
@@ -110,7 +145,8 @@ Restart the session so the agent is discovered.
 Or invoke a stage directly — each works standalone:
 
 ```
-/qa-story-review     /qa-create-tc     /qa-run-tc
+/qa-story-review   /qa-create-tc       /qa-run-tc
+/api-testing       /flow-to-regression /Smart_ReTest
 ```
 
 Given a story with no stated intent, it defaults to Story Review and says so in one correctable
@@ -143,17 +179,26 @@ approval gates still apply.
 
 ```
 agents/
-  qa-assistant.md              the routing agent
+  qa-assistant.md                 the routing agent
 skills/
-  qa-story-review/
-    SKILL.md                   stage 1
-    references/foundation.md   shared safety and adaptation rules
-  qa-create-tc/
-    SKILL.md                   stage 2
+  qa-story-review/                stage 1
+    SKILL.md
+    references/foundation.md      shared safety and adaptation rules
+  qa-create-tc/                   stage 2
+    SKILL.md
     references/foundation.md
-  qa-run-tc/
-    SKILL.md                   stage 3
+  qa-run-tc/                      stage 3
+    SKILL.md
     references/foundation.md
+  api-testing/                    specialist — API sweeps, journeys, contract checks
+    SKILL.md
+  Smart_ReTest/                   specialist — quick and deep bug retesting
+    SKILL.md
+  flow-to-regression/             specialist — flow model to regression suite
+    SKILL.md
+    README.md
+    USAGE.md
+    flow.schema.json
 ```
 
 `foundation.md` is identical in all three skills — each stage must be able to run standalone. Keep
