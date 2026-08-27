@@ -108,11 +108,12 @@ cp agents/qa-assistant.md ~/.claude/agents/
 cp -r skills/* ~/.claude/skills/
 ```
 
-That installs the agent plus all six skills. To take only the core workflow:
+That installs the agent plus all seven skills — the `/qa-assistant` entry point, the three
+core stages, and the three specialists. To take only the entry point and core workflow:
 
 ```bash
 cp agents/qa-assistant.md ~/.claude/agents/
-cp -r skills/qa-story-review skills/qa-create-tc skills/qa-run-tc ~/.claude/skills/
+cp -r skills/qa-assistant skills/qa-story-review skills/qa-create-tc skills/qa-run-tc ~/.claude/skills/
 ```
 
 For a single project, use `.claude/agents/` and `.claude/skills/` in the project root instead.
@@ -121,19 +122,32 @@ Restart the session so the agent is discovered.
 
 ### Use
 
+Start at the entry point — it shows all six modes and routes you:
+
 ```
-@qa-assistant <paste a story, a ticket link, or a file path>
+/qa-assistant
 ```
 
-Or invoke a stage directly — each works standalone:
+Or go straight to a mode — each works standalone:
 
 ```
 /qa-story-review   /qa-create-tc       /qa-run-tc
 /api-testing       /flow-to-regression /Smart_ReTest
 ```
 
+You can also attach the work to the entry point and skip the menu:
+
+```
+/qa-assistant review KAN-42
+/qa-assistant <paste a story>
+```
+
 Given a story with no stated intent, it defaults to Story Review and says so in one correctable
-line. It only shows a mode menu when the intent is genuinely ambiguous.
+line. It only shows the menu when the intent is genuinely ambiguous.
+
+> **Note on `@`:** in Claude Code the `@` prefix attaches *files*, not agents — typing
+> `@qa-assistant` searches for a file by that name and finds nothing. Use `/qa-assistant`, or just
+> name the agent in a sentence ("use qa-assistant to review this story").
 
 ---
 
@@ -145,7 +159,7 @@ environments with no tools at all.
 
 ### OpenAI Codex
 
-Codex supports skills natively in the same `SKILL.md` format, so all six copy across directly:
+Codex supports skills natively in the same `SKILL.md` format, so all seven copy across directly:
 
 ```bash
 mkdir -p ~/.codex/skills
@@ -184,6 +198,8 @@ INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent
 skills/
+  qa-assistant/                   entry point — shows the six modes and routes
+    SKILL.md
   qa-story-review/                stage 1
     SKILL.md
     references/foundation.md      shared safety and adaptation rules

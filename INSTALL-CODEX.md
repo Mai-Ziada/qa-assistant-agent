@@ -1,7 +1,7 @@
 # Installing QA Assistant on OpenAI Codex
 
-Codex supports skills natively, in the same `SKILL.md` format Claude Code uses — so the six skills
-port across with a copy. Only the agent file needs adapting, because Codex has no equivalent of
+Codex supports skills natively, in the same `SKILL.md` format Claude Code uses — so all seven
+skills port across with a copy. Only the agent file needs adapting, because Codex has no equivalent of
 Claude Code's `agents/` registry.
 
 Verified against **codex-cli 0.79.0**.
@@ -23,7 +23,7 @@ cp -r skills/* ~/.codex/skills/
 To take only the core workflow:
 
 ```bash
-cp -r skills/qa-story-review skills/qa-create-tc skills/qa-run-tc ~/.codex/skills/
+cp -r skills/qa-assistant skills/qa-story-review skills/qa-create-tc skills/qa-run-tc ~/.codex/skills/
 ```
 
 Verify:
@@ -59,6 +59,8 @@ cat >> ~/.codex/AGENTS.md <<'EOF'
 
 Act as a Senior Business Analyst and QA Architect when the user asks for story review, test-case
 generation, test execution, API testing, bug retesting, or regression suite building.
+
+Entry point — shows all six modes and routes:  `qa-assistant`
 
 Core workflow — three chained stages, each a skill:
 - Story analysis, dependency mapping, gap review  -> `qa-story-review`
@@ -141,6 +143,12 @@ sandbox, you will be told rather than shown a phantom file.
 ## 5. Use it
 
 ```
+$qa-assistant
+```
+
+That shows the six modes and routes you. Or go straight to one:
+
+```
 $qa-story-review
 ```
 
@@ -161,7 +169,8 @@ can start a story review in Codex and finish the test cases in Claude Code — o
 ## Uninstall
 
 ```bash
-rm -rf ~/.codex/skills/qa-story-review ~/.codex/skills/qa-create-tc ~/.codex/skills/qa-run-tc
+rm -rf ~/.codex/skills/qa-assistant ~/.codex/skills/qa-story-review
+rm -rf ~/.codex/skills/qa-create-tc ~/.codex/skills/qa-run-tc
 rm -rf ~/.codex/skills/api-testing ~/.codex/skills/Smart_ReTest ~/.codex/skills/flow-to-regression
 ```
 
