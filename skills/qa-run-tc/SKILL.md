@@ -20,7 +20,7 @@ requirements, and the host-adaptation mechanics this skill depends on.
 
 1. **Read the foundation** — `references/foundation.md`.
 2. **Check capabilities** and state the mode in one line. Note specifically whether you have browser access, API access, and database or observability access — these determine what is verifiable.
-3. **Load the test cases** — from `./ba-analysis/<STORY-ID>-testcases.md`, a supplied file, or the tracker. If none exists, say so and offer to run `qa-create-tc` first.
+3. **Load the test cases** — from `./qa-output/<STORY-ID>/qa-create-tc/testcases.md`, the legacy `./ba-analysis/<STORY-ID>-testcases.md`, a supplied file, or the tracker. If none exists, say so and offer to run `qa-create-tc` first.
 
 ## Step 1 — Execution-feasibility check ⛔ (before any case runs)
 
@@ -36,7 +36,7 @@ classify the affected cases as `BLOCKED` / `MANUAL ONLY` and proceed with the re
 | 5 | **Test data** | Required accounts, records, and states — do they exist, or must they be created? |
 | 6 | **Browser access** | Available for UI cases? |
 | 7 | **API access** | Reachable, and is the network open from this host? |
-| 8 | **Database / observability** | Available? If not, every Persisted / Audit / Downstream expectation becomes **unverifiable** — say so explicitly rather than skipping it silently. |
+| 8 | **Database / observability** | Available? If not, any case carrying a Persisted / Audit / Downstream expectation is **partially unverifiable**. Run the layers you can reach, mark the case `BLOCKED` if its core assertion needs the layer you cannot, and name the missing layer. Never silently drop an expectation and call the case `PASS`. |
 | 9 | **Environment limitations** | MFA, CAPTCHA, third-party sandboxes, feature flags, seeded-data constraints |
 | 10 | **Side-effect risk** | **Could execution create, modify, delete, notify, charge, publish, or dispatch anything real?** Name every such case explicitly and get confirmation before running it — or mark it `MANUAL ONLY`. |
 
@@ -73,7 +73,7 @@ observed result** for every case — not the expected one restated.
 
 ## Step 4 — Report
 
-Write to `./ba-analysis/<STORY-ID>-run-<YYYY-MM-DD>.md`:
+Write to `./qa-output/<STORY-ID>/qa-run-tc/run-<YYYY-MM-DD>.md` (create the directory first):
 
 | TC ID | Title | Priority | Status | Actual result | Evidence |
 |---|---|---|---|---|---|

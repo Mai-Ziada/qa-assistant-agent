@@ -276,7 +276,7 @@ after a revision.** Append one row per round:
 header included, not just the prose. Keep identifiers, severities, statuses, verdicts, markers,
 field names, API paths, and `Given/When/Then` blocks in English. See `references/foundation.md` §10.
 
-Write to `./ba-analysis/<STORY-ID>-analysis.md`. With no file access, output inline as Markdown in
+Write to `./qa-output/<STORY-ID>/qa-story-review/analysis.md` (create the directory first). With no file access, output inline as Markdown in
 exactly this structure.
 
 ## Step 5 — Approval gate 1 🚦

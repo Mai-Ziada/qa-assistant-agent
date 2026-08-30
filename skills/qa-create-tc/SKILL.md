@@ -20,7 +20,7 @@ the approval gates, and the host-adaptation mechanics this skill depends on.
 
 1. **Read the foundation** — `references/foundation.md`.
 2. **Check capabilities** and state the mode in one line.
-3. **Find the approved analysis.** Look for `./ba-analysis/<STORY-ID>-analysis.md` — if one exists, read it and use its gaps, dependencies, and acceptance criteria. Continue from it rather than re-deriving. **If it carries a Section F2 design review, that section feeds category 6** — see Step 1, category 6.
+3. **Find the approved analysis.** Look for `./qa-output/<STORY-ID>/qa-story-review/analysis.md`, then the legacy `./ba-analysis/<STORY-ID>-analysis.md` — if one exists, read it and use its gaps, dependencies, and acceptance criteria. Continue from it rather than re-deriving. **If it carries a Section F2 design review, that section feeds category 6** — see Step 1, category 6.
 4. **Read the readiness score.** The analysis carries a Section G score and verdict.
 
    - **70% or above** — proceed normally.
@@ -360,7 +360,7 @@ expected result.
 
 ## Step 4 — Deliverables
 
-Write to `./ba-analysis/<STORY-ID>-testcases.md`:
+Write to `./qa-output/<STORY-ID>/qa-create-tc/testcases.md` (create the directory first):
 
 - **Header line** — the story's readiness score and verdict from the analysis, and where the score was below 70%, the word `PROVISIONAL` with the unresolved blockers named. Where no analysis existed, say that instead.
 
@@ -436,7 +436,7 @@ Never merge this question into the gate above, and never treat silence as consen
 **If Push to the tracking tool** — confirm the exact destination (project, issue type, parent story, test-management tool
 if any) **before writing anything**. Push, then report exactly what was created with IDs and links.
 If the integration is unavailable, say so and offer a CSV export at
-`./ba-analysis/<STORY-ID>-testcases.csv` for manual import.
+`./qa-output/<STORY-ID>/qa-create-tc/testcases.csv` for manual import.
 
 **If Keep local only** — stop. The files on disk are the deliverable.
 

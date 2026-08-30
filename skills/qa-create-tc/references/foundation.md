@@ -118,14 +118,14 @@ State it in **one line** — `Mode: full (files + shell + web)` or
 
 **Claude Code / Desktop / agents.** Native `Read`, `Write`, `Edit`, `Glob`, `Grep`, `Bash`,
 `WebFetch`, `WebSearch`. Prefer `Glob`/`Grep` over shelling out. Tracker access usually via MCP
-(Atlassian, GitHub, Linear) — check for a connected server before falling back to a CLI. Create
-`./ba-analysis/` before writing.
+(Atlassian, GitHub, Linear) — check for a connected server before falling back to a CLI. Create the
+output directory (`./qa-output/<STORY-ID>/<skill-name>/`) before writing.
 
 **OpenAI Codex / Codex CLI.** Shell-first, sandboxed. Read with `cat` / `sed -n`, write with
 heredocs (`cat > file <<'EOF'`), search with `grep -rn` and `find`, call APIs with `curl`.
-`mkdir -p ba-analysis` first. **Network may be disabled by default** — if a call fails with a
+`mkdir -p qa-output/<STORY-ID>/<skill-name>` first. **Network may be disabled by default** — if a call fails with a
 network error, say so once and continue with local sources rather than retrying. Verify writes
-landed (`ls -la ba-analysis/`) before reporting a deliverable as created.
+landed (`ls -la qa-output/<STORY-ID>/<skill-name>/`) before reporting a deliverable as created.
 
 **IDE agents — Cursor, Windsurf, Cline, Continue, Copilot-style.** Use built-in file and
 codebase-search tools. Repository search is usually strong; tracker access usually absent — expect
@@ -150,15 +150,41 @@ only transport.
 
 ## 8. Portable output contract
 
+Every artifact lives under **`./qa-output/<STORY-ID>/<skill-name>/`** — the story is the root, and
+each skill owns a folder inside it. One story's whole trail sits together, each stage stays
+separable, and a story can be archived or deleted as a single directory.
+
 | Deliverable | Path when files are available | Fallback |
 |---|---|---|
-| Analysis | `./ba-analysis/<STORY-ID>-analysis.md` | Inline Markdown, same sections |
-| Test cases | `./ba-analysis/<STORY-ID>-testcases.md` | Inline Markdown, same format |
-| CSV export | `./ba-analysis/<STORY-ID>-testcases.csv` | Inline CSV block |
-| Run report | `./ba-analysis/<STORY-ID>-run-<YYYY-MM-DD>.md` | Inline Markdown table |
+| Analysis | `./qa-output/<STORY-ID>/qa-story-review/analysis.md` | Inline Markdown, same sections |
+| Test cases | `./qa-output/<STORY-ID>/qa-create-tc/testcases.md` | Inline Markdown, same format |
+| CSV export | `./qa-output/<STORY-ID>/qa-create-tc/testcases.csv` | Inline CSV block |
+| Run report | `./qa-output/<STORY-ID>/qa-run-tc/run-<YYYY-MM-DD>.md` | Inline Markdown table |
 
-Artifacts must fit together across hosts and across skills. If you find an existing `ba-analysis/`
-artifact, **read it and continue from it** rather than starting over.
+Any further artifact a skill produces — a spreadsheet, an HTML report, evidence — goes in that same
+skill folder, named for what it is (`testcases.xlsx`, `evidence/`). The story id is already the
+parent directory, so **do not repeat it in filenames**: `testcases.md`, not
+`<STORY-ID>-testcases.md`.
+
+`<STORY-ID>` must be filesystem-safe: keep letters, digits, hyphens and underscores, replace
+anything else with a hyphen. With no id, use a short slug from the story title.
+
+Create the directory before writing (`mkdir -p qa-output/<STORY-ID>/<skill-name>`) and verify the
+write landed before reporting a deliverable as created.
+
+### Finding a previous stage's artifact
+
+Artifacts must fit together across hosts and across skills. When a skill looks for an earlier
+stage's output, search in this order and **stop at the first hit**:
+
+1. `./qa-output/<STORY-ID>/<producing-skill>/` — the current layout
+2. `./ba-analysis/<STORY-ID>-*.md` — the pre-existing flat layout
+
+Older work therefore keeps chaining without being moved. If you continue from a legacy path, say so
+in one line and write your own output to the new layout — never migrate or delete the user's
+existing files unless they ask.
+
+**Read an artifact you find and continue from it** rather than starting over.
 
 ## 9. Global rules
 
