@@ -240,11 +240,23 @@ installed by hand — fall back to `install/templates/` in the repo, and if that
 write the files from the structure documented in § 8b: every heading present, `[NOT PROVIDED]` in
 place of each value, so each file is ready to fill rather than empty.
 
-Say in one line that you created it, and continue with the run. **Never overwrite an existing
-file**: a workspace that is partly there gets only the missing pieces added.
+**Then protect it.** Scaffolding without this step can put screenshots and deliverables into the
+user's next commit:
 
-`.mcp.json` is the one thing you do not create — it holds credentials, and belongs to `install.sh`
-or to the user.
+- **`.gitignore`** — append the QA Assistant block if it is not already there, creating the file if
+  the project has none. It ignores `.mcp.json`, `.qa/screenshots/`, and `qa-output/`, and keeps
+  `project-context.md`, `memory.md`, `index.md`, and `knowledge/` tracked. The block is in
+  `gitignore-block` beside the templates. **Append, never rewrite** — every other rule in that file
+  stays exactly as it is, and the block goes in once.
+- **`.mcp.json.example`** — copy it too. It is a template with empty credential fields, safe to
+  commit, and it tells the user which MCP servers to configure.
+
+Say in one line what you created, and continue with the run. **Never overwrite an existing file**:
+a workspace that is partly there gets only its missing pieces added.
+
+**`.mcp.json` is the one thing you never create.** It holds real credentials; it belongs to
+`install.sh` or to the user. If a run needs an MCP server and no `.mcp.json` exists, say so once —
+point at `.mcp.json.example` — and continue with what you can do without it.
 
 ### Write to them as you learn
 
