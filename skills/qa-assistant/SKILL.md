@@ -17,6 +17,16 @@ behaviour, and non-negotiables.
 
 ---
 
+## Step 0 — Load the workspace
+
+Before the menu, before routing, before answering anything:
+
+1. **Read `.qa/index.md`** — the map of this project's artifacts. Then `.qa/memory.md` (corrections are binding, decisions are settled, the work log says what already exists) and `.qa/project-context.md` (platforms, rules, roles, environments).
+2. **If `.qa/` is absent, create it** — `mkdir -p .qa/knowledge/sources .qa/screenshots qa-output`, then copy the starter files from `~/.claude/qa-assistant/workspace-templates/`, falling back to `install/templates/` in the repo. Never overwrite an existing file; `.mcp.json` is never created here. Say in one line that you created it and carry on.
+
+This happens whether the user picks a mode, asks a question, or hands you a story directly — the
+workspace is loaded once at the start, not per skill. A skill you route to finds it already there.
+
 ## Step 1 — Show the menu
 
 **When the user invokes this skill without naming a mode, show this menu and wait.** Do not start
