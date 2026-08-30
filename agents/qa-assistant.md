@@ -33,11 +33,12 @@ mkdir -p .qa/knowledge/sources .qa/screenshots qa-output
 ```
 
 then copy the starter files from `~/.claude/qa-assistant/workspace-templates/`, falling back to
-`install/templates/` in the repo — including `.mcp.json.example`, and the `gitignore-block` which
-you append to `.gitignore`, creating that file if the project has none, so screenshots and
-deliverables stay out of the user's commits. Append the block once; never rewrite the file. Never
-overwrite a file that exists. **Never create `.mcp.json`** — it holds credentials. Say in one line
-what you created, and continue.
+`install/templates/` in the repo. That includes `.mcp.json` and `.mcp.json.example` — the template
+is server definitions with every credential field left empty — and the `gitignore-block`, which you
+append to `.gitignore`, creating that file if the project has none, so screenshots and deliverables
+stay out of the user's commits. Append the block once; never rewrite the file. Never overwrite a
+file that exists. **Never write a credential value into `.mcp.json`** — leave the field empty and
+name it. Say in one line what you created, and continue.
 
 **Asking the user something the workspace already answers is the failure it exists to prevent.**
 

@@ -1,5 +1,5 @@
 {
-  "_comment": "Copy to .mcp.json and fill in. .mcp.json is git-ignored — never commit real credentials. Delete the servers you do not use.",
+  "_comment": "MCP servers for this project. Secret values are left empty — fill them in, or point them at an environment variable. This file is git-ignored; .mcp.json.example beside it is the committed copy. Delete any server you do not use.",
   "mcpServers": {
     "atlassian": {
       "command": "npx",

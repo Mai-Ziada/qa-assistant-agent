@@ -248,15 +248,21 @@ user's next commit:
   `project-context.md`, `memory.md`, `index.md`, and `knowledge/` tracked. The block is in
   `gitignore-block` beside the templates. **Append, never rewrite** — every other rule in that file
   stays exactly as it is, and the block goes in once.
-- **`.mcp.json.example`** — copy it too. It is a template with empty credential fields, safe to
-  commit, and it tells the user which MCP servers to configure.
+- **`.mcp.json`** — copy it from `mcp.json.example`. The template is server definitions, not
+  secrets: commands, package names and flags, with **every credential field left as an empty
+  string**. Creating it saves the user assembling that by hand, and an empty field is obvious to
+  fill. **Never write a credential value into it** — not one the user pasted, not one from the
+  environment, not one you found in another project. Leave it empty and say which fields need
+  filling.
+- **`.mcp.json.example`** — copy it as well, as the committed reference. `.mcp.json` is git-ignored,
+  so the example is what tells a teammate which servers this project expects.
 
-Say in one line what you created, and continue with the run. **Never overwrite an existing file**:
-a workspace that is partly there gets only its missing pieces added.
+Say in one line what you created — and name any credential field left empty — then continue with
+the run. **Never overwrite an existing file**: a workspace that is partly there gets only its
+missing pieces added, and an existing `.mcp.json` with real credentials in it is never touched.
 
-**`.mcp.json` is the one thing you never create.** It holds real credentials; it belongs to
-`install.sh` or to the user. If a run needs an MCP server and no `.mcp.json` exists, say so once —
-point at `.mcp.json.example` — and continue with what you can do without it.
+If a run needs an MCP server whose credential is still empty, say so once and continue with what
+you can do without it.
 
 ### Write to them as you learn
 
