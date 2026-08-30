@@ -56,7 +56,8 @@ Run this phase once at the start of every API testing session. Infer each item f
 
 Before asking the user anything — and before planning any run — load:
 
-- `.qa/memory.md` — **read this first.** Its Corrections section is binding: never repeat a mistake recorded there. Its Decisions section is settled: never re-ask a question already answered there. Its Work log tells you whether this API has been tested before, and its Recurring defects raise likelihood for the endpoints named there.
+- `.qa/index.md` — **read this first.** The map of every artifact in this project and what each holds. Open the file you need rather than searching the tree; anything not listed there does not exist yet.
+- `.qa/memory.md` — Its Corrections section is binding: never repeat a mistake recorded there. Its Decisions section is settled: never re-ask a question already answered there. Its Work log tells you whether this API has been tested before, and its Recurring defects raise likelihood for the endpoints named there.
 - `.qa/project-context.md` — environments and their base URLs, roles and permissions, integrations, business rules, and where credentials live. Never re-derive what this file already states.
 - API documentation in `.qa/knowledge/` — OpenAPI/Swagger files, Postman collections, GraphQL schemas, HAR captures, and any API notes from earlier runs. Search `.qa/knowledge/sources/` for the originals as supplied.
 - Existing test cases in `qa-output/<STORY-ID>/qa-create-tc/testcases.md` — when this API work follows a story, its API-category cases are your starting point rather than a fresh derivation.

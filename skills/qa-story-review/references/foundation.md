@@ -195,6 +195,7 @@ long-term state: what is true about this product, and what has already happened.
 
 ```
 .qa/
+  index.md              the map of every artifact and everything learned — read before searching
   project-context.md    standing facts about the product — platforms, rules, environments, roles
   memory.md             work log, corrections, settled decisions, recurring defects
   knowledge/            full source material — supplied docs, produced reports, live findings
@@ -211,6 +212,7 @@ qa-output/              deliverables, per story, per skill
 | `.qa/memory.md` § Decisions | A settled question must not be re-asked |
 | `.qa/memory.md` § Work log | The work may already exist — continue it, do not redo it |
 | `.qa/project-context.md` | Platforms decide mandatory coverage; rules, roles and environments feed every case |
+| `.qa/index.md` | **Read it before searching for anything.** It lists every artifact and what each holds — open the one file you need instead of sweeping the tree. Something not listed there does not exist yet. |
 | `.qa/knowledge/` | Search it before asking the user for something they may have already supplied |
 
 **Asking the user something these files already answer is the failure this workspace prevents.**
@@ -229,6 +231,7 @@ not create it silently mid-run, and never treat its absence as a reason to stop.
 | A `[MISSING-BLOCKING]` gap is answered | `.qa/memory.md` § Answered questions — and `project-context.md` when the answer is durable |
 | A document is supplied, a report is produced, a live journey yields findings | `.qa/knowledge/` |
 | A screenshot is captured | `.qa/screenshots/<STORY-ID or TC-ID or BUG-ID>/` |
+| **Any artifact is created, moved, or superseded** | `.qa/index.md` — in the same turn that creates it, never later |
 
 Each file's own header carries its update rules — follow them. Four hold everywhere:
 

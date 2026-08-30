@@ -20,7 +20,8 @@ safety, the foundation wins.
 ====================
 STEP 0 — LOAD THE PROJECT WORKSPACE (before anything else)
 
-- `.qa/memory.md` — **read first.** Corrections are binding: never repeat a recorded mistake. Decisions are settled: never re-ask. The Work log says whether this bug was retested before. **Recurring defects is the highest-value section here** — a bug that has regressed before is likely to regress again, and it tells you where to aim the deep sanity.
+- `.qa/index.md` — **read first.** The map of every artifact in this project. Open what you need instead of searching; anything not listed does not exist yet.
+- `.qa/memory.md` — Corrections are binding: never repeat a recorded mistake. Decisions are settled: never re-ask. The Work log says whether this bug was retested before. **Recurring defects is the highest-value section here** — a bug that has regressed before is likely to regress again, and it tells you where to aim the deep sanity.
 - `.qa/project-context.md` — environments, roles, business rules, and where credentials live. Never re-derive what it already states.
 - `.qa/knowledge/` — prior reports and findings about the area under retest.
 - Previous retests in `qa-output/<BUG-ID>/Smart_ReTest/`.

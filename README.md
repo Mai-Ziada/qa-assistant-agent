@@ -126,6 +126,7 @@ reaches all of them.
 ```
 your-project/
   .qa/
+    index.md              map of every artifact — the agent reads it instead of searching
     project-context.md    standing facts — platforms, business rules, environments, roles
     memory.md             work log, corrections, settled decisions, recurring defects
     knowledge/            source material — supplied docs, produced reports, live findings
@@ -150,13 +151,17 @@ Then: put real credentials in `.mcp.json`, fill in `.qa/project-context.md`, res
 
 ### What the agent maintains for you
 
-`project-context.md` and `memory.md` are **living files the agent updates as it learns** — a
+`index.md`, `project-context.md` and `memory.md` are **living files the agent updates as it learns** — a
 business rule you state, a platform it determines, a correction you make, a decision you settle.
 Every skill reads them before it starts.
 
 That is what stops the agent asking you the same question twice, re-deriving what it already knew,
 or repeating a mistake you already corrected. Keeping them in git means that context travels to
 your teammates and to your next machine.
+
+`index.md` is the lookup layer: it maps every deliverable, knowledge file, and evidence folder to
+what it holds, so a session opens the one file it needs instead of sweeping the project. The repo
+has its own `index.md` doing the same for the agent's machinery.
 
 **Git-ignored by default:** `.mcp.json` (secrets), `.qa/screenshots/` (heavy, may hold sensitive
 data), `qa-output/` (changes constantly). **Committed:** `project-context.md`, `memory.md`,
@@ -250,6 +255,7 @@ can be finished in Claude Code without conversion.
 
 ```
 README.md                         this file
+index.md                          index of every file in this repo and what it holds
 install.sh                        installer — skills to ~/.claude, workspace to your project
 install/templates/                workspace templates the installer copies
 INSTALL-CODEX.md                  OpenAI Codex install guide

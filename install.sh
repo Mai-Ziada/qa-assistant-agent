@@ -70,6 +70,7 @@ if [ "$SKILLS_ONLY" -eq 0 ]; then
   mkdir -p .qa/knowledge .qa/screenshots qa-output
   say "created  .qa/knowledge/  .qa/screenshots/  qa-output/"
 
+  place "$TPL/index.md"           ".qa/index.md"           ".qa/index.md"
   place "$TPL/project-context.md" ".qa/project-context.md" ".qa/project-context.md"
   place "$TPL/memory.md"          ".qa/memory.md"          ".qa/memory.md"
   place "$TPL/knowledge-README.md" ".qa/knowledge/README.md" ".qa/knowledge/README.md"
@@ -92,6 +93,6 @@ fi
 head_ "Done."
 cat <<'NEXT'
   1. Put your real MCP credentials in .mcp.json  (git-ignored)
-  2. Fill in .qa/project-context.md              (the agent keeps it current from here on)
+  2. Fill in .qa/project-context.md              (the agent keeps it and .qa/index.md current from here on)
   3. Restart the session, then run:  /qa-assistant
 NEXT
