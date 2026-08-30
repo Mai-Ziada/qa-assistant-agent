@@ -28,6 +28,7 @@ project, not this file.
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
 | What the workspace files are for | `install/templates/` |
 | How installation works | `install.sh`, `README.md` § Install |
+| How removal works, and what survives it | `uninstall.sh`, `README.md` § Uninstall |
 
 ---
 
@@ -109,6 +110,13 @@ specialist table, routing rules by phrase, chaining offers, and the gate discipl
 ### `install.sh`
 Skills and agent to `~/.claude/`; workspace to the project. Never overwrites — existing files report
 `kept`. Flags: `--skills-only`, `--workspace-only`, `--force`.
+
+### `uninstall.sh`
+Removes the agent and skills from `~/.claude`, and the scaffolding from a project. **Keeps `.qa/`
+and `qa-output/` by default** — your work survives; `--purge-work` deletes it. Never touches
+`.mcp.json`. Strips only its own `.gitignore` block. Confirms before acting; refuses rather than
+guessing when it cannot get an answer. Flags: `--skills-only`, `--workspace-only`, `--purge-work`,
+`--yes`.
 
 ### `install/templates/`
 Copied into a project on install. The first two are living files the agent updates.

@@ -149,6 +149,33 @@ templates restored.
 
 Then: put real credentials in `.mcp.json`, fill in `.qa/project-context.md`, restart the session.
 
+### Uninstall
+
+```bash
+cd /path/to/your/project
+bash /path/to/qa-assistant-agent/uninstall.sh
+```
+
+**Your work is kept by default.** It removes the agent and the six skills from `~/.claude`, deletes
+`.mcp.json.example`, and strips the QA Assistant block from `.gitignore` — leaving every other rule
+in that file untouched. `.qa/` and `qa-output/` stay exactly where they are, so reinstalling later
+picks up where you left off. `.mcp.json` is never touched.
+
+It prints what it will remove and what it will keep, then asks before doing anything.
+
+| Flag | Effect |
+|---|---|
+| `--skills-only` | Remove from `~/.claude` only, leave the project untouched |
+| `--workspace-only` | Remove the project scaffolding only, leave `~/.claude` untouched |
+| `--purge-work` | **Also delete `.qa/` and `qa-output/`** — analyses, test cases, run reports, knowledge, evidence. Cannot be undone |
+| `--yes` | Skip the confirmation prompt |
+
+To remove everything including your work:
+
+```bash
+bash /path/to/qa-assistant-agent/uninstall.sh --purge-work
+```
+
 ### What the agent maintains for you
 
 `index.md`, `project-context.md` and `memory.md` are **living files the agent updates as it learns** — a
@@ -257,6 +284,7 @@ can be finished in Claude Code without conversion.
 README.md                         this file
 index.md                          index of every file in this repo and what it holds
 install.sh                        installer — skills to ~/.claude, workspace to your project
+uninstall.sh                      uninstaller — keeps your work unless --purge-work
 install/templates/                workspace templates the installer copies
 INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
