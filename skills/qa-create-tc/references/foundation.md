@@ -161,6 +161,7 @@ separable, and a story can be archived or deleted as a single directory.
 | CSV export | `./qa-output/<STORY-ID>/qa-create-tc/testcases.csv` | Inline CSV block |
 | Run report | `./qa-output/<STORY-ID>/qa-run-tc/run-<YYYY-MM-DD>.md` | Inline Markdown table |
 | API run report | `./qa-output/<STORY-ID>/api-testing/api-<mode>-<feature>-<env>-<timestamp>.md` | Inline Markdown, same sections |
+| Retest report | `./qa-output/<BUG-ID>/Smart_ReTest/retest-<YYYY-MM-DD>.md` | Inline Markdown, same sections |
 
 Any further artifact a skill produces — a spreadsheet, an HTML report, evidence — goes in that same
 skill folder, named for what it is (`testcases.xlsx`, `evidence/`). The story id is already the

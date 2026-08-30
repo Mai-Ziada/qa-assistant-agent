@@ -29,7 +29,7 @@ cp -r skills/qa-assistant skills/qa-story-review skills/qa-create-tc skills/qa-r
 Verify:
 
 ```bash
-ls ~/.codex/skills | grep -E 'qa-|api-testing|Smart_ReTest|flow-to-regression'
+ls ~/.codex/skills | grep -E 'qa-|api-testing|Smart_ReTest'
 ```
 
 > If you have set `CODEX_HOME` to a custom location, use `$CODEX_HOME/skills/` instead of
@@ -60,7 +60,7 @@ cat >> ~/.codex/AGENTS.md <<'EOF'
 Act as a Senior Business Analyst and QA Architect when the user asks for story review, test-case
 generation, test execution, API testing, bug retesting, or regression suite building.
 
-Entry point — shows all six modes and routes:  `qa-assistant`
+Entry point — shows all five modes and routes:  `qa-assistant`
 
 Core workflow — three chained stages, each a skill:
 - Story analysis, dependency mapping, gap review  -> `qa-story-review`
@@ -70,7 +70,6 @@ Core workflow — three chained stages, each a skill:
 Specialists:
 - API sweeps, API journeys, contract checks       -> `api-testing`
 - Retesting a bug after a fix                     -> `Smart_ReTest`
-- Feature or URL into a regression suite          -> `flow-to-regression`
 
 Routing rules:
 - Enter the stage the user asked for. Given a story with no stated intent, default to
@@ -146,7 +145,7 @@ sandbox, you will be told rather than shown a phantom file.
 $qa-assistant
 ```
 
-That shows the six modes and routes you. Or go straight to one:
+That shows the five modes and routes you. Or go straight to one:
 
 ```
 $qa-story-review
@@ -171,7 +170,7 @@ can start a story review in Codex and finish the test cases in Claude Code — o
 ```bash
 rm -rf ~/.codex/skills/qa-assistant ~/.codex/skills/qa-story-review
 rm -rf ~/.codex/skills/qa-create-tc ~/.codex/skills/qa-run-tc
-rm -rf ~/.codex/skills/api-testing ~/.codex/skills/Smart_ReTest ~/.codex/skills/flow-to-regression
+rm -rf ~/.codex/skills/api-testing ~/.codex/skills/Smart_ReTest
 ```
 
 Then delete the block between `<!-- qa-assistant:start -->` and `<!-- qa-assistant:end -->` in

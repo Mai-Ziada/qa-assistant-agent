@@ -34,7 +34,6 @@ Specialists:
 
 4. **API Testing** — `/api-testing` — Endpoint sweeps, API journeys, contract checks.
 5. **Smart ReTest** — `/Smart_ReTest` — Retest a bug after a fix, quick or deep.
-6. **Flow → Regression** — `/flow-to-regression` — Feature or URL to flow model, chart, regression plan, suite.
 
 Reply with a number, a name, or just describe what you need.
 
@@ -46,7 +45,7 @@ conversation is not — everything after the mode is chosen still follows the us
 ## Step 2 — Route
 
 **Present the menu as a selectable prompt using the `AskUserQuestion` tool** where the host provides
-it — one question, header `Mode`, with the six modes as options. That is what "show the menu" means
+it — one question, header `Mode`, with the five modes as options. That is what "show the menu" means
 above; the plain-text block is the fallback for hosts without such a tool.
 
 Accept the answer in any form — a click, a number, a skill name, or a plain sentence. Then invoke
@@ -59,7 +58,6 @@ that skill.
 | `3`, "run TC", "execute the tests", "run a test pass" | `qa-run-tc` |
 | `4`, "API testing", "sweep the endpoints", "check the contract" | `api-testing` |
 | `5`, "retest", "is this fix working", "re-verify" | `Smart_ReTest` |
-| `6`, "regression suite", "build a flow model", "chart this feature" | `flow-to-regression` |
 
 **Skip the menu when the intent is already clear.** If the user invoked this skill *with* a request
 attached — `/qa-assistant review KAN-42` or "use qa-assistant to create test cases" — route straight

@@ -48,14 +48,13 @@ qa-output/
 
 ## Specialist skills
 
-Three deeper skills handle work the core workflow deliberately keeps shallow. The agent routes to
+Two deeper skills handle work the core workflow deliberately keeps shallow. The agent routes to
 them when the task matches, and offers them when the core stages hit their limit.
 
 | Skill | Use when | Modes |
 |---|---|---|
 | **`api-testing`** | API work beyond the basic per-endpoint cases stage 2 writes | `API_SWEEP` endpoint bug-hunting · `API_JOURNEY` ordered business flows · `API_CONTRACT` live behaviour vs spec |
 | **`Smart_ReTest`** | A bug needs retesting after a fix — does it hold, is nearby functionality still intact, is the dependency chain covered | Quick Retest · Deep Retest (five evidence-driven stages) |
-| **`flow-to-regression`** | A feature, requirement, or live URL needs turning into a regression suite | Discovery → typed `flow.json` → Mermaid chart → journeys → plan, then hands off to `agentic-regression` |
 
 ---
 
@@ -179,7 +178,7 @@ Restart the session so the agent is discovered.
 
 ### Use
 
-Start at the entry point — it shows all six modes and routes you:
+Start at the entry point — it shows all five modes and routes you:
 
 ```
 /qa-assistant
@@ -189,7 +188,7 @@ Or go straight to a mode — each works standalone:
 
 ```
 /qa-story-review   /qa-create-tc       /qa-run-tc
-/api-testing       /flow-to-regression /Smart_ReTest
+/api-testing       /Smart_ReTest
 ```
 
 You can also attach the work to the entry point and skip the menu:
@@ -257,7 +256,7 @@ INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent
 skills/
-  qa-assistant/                   entry point — shows the six modes and routes
+  qa-assistant/                   entry point — shows the five modes and routes
     SKILL.md
   qa-story-review/                stage 1
     SKILL.md
@@ -272,7 +271,6 @@ skills/
     SKILL.md
   Smart_ReTest/                   specialist — quick and deep bug retesting
     SKILL.md
-  flow-to-regression/             specialist — flow model to regression suite
     SKILL.md
     README.md
     USAGE.md
@@ -283,32 +281,26 @@ skills/
 
 ## Maintenance notes
 
-**`foundation.md` is duplicated on purpose.** It is identical in `qa-story-review`, `qa-create-tc`,
-`qa-run-tc`, and `api-testing` so each can run standalone. Keep the four copies in sync when editing.
+**`foundation.md` is duplicated on purpose.** It is identical in all five skills so each can run
+standalone. Keep the five copies in sync when editing.
 
 **`api-testing` is a full member of the workflow.** It reads and writes the same `.qa/` workspace,
 follows the same foundation, writes to `qa-output/<STORY-ID>/api-testing/`, and files bugs through
 its own tracker rules. It depends on no skill outside this repository, and continues from a story's
 API cases when they exist.
 
-**`flow-to-regression` has one external dependency.** After its second gate it hands off to an
-`agentic-regression` skill that is not part of this repository. Without that skill installed it
-stops at the approved `plan.md` — a complete, ready-to-run handoff package — and says so. Everything
-before the handoff works standalone. Its `.sara/` paths belong to that companion skill; leave them
-alone unless you are also replacing the handoff.
-
-`Smart_ReTest` mentions `.sara/` once, as an example location for saving a report. It is not a
-dependency.
+**Every skill here is self-contained.** All five read and write the same `.qa/` workspace, follow
+the same foundation, and write to `qa-output/<STORY-ID>/<skill-name>/`. None of them requires a
+skill outside this repository.
 
 ---
 
 ## Credits
 
-The three specialist skills originate from separate repositories and are vendored here so the agent
+The two specialist skills originate from separate repositories and are vendored here so the agent
 ships complete. Persona wording adapted; method and structure are the original authors' work.
 
 | Skill | Author | Source |
 |---|---|---|
 | `Smart_ReTest` | Mai-Ziada | [Smart_ReTest_Skill](https://github.com/Mai-Ziada/Smart_ReTest_Skill) |
 | `api-testing` | Eng-Mohammed-Samir | [API_Testing_skill](https://github.com/Eng-Mohammed-Samir/API_Testing_skill) |
-| `flow-to-regression` | Haifasameer24 | [-flow-to-regression](https://github.com/Haifasameer24/-flow-to-regression) |
