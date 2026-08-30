@@ -309,6 +309,3 @@ ships complete. Persona wording adapted; method and structure are the original a
 | `Smart_ReTest` | Mai-Ziada | [Smart_ReTest_Skill](https://github.com/Mai-Ziada/Smart_ReTest_Skill) |
 | `api-testing` | Eng-Mohammed-Samir | [API_Testing_skill](https://github.com/Eng-Mohammed-Samir/API_Testing_skill) |
 | `flow-to-regression` | Haifasameer24 | [-flow-to-regression](https://github.com/Haifasameer24/-flow-to-regression) |
-
-None of the three source repositories carries a licence file. Check with the author before
-redistributing their skill outside this private repository.
