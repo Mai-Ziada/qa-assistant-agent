@@ -1,0 +1,26 @@
+{
+  "_comment": "Copy to .mcp.json and fill in. .mcp.json is git-ignored — never commit real credentials. Delete the servers you do not use.",
+  "mcpServers": {
+    "atlassian": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.atlassian.com/v1/sse"],
+      "env": {}
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": ""
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y", "@playwright/mcp@latest",
+        "--caps=vision",
+        "--viewport-size=1920x1080"
+      ],
+      "env": {}
+    }
+  }
+}

@@ -30,8 +30,19 @@ qa-run-tc        ──▶  feasibility check ▸ execute ▸ report
 | **2. Create TC** | `qa-create-tc` | Coverage matrix and test cases — functional, edge, integration, API, threat-based security |
 | **3. Run TC** | `qa-run-tc` | Executed results with redacted evidence, faithful statuses, optional bug filing |
 
-Artifacts land in `./ba-analysis/` and carry across stages, sessions, and hosts — stop after the
-analysis today, pick up test cases tomorrow.
+Artifacts land in `./qa-output/<STORY-ID>/<skill-name>/` and carry across stages, sessions, and
+hosts — stop after the analysis today, pick up test cases tomorrow. One story's whole trail sits in
+one folder:
+
+```
+qa-output/
+  US1/
+    qa-story-review/   analysis.md
+    qa-create-tc/      testcases.md  testcases.csv
+    qa-run-tc/         run-2026-08-27.md
+  US2/
+    ...
+```
 
 ---
 
@@ -100,23 +111,69 @@ partial result labelled complete is treated as the most damaging output it can p
 
 ## Install
 
-Copy into your Claude Code configuration:
+```bash
+git clone https://github.com/Mai-Ziada/qa-assistant-agent.git
+cd /path/to/your/project
+bash /path/to/qa-assistant-agent/install.sh
+```
+
+That does two things:
+
+**1. The agent and skills → `~/.claude/`** — installed once, shared by every project, so an update
+reaches all of them.
+
+**2. A workspace → your project** — the agent's long-term state for *this* product:
+
+```
+your-project/
+  .qa/
+    project-context.md    standing facts — platforms, business rules, environments, roles
+    memory.md             work log, corrections, settled decisions, recurring defects
+    knowledge/            source material — supplied docs, produced reports, live findings
+    screenshots/          test evidence, foldered by story / test case / bug
+  qa-output/              deliverables, per story, per skill
+  .mcp.json               your MCP credentials (git-ignored)
+  .mcp.json.example       the template, safe to commit
+  .gitignore              QA Assistant block appended
+```
+
+**Re-running is safe.** Existing files are never overwritten — the script reports `kept` and moves
+on, so your credentials and edits survive. Pass `--force` only when you deliberately want the
+templates restored.
+
+| Flag | Effect |
+|---|---|
+| `--skills-only` | Install to `~/.claude` only, no project workspace |
+| `--workspace-only` | Scaffold the project workspace only |
+| `--force` | Overwrite existing files |
+
+Then: put real credentials in `.mcp.json`, fill in `.qa/project-context.md`, restart the session.
+
+### What the agent maintains for you
+
+`project-context.md` and `memory.md` are **living files the agent updates as it learns** — a
+business rule you state, a platform it determines, a correction you make, a decision you settle.
+Every skill reads them before it starts.
+
+That is what stops the agent asking you the same question twice, re-deriving what it already knew,
+or repeating a mistake you already corrected. Keeping them in git means that context travels to
+your teammates and to your next machine.
+
+**Git-ignored by default:** `.mcp.json` (secrets), `.qa/screenshots/` (heavy, may hold sensitive
+data), `qa-output/` (changes constantly). **Committed:** `project-context.md`, `memory.md`,
+`knowledge/` — the knowledge worth sharing.
+
+### Manual install
+
+If you would rather not run the script:
 
 ```bash
-# user-global — available in every project
 cp agents/qa-assistant.md ~/.claude/agents/
 cp -r skills/* ~/.claude/skills/
 ```
 
-That installs the agent plus all seven skills — the `/qa-assistant` entry point, the three
-core stages, and the three specialists. To take only the entry point and core workflow:
-
-```bash
-cp agents/qa-assistant.md ~/.claude/agents/
-cp -r skills/qa-assistant skills/qa-story-review skills/qa-create-tc skills/qa-run-tc ~/.claude/skills/
-```
-
 For a single project, use `.claude/agents/` and `.claude/skills/` in the project root instead.
+The skills work without the workspace — they say once that `./install.sh` would scaffold it.
 
 Restart the session so the agent is discovered.
 
@@ -194,6 +251,8 @@ can be finished in Claude Code without conversion.
 
 ```
 README.md                         this file
+install.sh                        installer — skills to ~/.claude, workspace to your project
+install/templates/                workspace templates the installer copies
 INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent

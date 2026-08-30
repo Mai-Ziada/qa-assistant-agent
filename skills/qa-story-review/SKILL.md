@@ -22,9 +22,10 @@ classification, the depth levels, and the host-adaptation mechanics that this sk
 
 ## Step 0 — Set up
 
-1. **Read the foundation** — `references/foundation.md` in this skill directory.
-2. **Check capabilities** — establish what you actually have (read files, write files, search repo, shell, web). State it in one line: `Mode: full (files + shell + web)` or `Mode: chat-only — deliverables inline.`
-3. **Set the depth** — infer from the story content and announce it in one correctable line: `Depth: Standard — say "quick" or "deep" to change it.` Apply the mandatory-escalation rule from the foundation.
+1. **Load the project workspace** — read `.qa/memory.md` (corrections, decisions, work log) and `.qa/project-context.md` (platforms, rules, roles, environments), and search `.qa/knowledge/` for material already supplied. Never repeat a recorded mistake, re-ask a settled decision, or ask for something the workspace already answers. If `.qa/` is absent, say once that `./install.sh` would scaffold it and continue.
+2. **Read the foundation** — `references/foundation.md` in this skill directory.
+3. **Check capabilities** — establish what you actually have (read files, write files, search repo, shell, web). State it in one line: `Mode: full (files + shell + web)` or `Mode: chat-only — deliverables inline.`
+4. **Set the depth** — infer from the story content and announce it in one correctable line: `Depth: Standard — say "quick" or "deep" to change it.` Apply the mandatory-escalation rule from the foundation.
 
 ## Step 1 — Ingest the story
 
@@ -285,10 +286,10 @@ Present in chat, in this order:
 1. **The readiness score and the verdict** — `62% — NOT READY` — and the single most important reason
 2. **What is already good** — two or three lines, so the summary is not purely negative
 3. **The score arithmetic** in three or four lines — the deductions that cost the most, so the number is inspectable at a glance
-4. **Gap counts by severity**, then the top 3 blockers
-5. **The sharpest what-if** — the one scenario most likely to change a decision
-6. **The top 3 questions** blocking readiness
-7. **The minimum path to READY**, each item with the points it recovers
+5. **Gap counts by severity**, then the top 3 blockers
+6. **The sharpest what-if** — the one scenario most likely to change a decision
+7. **The top 3 questions** blocking readiness
+8. **The minimum path to READY**, each item with the points it recovers
 
 Keep it short enough to read without scrolling. The file holds the detail.
 

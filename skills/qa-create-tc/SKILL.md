@@ -18,18 +18,19 @@ the approval gates, and the host-adaptation mechanics this skill depends on.
 
 ## Step 0 — Set up and locate the analysis
 
-1. **Read the foundation** — `references/foundation.md`.
-2. **Check capabilities** and state the mode in one line.
-3. **Find the approved analysis.** Look for `./qa-output/<STORY-ID>/qa-story-review/analysis.md`, then the legacy `./ba-analysis/<STORY-ID>-analysis.md` — if one exists, read it and use its gaps, dependencies, and acceptance criteria. Continue from it rather than re-deriving. **If it carries a Section F2 design review, that section feeds category 6** — see Step 1, category 6.
-4. **Read the readiness score.** The analysis carries a Section G score and verdict.
+1. **Load the project workspace** — read `.qa/memory.md` (corrections, decisions, work log) and `.qa/project-context.md` (platforms, rules, roles, environments), and search `.qa/knowledge/` for material already supplied. Never repeat a recorded mistake, re-ask a settled decision, or ask for something the workspace already answers. If `.qa/` is absent, say once that `./install.sh` would scaffold it and continue.
+2. **Read the foundation** — `references/foundation.md`.
+3. **Check capabilities** and state the mode in one line.
+4. **Find the approved analysis.** Look for `./qa-output/<STORY-ID>/qa-story-review/analysis.md`, then the legacy `./ba-analysis/<STORY-ID>-analysis.md` — if one exists, read it and use its gaps, dependencies, and acceptance criteria. Continue from it rather than re-deriving. **If it carries a Section F2 design review, that section feeds category 6** — see Step 1, category 6.
+5. **Read the readiness score.** The analysis carries a Section G score and verdict.
 
    - **70% or above** — proceed normally.
    - **Below 70%** — say so in one line with the score and the blockers, and ask with `AskUserQuestion` (header `Readiness`) whether to **close the gaps first** (listed first) or **generate anyway**. Do not decide for the user, and do not ask twice: if `qa-story-review` already put this question to them and they chose to proceed, honour that and continue without re-asking.
    - **Generating below 70%** — the suite is `PROVISIONAL`. Put that on the first line of the deliverable with the score and the verdict, flag every case that rests on an unresolved gap with `[PROVISIONAL — depends on GAP-<n>]`, and close with a short **re-verify list**: the cases to revisit once each gap is answered. A provisional suite is honest and useful; a provisional suite presented as final is the failure this rule exists to prevent.
 
-5. **If no analysis exists** — say so and offer to run `qa-story-review` first. If the user prefers to proceed on the raw story, do so, but state in one line what will be weaker without it: no dependency map means integration coverage is guesswork, and no gap list means untestable requirements go unflagged.
-6. **Confirm the depth** — inherit it from the analysis if present, otherwise infer and announce it. Apply the mandatory-escalation rule from the foundation.
-7. **Identify the delivery platform** and announce it in the same line as the depth — `mobile app`, `web`, `backend/API`, or a combination. Screenshots of phone frames, an app store, an `.apk` or `.ipa`, or any wording about a mobile app settles it. When the platform is genuinely unclear, state your reading and continue; do not stop to ask. The platform decides whether the mobile additions are mandatory or skipped, and whether category 6 (UI / UX) applies at all.
+6. **If no analysis exists** — say so and offer to run `qa-story-review` first. If the user prefers to proceed on the raw story, do so, but state in one line what will be weaker without it: no dependency map means integration coverage is guesswork, and no gap list means untestable requirements go unflagged.
+7. **Confirm the depth** — inherit it from the analysis if present, otherwise infer and announce it. Apply the mandatory-escalation rule from the foundation.
+8. **Identify the delivery platform** and announce it in the same line as the depth — `mobile app`, `web`, `backend/API`, or a combination. **Check `.qa/project-context.md` § Platforms first** — when it records the platform, use it rather than re-deriving; when you determine the platform and it is absent or wrong there, update that file. Screenshots of phone frames, an app store, an `.apk` or `.ipa`, or any wording about a mobile app settles it. When the platform is genuinely unclear, state your reading and continue; do not stop to ask. The platform decides whether the mobile additions are mandatory or skipped, and whether category 6 (UI / UX) applies at all.
 
 ## Step 1 — Coverage: applicability-based, not checklist-based
 

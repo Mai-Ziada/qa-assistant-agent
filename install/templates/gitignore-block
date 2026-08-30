@@ -1,0 +1,11 @@
+# --- QA Assistant ---
+# Real MCP credentials. The committed template is .mcp.json.example
+.mcp.json
+
+# Test evidence — heavy, constantly changing, may contain sensitive data
+.qa/screenshots/
+
+# Deliverables — remove this line if your team wants them versioned
+qa-output/
+
+# Kept in git on purpose: .qa/project-context.md, .qa/memory.md, .qa/knowledge/

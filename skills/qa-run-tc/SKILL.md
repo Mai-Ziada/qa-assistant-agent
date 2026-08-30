@@ -18,9 +18,10 @@ requirements, and the host-adaptation mechanics this skill depends on.
 
 ## Step 0 — Set up and load the cases
 
-1. **Read the foundation** — `references/foundation.md`.
-2. **Check capabilities** and state the mode in one line. Note specifically whether you have browser access, API access, and database or observability access — these determine what is verifiable.
-3. **Load the test cases** — from `./qa-output/<STORY-ID>/qa-create-tc/testcases.md`, the legacy `./ba-analysis/<STORY-ID>-testcases.md`, a supplied file, or the tracker. If none exists, say so and offer to run `qa-create-tc` first.
+1. **Load the project workspace** — read `.qa/memory.md` (corrections, decisions, work log) and `.qa/project-context.md` (platforms, rules, roles, environments), and search `.qa/knowledge/` for material already supplied. Never repeat a recorded mistake, re-ask a settled decision, or ask for something the workspace already answers. If `.qa/` is absent, say once that `./install.sh` would scaffold it and continue.
+2. **Read the foundation** — `references/foundation.md`.
+3. **Check capabilities** and state the mode in one line. Note specifically whether you have browser access, API access, and database or observability access — these determine what is verifiable.
+4. **Load the test cases** — from `./qa-output/<STORY-ID>/qa-create-tc/testcases.md`, the legacy `./ba-analysis/<STORY-ID>-testcases.md`, a supplied file, or the tracker. If none exists, say so and offer to run `qa-create-tc` first.
 
 ## Step 1 — Execution-feasibility check ⛔ (before any case runs)
 
@@ -70,6 +71,8 @@ observed result** for every case — not the expected one restated.
 - **Consolidated evidence is acceptable** for a run of repeated passing P2/P3 cases — one artifact covering a verified batch. It must still prove each result reliably; a single artifact covering cases you did not actually verify is not evidence, it is a claim.
 - **Keep it minimal but sufficient** — the smallest artifact that proves the result: the relevant response fields, the relevant region of the screen. Capture the full payload or full screen only when the failure needs that context.
 - **Redact before storing.** Apply the foundation's data-protection rules to every screenshot, request, response, and log — tokens, cookies, auth headers, national and financial identifiers, personal data not needed to prove the result.
+- **Where it goes.** Screenshots live in `.qa/screenshots/<subject>/`, where `<subject>` is the story id, the test-case id, or the bug id — whichever the run is about. Name them `<seq>-<what-it-shows>.png` so the sequence reads in order, and mark the failing frame `FAIL` (`03-FAIL-total-mismatch.png`). Reference the path in the report's Evidence column. Non-image evidence (a response body, a log excerpt) goes beside the run report in `./qa-output/<STORY-ID>/qa-run-tc/evidence/`.
+- **A screenshot is not proof of a pass.** It shows what the screen displayed, never what was persisted. A case carrying a `Persisted`, `Audit/event`, or `Downstream` expectation needs evidence at that layer too, or the status is `BLOCKED` on the missing access — never `PASS`.
 
 ## Step 4 — Report
 

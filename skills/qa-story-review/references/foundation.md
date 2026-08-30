@@ -186,6 +186,55 @@ existing files unless they ask.
 
 **Read an artifact you find and continue from it** rather than starting over.
 
+## 8b. The project workspace
+
+Beside `qa-output/`, an installed project carries a `.qa/` workspace. It is the agent's own
+long-term state: what is true about this product, and what has already happened.
+
+```
+.qa/
+  project-context.md    standing facts about the product — platforms, rules, environments, roles
+  memory.md             work log, corrections, settled decisions, recurring defects
+  knowledge/            full source material — supplied docs, produced reports, live findings
+  screenshots/          test evidence, foldered by story / test case / bug id
+qa-output/              deliverables, per story, per skill
+.mcp.json               MCP credentials (git-ignored; template is .mcp.json.example)
+```
+
+### Read these before you start — every run, every skill
+
+| File | Why it changes what you do |
+|---|---|
+| `.qa/memory.md` § Corrections | A mistake recorded there must not be repeated |
+| `.qa/memory.md` § Decisions | A settled question must not be re-asked |
+| `.qa/memory.md` § Work log | The work may already exist — continue it, do not redo it |
+| `.qa/project-context.md` | Platforms decide mandatory coverage; rules, roles and environments feed every case |
+| `.qa/knowledge/` | Search it before asking the user for something they may have already supplied |
+
+**Asking the user something these files already answer is the failure this workspace prevents.**
+If the workspace is absent, work normally and say once that `./install.sh` would scaffold it — do
+not create it silently mid-run, and never treat its absence as a reason to stop.
+
+### Write to them as you learn
+
+| When | Write to |
+|---|---|
+| A durable product fact appears — a platform, a business rule, a role, an environment, an integration | `.qa/project-context.md` |
+| The user corrects you | `.qa/memory.md` § Corrections — **always** |
+| The user chooses between options you offered | `.qa/memory.md` § Decisions |
+| A stage completes | `.qa/memory.md` § Work log |
+| The same defect appears again | `.qa/memory.md` § Recurring defects |
+| A `[MISSING-BLOCKING]` gap is answered | `.qa/memory.md` § Answered questions — and `project-context.md` when the answer is durable |
+| A document is supplied, a report is produced, a live journey yields findings | `.qa/knowledge/` |
+| A screenshot is captured | `.qa/screenshots/<STORY-ID or TC-ID or BUG-ID>/` |
+
+Each file's own header carries its update rules — follow them. Four hold everywhere:
+
+1. **Durable only.** Facts true next month go in `.qa/`; anything specific to one story stays in `qa-output/`.
+2. **Never overwrite a confirmed fact with an inferred one**, and treat a contradiction as a finding to surface, not a value to quietly replace.
+3. **Say in one line what you updated**, so a wrong entry is caught immediately.
+4. **Never write a credential, token, or personal data** into any of these files. Record where a secret lives, never its value.
+
 ## 9. Global rules
 
 **Never invent facts.** An unstated rule is `[NOT PROVIDED]` or `[MISSING-BLOCKING]`, never a rule
