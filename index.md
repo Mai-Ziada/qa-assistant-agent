@@ -28,6 +28,7 @@ project, not this file.
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
 | What the workspace files are for | `install/templates/` |
 | How installation works | `install.sh`, `README.md` § Install |
+| How a missing `.qa/` gets created | `skills/*/references/foundation.md` § 8b, Create it when it is missing |
 | How removal works, and what survives it | `uninstall.sh`, `README.md` § Uninstall |
 
 ---
@@ -119,7 +120,10 @@ guessing when it cannot get an answer. Flags: `--skills-only`, `--workspace-only
 `--yes`.
 
 ### `install/templates/`
-Copied into a project on install. The first two are living files the agent updates.
+Copied into a project on install, and to
+`~/.claude/qa-assistant/workspace-templates/` at agent level — the canonical source a skill copies
+from when it scaffolds a workspace in a project that has none. The first two are living files the
+agent updates.
 
 | File | Becomes | Holds |
 |---|---|---|

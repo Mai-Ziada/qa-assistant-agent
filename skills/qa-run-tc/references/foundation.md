@@ -216,8 +216,35 @@ qa-output/              deliverables, per story, per skill
 | `.qa/knowledge/` | Search it before asking the user for something they may have already supplied |
 
 **Asking the user something these files already answer is the failure this workspace prevents.**
-If the workspace is absent, work normally and say once that `./install.sh` would scaffold it — do
-not create it silently mid-run, and never treat its absence as a reason to stop.
+
+### Create it when it is missing
+
+If `.qa/` is absent, **create it before you start** — do not ask, and never treat its absence as a
+reason to stop:
+
+```bash
+mkdir -p .qa/knowledge/sources .qa/screenshots qa-output
+```
+
+Then write the starter files — `.qa/index.md`, `.qa/project-context.md`, `.qa/memory.md`, and a
+`README.md` in `knowledge/`, `screenshots/`, and `qa-output/`. Copy them from the templates
+installed at agent level:
+
+```
+~/.claude/qa-assistant/workspace-templates/
+```
+
+That directory is written once by `install.sh` and is the canonical source, so scaffolding never
+depends on the cloned repository still being on the machine. If it is missing — the agent was
+installed by hand — fall back to `install/templates/` in the repo, and if that is unavailable too,
+write the files from the structure documented in § 8b: every heading present, `[NOT PROVIDED]` in
+place of each value, so each file is ready to fill rather than empty.
+
+Say in one line that you created it, and continue with the run. **Never overwrite an existing
+file**: a workspace that is partly there gets only the missing pieces added.
+
+`.mcp.json` is the one thing you do not create — it holds credentials, and belongs to `install.sh`
+or to the user.
 
 ### Write to them as you learn
 

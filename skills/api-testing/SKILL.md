@@ -64,8 +64,7 @@ Before asking the user anything — and before planning any run — load:
 - Previous API runs in `qa-output/<STORY-ID>/api-testing/` and in `.qa/memory.md` § Work log — filter by feature area and environment matching the current request.
 - Existing test data files
 
-If `.qa/` is absent, say once that `./install.sh` would scaffold it, then continue — its absence
-never blocks a run.
+If `.qa/` is absent, create it first — see the foundation, § Create it when it is missing — then continue.
 
 If prior API testing runs exist for the same feature area and environment, call AskUserQuestion with:
 

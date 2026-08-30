@@ -60,6 +60,12 @@ if [ "$WORKSPACE_ONLY" -eq 0 ]; then
   say "installed  agents/qa-assistant.md"
   cp -r "$REPO/skills/." "$HOME/.claude/skills/"
   say "installed  $(find "$REPO/skills" -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ') skills"
+
+  # Workspace templates, once, at agent level. A skill running in a project with
+  # no .qa/ scaffolds one from here, so it never depends on the cloned repo.
+  mkdir -p "$HOME/.claude/qa-assistant/workspace-templates"
+  cp "$TPL"/index.md "$TPL"/project-context.md "$TPL"/memory.md      "$TPL"/knowledge-README.md "$TPL"/screenshots-README.md "$TPL"/qa-output-README.md      "$HOME/.claude/qa-assistant/workspace-templates/"
+  say "installed  workspace templates"
 fi
 
 # ------------------------------------------------------------- workspace

@@ -26,8 +26,7 @@ STEP 0 — LOAD THE PROJECT WORKSPACE (before anything else)
 - `.qa/knowledge/` — prior reports and findings about the area under retest.
 - Previous retests in `qa-output/<BUG-ID>/Smart_ReTest/`.
 
-If `.qa/` is absent, say once that `./install.sh` would scaffold it, then continue — its absence
-never blocks a retest.
+If `.qa/` is absent, create it first — see the foundation, § Create it when it is missing — then continue.
 
 **After the retest**, write back: the outcome to `.qa/memory.md` § Work log; a fix that broke
 something it had broken before to § Recurring defects; any correction the user makes to

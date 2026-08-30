@@ -137,6 +137,11 @@ your-project/
   .gitignore              QA Assistant block appended
 ```
 
+**Other projects need no install.** The skills scaffold `.qa/` and `qa-output/` themselves the
+first time they run somewhere without one, copying from the templates installed at
+`~/.claude/qa-assistant/workspace-templates/`. Run `install.sh` in a project only when you want the
+workspace and `.mcp.json` set up in advance — credentials are the one thing a skill never creates.
+
 **Re-running is safe.** Existing files are never overwritten — the script reports `kept` and moves
 on, so your credentials and edits survive. Pass `--force` only when you deliberately want the
 templates restored.
