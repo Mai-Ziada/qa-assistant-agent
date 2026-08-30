@@ -284,18 +284,21 @@ skills/
 ## Maintenance notes
 
 **`foundation.md` is duplicated on purpose.** It is identical in `qa-story-review`, `qa-create-tc`,
-and `qa-run-tc` so each stage can run standalone. Keep the three copies in sync when editing.
+`qa-run-tc`, and `api-testing` so each can run standalone. Keep the four copies in sync when editing.
 
-**Do not rename `.sara/` paths in the specialist skills.** They are data directories, not branding
-— they hold run history, heuristics, and known-issues that the skills read on every run. Renaming
-them orphans that data.
+**`api-testing` is a full member of the workflow.** It reads and writes the same `.qa/` workspace,
+follows the same foundation, writes to `qa-output/<STORY-ID>/api-testing/`, and files bugs through
+its own tracker rules. It depends on no skill outside this repository, and continues from a story's
+API cases when they exist.
 
-**Do not touch the `agentic-regression` handoff in `flow-to-regression`.** That skill owns the
-suite format, the regression maps, and everything under `.sara/regression/`. Breaking the handoff
-stops suite generation entirely.
+**`flow-to-regression` has one external dependency.** After its second gate it hands off to an
+`agentic-regression` skill that is not part of this repository. Without that skill installed it
+stops at the approved `plan.md` — a complete, ready-to-run handoff package — and says so. Everything
+before the handoff works standalone. Its `.sara/` paths belong to that companion skill; leave them
+alone unless you are also replacing the handoff.
 
-Only persona references were adapted to QA Assistant. Both identifiers above were deliberately left
-unchanged, so these copies stay compatible with existing run history and installed companion skills.
+`Smart_ReTest` mentions `.sara/` once, as an example location for saving a report. It is not a
+dependency.
 
 ---
 

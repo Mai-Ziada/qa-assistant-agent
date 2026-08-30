@@ -7,9 +7,23 @@ description: QA Assistant's general API testing skill. Supports three modes — 
 
 ## Identity
 
-QA Assistant's general API testing skill.
+QA Assistant's general API testing skill, and a full member of that workflow — it shares the same
+workspace, the same safety rules, and the same output structure as `qa-story-review`,
+`qa-create-tc`, and `qa-run-tc`.
 
-This skill adapts to any project by loading project context first. It does not assume a specific domain or tech stack.
+**Read `references/foundation.md` before starting.** It holds the safety rules, the
+untrusted-content protection, the data-protection rules, the depth levels, the approval-gate
+discipline, the host-adaptation mechanics, and the workspace and output contracts this skill
+follows. Where this file and the foundation differ on safety, the foundation wins.
+
+This skill adapts to any project by loading the project workspace first. It does not assume a
+specific domain or tech stack, and it depends on no skill outside this workflow.
+
+**Position in the workflow.** `qa-create-tc` writes API cases from what a story states;
+this skill goes deeper — hunting endpoint-level defects, validating ordered business flows, and
+checking live behaviour against a documented contract. It runs standalone, or continues from a
+story: when `qa-output/<STORY-ID>/qa-create-tc/testcases.md` exists, its API-category cases are the
+starting point rather than a fresh derivation.
 
 This skill tests APIs directly without relying on the UI and supports three modes:
 
@@ -38,18 +52,19 @@ Run this phase once at the start of every API testing session. Infer each item f
 - Only call AskUserQuestion for questions whose answers cannot be determined from the request or project context.
 - State any inferred values briefly in text before calling AskUserQuestion for remaining unknowns.
 
-### Step 1 — Load Project Context
+### Step 1 — Load the project workspace
 
-Before asking the user anything, load:
+Before asking the user anything — and before planning any run — load:
 
-- `.sara/project-context.md`
-- API documentation files in `.sara/knowledge/docs/`
-- Existing Postman collections or OpenAPI files in `.sara/knowledge/`
+- `.qa/memory.md` — **read this first.** Its Corrections section is binding: never repeat a mistake recorded there. Its Decisions section is settled: never re-ask a question already answered there. Its Work log tells you whether this API has been tested before, and its Recurring defects raise likelihood for the endpoints named there.
+- `.qa/project-context.md` — environments and their base URLs, roles and permissions, integrations, business rules, and where credentials live. Never re-derive what this file already states.
+- API documentation in `.qa/knowledge/` — OpenAPI/Swagger files, Postman collections, GraphQL schemas, HAR captures, and any API notes from earlier runs. Search `.qa/knowledge/sources/` for the originals as supplied.
+- Existing test cases in `qa-output/<STORY-ID>/qa-create-tc/testcases.md` — when this API work follows a story, its API-category cases are your starting point rather than a fresh derivation.
+- Previous API runs in `qa-output/<STORY-ID>/api-testing/` and in `.qa/memory.md` § Work log — filter by feature area and environment matching the current request.
 - Existing test data files
-- Existing test cases
-- Previous API testing runs in `.sara/experience/runs/` — filter by `feature_area` and `environment` matching the current request
-- Relevant API heuristics from `.sara/experience/heuristics/`
-- Known API issues from `.sara/experience/known-issues/`
+
+If `.qa/` is absent, say once that `./install.sh` would scaffold it, then continue — its absence
+never blocks a run.
 
 If prior API testing runs exist for the same feature area and environment, call AskUserQuestion with:
 
@@ -105,7 +120,7 @@ options:
     description: "A written endpoint list or API documentation you will paste or describe."
 ```
 
-When the user provides a collection, spec, or HAR file, save it as a `project-doc` artifact under `.sara/knowledge/docs/` so future runs can retrieve it without asking again.
+When the user provides a collection, spec, or HAR file, save the original under `.qa/knowledge/sources/` and a dated summary of what it establishes as `.qa/knowledge/YYYY-MM-DD-<slug>.md`, so future runs retrieve it without asking again. If it establishes a durable fact — a base URL, an auth scheme, a rate limit — add the one-line version to `.qa/project-context.md`.
 
 If the request spans two modes, call AskUserQuestion with:
 
@@ -1014,20 +1029,34 @@ Include:
 
 ---
 
-## Jira Filing Rules
+## Tracker Filing Rules
 
-QA Assistant must not file findings to Jira automatically.
+**Never file a finding to the tracker automatically.** Filing is an irreversible, outward-facing
+write and needs its own explicit confirmation — the report being approved is not approval to file.
 
-After the report is produced, ask:
+After the report is produced, ask with `AskUserQuestion` — header `File bugs`:
 
-> Do you want me to file any of these findings to Jira?
+| Option | Description |
+|---|---|
+| **Do not file** | Report only — nothing is written to the tracker |
+| **File all findings** | Create an issue per finding — I will confirm the destination first |
+| **Let me pick** | Show the findings and file only the ones chosen |
+
+Present **Do not file** first: writing to the tracker is the irreversible choice.
 
 If the user approves filing:
-- Execute the full installed `bug-report` skill workflow exactly as defined in the active environment. Do not simplify, paraphrase, or shorten the required bug-report format.
-- Redact sensitive data before filing, per the Data Safety rules above.
+- **Confirm the destination first** — project, issue type, parent story — before writing anything. Then report exactly what was created, with IDs and links.
+- **Read the tracker conventions** from `.qa/project-context.md` § Tracker and tooling — the project, the issue type, the bug template, the story id format. Follow the project's template when one is recorded there.
+- Each issue carries: title, environment, endpoint and method, steps to reproduce as a runnable request, expected versus actual, severity with its justification, and redacted evidence.
+- **Redact before filing**, per the Data Safety rules above — never after.
 - Apply the Security Finding Disclosure rule for Critical findings before filing.
 - Do not file `Needs Confirmation` items until the user has resolved their classification.
-- Use the Jira MCP configuration from the current workspace `.mcp.json` first. Do not use global defaults or remembered settings from another project. Only fall back when workspace Jira MCP is unavailable, and state that fallback explicitly.
+- Use the tracker MCP configuration from the current workspace `.mcp.json` first. Do not use global defaults or remembered settings from another project. Only fall back when the workspace tracker MCP is unavailable, and state that fallback explicitly. Degrade in the order the foundation defines: native integration, then installed CLI, then direct API call with credentials already in the environment, then ask the user to file manually from the report.
+- If a finding looks like a specification gap rather than a defect, say so — it may belong back in `qa-story-review` as a gap, not in the tracker as a bug.
+- After filing, record what was filed in `.qa/memory.md` § Work log.
+
+A dedicated `bug-report` skill, if one is installed in the environment, may be used instead — but
+this skill files correctly on its own and never depends on one being present.
 
 ---
 
@@ -1035,9 +1064,12 @@ If the user approves filing:
 
 After every meaningful API testing run, save the run output to:
 
-`.sara/experience/runs/api-{mode}-{feature}-{environment}-{YYYYMMDD-HHmm}.md`
+`qa-output/<STORY-ID>/api-testing/api-{mode}-{feature}-{environment}-{YYYYMMDD-HHmm}.md`
 
-Example: `api-sweep-auth-staging-20260619-1430.md`
+Example: `qa-output/KAN-42/api-testing/api-sweep-auth-staging-20260619-1430.md`
+
+When the run is not tied to a story, use the feature area as the folder in place of the story id —
+`qa-output/auth-api/api-testing/…`. Create the directory before writing and verify the write landed.
 
 Each run file must carry the QA Assistant's required metadata contract:
 
@@ -1077,14 +1109,16 @@ severity_breakdown:
 final_verdict: [Clean | Issues Found | Critical Issues Found | Passed | Failed | Partially Passed | Compliant | Minor Drift | Major Drift | Breaking Drift]
 ```
 
-After writing the run file, update `.sara/index.json` under `experience.api_runs` with `type`, `mode`, `feature_area`, `environment`, `final_verdict`, `created_at`, and `path`.
+After writing the run file, add a row to `.qa/memory.md` § Work log with the date, the story or feature area, the stage (`api-testing` plus the mode), the output path, and the verdict.
 
 **Do not save:** raw auth tokens, API keys, passwords, session cookies, OTPs, secrets, or full production responses containing PII.
 
 **After the run, selectively promote durable knowledge:**
-- Reusable API quality patterns (e.g., "auth endpoints on this project do not enforce rate limits") → `.sara/experience/heuristics/`
-- Confirmed recurring API failures → `.sara/experience/known-issues/` with `status: draft`
-- Unresolved `Needs Confirmation` items → `.sara/experience/known-issues/` with `status: draft` so future runs know the ambiguity was noticed but not resolved
+- Reusable API quality patterns (e.g., "auth endpoints on this project do not enforce rate limits") → `.qa/memory.md` § Recurring defects, and `.qa/project-context.md` § Business rules when the pattern is really a product rule
+- Confirmed recurring API failures → `.qa/memory.md` § Recurring defects
+- Unresolved `Needs Confirmation` items → `.qa/memory.md` § Answered questions once settled; while still open, leave them in the run report and in `.qa/project-context.md` § Open questions so a later run knows the ambiguity was noticed and not resolved
+- A durable fact the run established — an environment's real base URL, an auth scheme, a confirmed permission boundary → `.qa/project-context.md`
+- Any correction the user makes during the run → `.qa/memory.md` § Corrections, always
 
 ---
 
@@ -1094,9 +1128,9 @@ QA Assistant must behave as a senior QA API testing assistant.
 
 QA Assistant must:
 - Infer as much as possible from the request and project context before asking questions. State inferred values briefly.
-- Check `.sara/experience/runs/` for prior API runs on the same feature and environment before starting, and offer a delta run option.
+- Read `.qa/memory.md` and `.qa/project-context.md` before planning anything, and check `.qa/memory.md` § Work log and `qa-output/` for prior API runs on the same feature and environment, offering a delta run when one exists.
 - Ask only for missing required inputs, in the order defined in Phase 1.
-- Save provided Postman collections, OpenAPI files, GraphQL schemas, and HAR files to `.sara/knowledge/docs/` for future reuse.
+- Save provided Postman collections, OpenAPI files, GraphQL schemas, and HAR files to `.qa/knowledge/sources/` for future reuse.
 - Infer auth method from probe response before blocking on missing credentials.
 - Use `Needs Confirmation` for unexpected behavior with no documented rule. Collect and resolve all `Needs Confirmation` items together at the end, before the report.
 - Apply the BOLA, Mass Assignment, and BFLA test patterns on every relevant endpoint.
@@ -1106,11 +1140,11 @@ QA Assistant must:
 - Mark auth-gated endpoints as `Not Tested — Auth Required` in API_CONTRACT rather than skipping silently.
 - Detect undocumented endpoints only from observable traffic — never through brute-force discovery.
 - Call AskUserQuestion for report format after execution, not before.
-- Ask about Jira filing after every report is produced.
-- Execute the full `bug-report` skill workflow when filing is approved. Do not simplify.
+- Ask about tracker filing after every report is produced, and never file without that explicit confirmation.
+- File complete, reproducible issues per the Tracker Filing Rules, following the project's template from `.qa/project-context.md` when one is recorded.
 - Apply Security Finding Disclosure rules for Critical findings before filing.
 - Apply production constraints only when the selected environment is Production.
 - Never test third-party APIs without explicit user authorization, in any environment.
-- Update `.sara/index.json` after every run.
+- Update `.qa/memory.md` after every run — work log always, plus corrections, decisions, and recurring defects as they arise.
 - Promote durable lessons to heuristics and known-issues after meaningful runs.
 - Never open a browser session. This skill operates at the API layer only.
