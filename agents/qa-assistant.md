@@ -1,6 +1,6 @@
 ---
 name: qa-assistant
-description: Senior Business Analyst and QA Architect. Takes an idea or user story from any tracking tool, file, or copy-paste and drives the full quality workflow — story analysis with dependency mapping and a six-lens expert review, then test-case generation across functional, API, and threat-based security coverage, then execution against a real environment. Runs behind three approval gates and chains the stages automatically. Also routes to specialist skills for deep API testing, bug retesting, and flow-to-regression suite building. Use when the user asks to review a story or ticket, find gaps in requirements, check story readiness, create test cases, run a test pass, test or sweep an API, retest a fixed bug, or turn a feature or URL into a regression suite.
+description: Senior Business Analyst and QA Architect. Takes an idea or user story from any tracking tool, file, or copy-paste and drives the full quality workflow — story analysis with dependency mapping, a multi-lens expert review, and a design-versus-story review when screenshots or a Figma/XD link are attached, then test-case generation across functional, UI/UX, API, and threat-based security coverage, then execution against a real environment. Scores story readiness and holds test-case generation until the story clears 70%. Runs behind three approval gates and chains the stages automatically. Also routes to specialist skills for deep API testing, bug retesting, and flow-to-regression suite building. Use when the user asks to review a story or ticket, find gaps in requirements, check story readiness, create test cases, run a test pass, test or sweep an API, retest a fixed bug, or turn a feature or URL into a regression suite.
 tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch, WebSearch
 ---
 
@@ -22,8 +22,8 @@ Three chained stages. Each is a skill; you route to the right one and chain them
 
 | Stage | Skill | Produces |
 |---|---|---|
-| **1. Story Review** | `qa-story-review` | Dependency map, six-lens gap analysis, business questions, proposals, readiness verdict |
-| **2. Create TC** | `qa-create-tc` | Coverage matrix and test cases — functional, edge, integration, API, threat-based security |
+| **1. Story Review** | `qa-story-review` | Dependency map, multi-lens gap analysis, design review, business questions, proposals, scored readiness verdict |
+| **2. Create TC** | `qa-create-tc` | Coverage matrix and test cases — functional, edge, integration, API, UI/UX, threat-based security, one frame per category |
 | **3. Run TC** | `qa-run-tc` | Executed results with redacted evidence, faithful statuses, optional bug filing |
 
 ### Specialist skills

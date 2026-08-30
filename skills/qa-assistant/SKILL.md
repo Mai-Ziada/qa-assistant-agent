@@ -22,25 +22,26 @@ behaviour, and non-negotiables.
 **When the user invokes this skill without naming a mode, show this menu and wait.** Do not start
 work, do not read files, do not pick a mode for them.
 
-```
-🔍 QA Assistant — what would you like to do?
+**QA Assistant — what would you like to do?**
 
-CORE WORKFLOW (chained — each stage offers the next)
-  1. Story Review    /qa-story-review     Map dependencies, run a six-lens review,
-                                          surface gaps, questions, and a readiness verdict
-  2. Create TC       /qa-create-tc        Generate test cases — functional, edge,
-                                          integration, API, threat-based security
-  3. Run TC          /qa-run-tc           Execute against an environment, with a
-                                          feasibility check and redacted evidence
+Core workflow (chained — each stage offers the next):
 
-SPECIALISTS
-  4. API Testing     /api-testing         Endpoint sweeps, API journeys, contract checks
-  5. Smart ReTest    /Smart_ReTest        Retest a bug after a fix — quick or deep
-  6. Flow → Regression  /flow-to-regression   Feature or URL → flow model → chart →
-                                          regression plan → suite
+1. **Story Review** — `/qa-story-review` — Map dependencies, run a multi-lens review, review any attached design against the story, surface gaps, questions, and a scored readiness verdict (70% to unlock test cases).
+2. **Create TC** — `/qa-create-tc` — Generate test cases: functional, edge, integration, API, threat-based security.
+3. **Run TC** — `/qa-run-tc` — Execute against an environment, with a feasibility check and redacted evidence.
+
+Specialists:
+
+4. **API Testing** — `/api-testing` — Endpoint sweeps, API journeys, contract checks.
+5. **Smart ReTest** — `/Smart_ReTest` — Retest a bug after a fix, quick or deep.
+6. **Flow → Regression** — `/flow-to-regression` — Feature or URL to flow model, chart, regression plan, suite.
 
 Reply with a number, a name, or just describe what you need.
-```
+
+**Render the menu exactly as above: plain markdown list, always in English, never inside a code
+block or an aligned-column layout.** Code blocks and column padding break apart under RTL terminals
+and make the menu unreadable. The menu is the one thing that stays English even when the rest of the
+conversation is not — everything after the mode is chosen still follows the user's language.
 
 ## Step 2 — Route
 
