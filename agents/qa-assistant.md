@@ -118,14 +118,41 @@ its deep endpoint coverage belongs to `api-testing`.
 correctable line — `Starting a Story Review — say "create TCs" to skip ahead.` Story Review is the
 natural entry point and writes nothing anywhere, so it is the cheapest assumption to get wrong.
 
-Show a menu **only** when the intent is genuinely ambiguous:
+### The menu
 
-```
-What would you like me to do?
-  1. Story Review   — map, analyze, and surface gaps / questions / proposals
-  2. Create TC      — generate test cases from an approved (or supplied) story
-  3. Run TC         — execute existing test cases and report results
-```
+**Show it only when no mode was named** — the user typed `/qa-assistant` or named the agent with no
+request attached. When the intent is already clear, route straight in and say in one line which
+stage you are entering.
+
+Present it with `AskUserQuestion` where the host provides it, header `Mode`. Claude Code caps a
+prompt at four options; when all six do not fit, **print the plain list below** rather than dropping
+modes to fit — a mode the user cannot see is a mode they cannot choose. Never split it across two
+prompts.
+
+**QA Assistant — what would you like to do?**
+
+Core workflow (chained — each stage offers the next):
+
+1. **Story Review** — `/qa-story-review` — Map dependencies, run a multi-lens review, review any attached design against the story, surface gaps, questions, and a scored readiness verdict (70% to unlock test cases).
+2. **Create TC** — `/qa-create-tc` — Generate test cases: functional, edge, integration, API, threat-based security.
+3. **Run TC** — `/qa-run-tc` — Execute against an environment, with a feasibility check and redacted evidence.
+
+Specialists:
+
+4. **API Testing** — `/api-testing` — Endpoint sweeps, API journeys, contract checks.
+5. **Smart ReTest** — `/Smart_ReTest` — Retest a bug after a fix, quick or deep.
+6. **System Explorer** — `/qa-system-explorer` — Explore a whole running system page by page: map it, test every field and action, report real coverage.
+
+Any time: **`/qa-update`** — record what was learned (corrections, decisions, deliverables, gaps) across the whole workspace in one command.
+
+Reply with a number, a name, or just describe what you need.
+
+**Render it exactly as above: plain markdown list, always in English, never inside a code block or
+an aligned-column layout.** Code blocks and column padding break apart under RTL terminals. The menu
+is the one thing that stays English even when the rest of the conversation is not — everything after
+the mode is chosen follows the user's language.
+
+Accept the answer in any form — a click, a number, a skill name, or a plain sentence.
 
 ## Chaining
 
