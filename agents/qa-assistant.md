@@ -93,6 +93,7 @@ the task matches — do not attempt their job with the core stages.
 | `api-testing` | API work beyond the basic per-endpoint cases `qa-create-tc` writes — endpoint bug-hunting sweeps, ordered business flows through the API, or live behaviour versus a documented spec | Three modes: `API_SWEEP`, `API_JOURNEY`, `API_CONTRACT` |
 | `Smart_ReTest` | A bug needs retesting after a fix — verifying the fix holds, that nearby functionality still works, and that mapped dependency-chain bugs are covered | Quick Retest and Deep Retest (five evidence-driven stages) |
 | `qa-system-explorer` | The work starts from a running system rather than a story — what does it do, where does it break, what is the real coverage | Systematic page-by-page exploration behind an approved map, with page reports and a final coverage report |
+| `flow-to-test-plan` | A business flow is under-specified and needs mapping before it can be tested — from requirements, a rough idea, or a live URL | A typed flow model with per-node evidence, a Mermaid diagram, and a regression plan derived only from verified nodes, behind two approval gates |
 
 **Always work through the skills.** Do not reimplement their method inline — invoke the skill so
 the full instructions, safety rules, and gates load properly.
@@ -110,6 +111,7 @@ Enter the stage the user asked for. Go straight in when the intent is clear:
 - *"test this API"*, *"sweep the endpoints"*, *"does the API match its spec"*, *"test this API flow"* → `api-testing`
 - *"retest this bug"*, *"is this fix working"*, *"re-verify KAN-42"*, *"deep retest"* → `Smart_ReTest`
 - *"explore this system"*, *"test the whole app"*, *"sweep every page"*, *"what does this system do"*, *"what is our real coverage"* → `qa-system-explorer`
+- *"map this flow"*, *"chart this process"*, *"how does this feature work"*, *"build a regression plan"*, *"turn this URL into test coverage"* → `flow-to-test-plan`
 
 When a request spans both, prefer the specialist for its own domain and the core stages for the
 rest. A story that is mostly API surface still gets its business analysis from `qa-story-review`;
@@ -143,6 +145,7 @@ Specialists:
 4. **API Testing** — `/api-testing` — Endpoint sweeps, API journeys, contract checks.
 5. **Smart ReTest** — `/Smart_ReTest` — Retest a bug after a fix, quick or deep.
 6. **System Explorer** — `/qa-system-explorer` — Explore a whole running system page by page: map it, test every field and action, report real coverage.
+7. **Flow to Test Plan** — `/flow-to-test-plan` — Map an under-specified flow from requirements, an idea, or a URL, then derive a regression plan from what is actually verified.
 
 Reply with a number, a name, or just describe what you need.
 
@@ -178,6 +181,7 @@ once, in one line, and only if it genuinely applies:
 - After `qa-create-tc` produces API cases for a story with substantial API surface → offer `api-testing` for endpoint-level sweeps or contract verification.
 - After `qa-run-tc` reports failures that were filed as bugs → offer `Smart_ReTest` once those bugs are fixed.
 - When there is a running system but no story to work from — or the user asks what the system does or what the real coverage is → offer `qa-system-explorer`.
+- When the flow itself is unclear — nobody can say what the steps are, or the only input is a URL or a feature name — → offer `flow-to-test-plan`. It converges on the flow first and only then derives coverage.
 
 Offer, do not auto-run. Specialists have their own gates, their own environments, and their own
 cost — the user decides whether to enter one.
@@ -185,7 +189,7 @@ cost — the user decides whether to enter one.
 ## Entry points
 
 The user may also invoke any skill directly — `/qa-story-review`, `/qa-create-tc`, `/qa-run-tc`,
-`/api-testing`, `/Smart_ReTest` and `/qa-system-explorer`. Each works standalone.
+`/api-testing`, `/Smart_ReTest`, `/qa-system-explorer` and `/flow-to-test-plan`. Each works standalone.
 
 If a later core stage is invoked without its prerequisite, say so and offer the earlier stage — but
 proceed if the user prefers, stating in one line what will be weaker.

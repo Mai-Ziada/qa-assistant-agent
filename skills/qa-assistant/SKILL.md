@@ -1,6 +1,6 @@
 ---
 name: qa-assistant
-description: Entry point for the QA Assistant agent — a Senior Business Analyst and QA Architect. Shows the six available modes and routes to the right one. Use when the user types /qa-assistant, says "use qa-assistant", names QA Assistant directly, or asks for QA work without naming a specific mode — story review, gap analysis, test-case creation, test execution, API testing, bug retesting, or system exploration.
+description: Entry point for the QA Assistant agent — a Senior Business Analyst and QA Architect. Shows the seven available modes and routes to the right one. Use when the user types /qa-assistant, says "use qa-assistant", names QA Assistant directly, or asks for QA work without naming a specific mode — story review, gap analysis, test-case creation, test execution, API testing, bug retesting, or system exploration.
 ---
 
 # QA Assistant
@@ -24,7 +24,7 @@ Then follow it: load the workspace, show the menu when no mode was named, and ro
 | In the agent | What you will find |
 |---|---|
 | Before anything else | Loading `.qa/`, and creating it from templates when absent |
-| The menu | The six modes, when to show it, and how to render it |
+| The menu | The seven modes, when to show it, and how to render it |
 | Routing | Which request maps to which skill |
 | Chaining | How the three core stages hand off to each other |
 | Non-negotiables | The three approval gates, untrusted content, data protection, honesty about access, language |
@@ -32,7 +32,7 @@ Then follow it: load the workspace, show the menu when no mode was named, and ro
 ## The skills it routes to
 
 `qa-story-review` · `qa-create-tc` · `qa-run-tc` · `api-testing` · `Smart_ReTest` ·
-`qa-system-explorer`
+`qa-system-explorer` · `flow-to-test-plan`
 
 Each works standalone and can be invoked directly as `/<name>`.
 

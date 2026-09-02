@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Mai-Ziada/qa-assistant-agent/flow.schema.json",
+  "title": "QA flow model",
+  "description": "The canonical typed flow model for flow-to-test-plan. flow.mmd is rendered from this; this file is the only source of truth.",
+  "type": "object",
+  "required": ["flow_id", "title", "status", "input_mode", "nodes", "edges"],
+  "additionalProperties": false,
+  "properties": {
+    "flow_id": {
+      "type": "string",
+      "description": "Stable identifier for this flow, kebab-case; matches the folder name under .qa/flows/.",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "version": {
+      "type": "string",
+      "description": "Incremented whenever the model changes after an approval.",
+      "default": "1"
+    },
+    "status": {
+      "type": "string",
+      "description": "draft until Gate 1, chart-approved after it, plan-approved after Gate 2.",
+      "enum": ["draft", "chart-approved", "plan-approved"]
+    },
+    "input_mode": {
+      "type": "string",
+      "enum": ["requirements", "partial_idea", "url_discovery", "url_feature_focus"]
+    },
+    "target_environment": { "type": "string" },
+    "actors": {
+      "type": "array",
+      "description": "Roles that appear in the flow. Node.actor should name one of these.",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "verified": { "type": "boolean", "default": false }
+        }
+      }
+    },
+    "business_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "rule"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^BR-[0-9]+$" },
+          "rule": { "type": "string", "minLength": 1 },
+          "verified": { "type": "boolean", "default": false },
+          "evidence": { "$ref": "#/$defs/evidence" }
+        }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/node" }
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/edge" }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "question"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^Q-[0-9]+$" },
+          "question": { "type": "string", "minLength": 1 },
+          "blocks": {
+            "type": "array",
+            "description": "Node or edge IDs that cannot be verified until this is answered.",
+            "items": { "type": "string" }
+          },
+          "answer": { "type": "string" },
+          "answered_on": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "coverage_limitations": {
+      "type": "array",
+      "description": "What this model does not cover, and why — carried into the plan's excluded scope.",
+      "items": { "type": "string" }
+    },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["gate", "approver", "date", "version"],
+        "additionalProperties": false,
+        "properties": {
+          "gate": { "type": "string", "enum": ["flow", "plan"] },
+          "approver": { "type": "string" },
+          "date": { "type": "string", "format": "date" },
+          "version": { "type": "string" },
+          "accepted_limitations": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "description": "Where this came from. Required whenever verified is true.",
+      "required": ["source", "ref", "confidence"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "requirement",
+            "user_story",
+            "acceptance_criteria",
+            "business_rule_document",
+            "design",
+            "user_statement",
+            "observed_ui",
+            "observed_route",
+            "observed_api",
+            "domain_review",
+            "project_memory",
+            "prior_flow_model",
+            "inference"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The concrete pointer: US-01 / AC-03, a URL, a selector, a document heading. Never a credential."
+        },
+        "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "interaction": {
+          "type": "string",
+          "description": "For observed sources: the non-mutating interaction performed, and what it revealed."
+        },
+        "screenshot": { "type": "string" }
+      }
+    },
+    "node": {
+      "type": "object",
+      "required": ["id", "type", "label", "verified"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^N[0-9]{3,}$" },
+        "type": {
+          "type": "string",
+          "enum": [
+            "start", "page", "state", "action", "decision", "validation",
+            "system_action", "integration", "notification", "approval",
+            "success", "failure", "end", "unknown"
+          ]
+        },
+        "label": { "type": "string", "minLength": 1 },
+        "actor": { "type": "string" },
+        "route": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "evidence": { "$ref": "#/$defs/evidence" },
+        "business_rules": {
+          "type": "array",
+          "description": "BR ids this node enforces.",
+          "items": { "type": "string", "pattern": "^BR-[0-9]+$" }
+        },
+        "notes": { "type": "string" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "verified": { "const": true } }, "required": ["verified"] },
+          "then": {
+            "required": ["evidence"],
+            "description": "A verified node must carry a concrete evidence reference."
+          }
+        },
+        {
+          "if": { "properties": { "verified": { "const": true } }, "required": ["verified"] },
+          "then": {
+            "properties": {
+              "evidence": {
+                "properties": { "source": { "not": { "const": "inference" } } }
+              }
+            },
+            "description": "Inference is never sufficient evidence to verify a node."
+          }
+        }
+      ]
+    },
+    "edge": {
+      "type": "object",
+      "required": ["from", "to", "type", "verified"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "type": "string", "pattern": "^N[0-9]{3,}$" },
+        "to": { "type": "string", "pattern": "^N[0-9]{3,}$" },
+        "type": {
+          "type": "string",
+          "enum": ["sequence", "conditional", "failure", "retry", "alternative"]
+        },
+        "condition": {
+          "type": "string",
+          "description": "Required for conditional edges: what makes this branch the one taken."
+        },
+        "label": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "evidence": { "$ref": "#/$defs/evidence" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "verified": { "const": true } }, "required": ["verified"] },
+          "then": { "required": ["evidence"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "conditional" } }, "required": ["type"] },
+          "then": { "required": ["condition"] }
+        }
+      ]
+    }
+  }
+}

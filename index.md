@@ -26,6 +26,7 @@ project, not this file.
 | API sweeps, journeys, contract checks | `skills/api-testing/SKILL.md` |
 | Retesting a bug after a fix | `skills/Smart_ReTest/SKILL.md` |
 | Exploring a whole running system page by page | `skills/qa-system-explorer/SKILL.md` |
+| Mapping an unclear flow, then planning regression from it | `skills/flow-to-test-plan/SKILL.md` |
 | Recording what a run learned — the only writer to `.qa/` | `install/shared/updating-the-workspace.md` |
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
 | What the workspace files are for | `install/templates/` |
@@ -42,7 +43,7 @@ activates. The five chained and specialist skills each carry an identical `refer
 `qa-system-explorer` carries its rules inline instead.
 
 ### `skills/qa-assistant/SKILL.md`
-Entry point. Shows the six modes and routes to one. **Step 1** menu · **Step 2** routing table
+Entry point. Shows the seven modes and routes to one. **Step 1** menu · **Step 2** routing table
 mapping numbers and phrases to skills · **Step 3** chaining rules. Routes rather than works.
 
 ### `skills/qa-story-review/SKILL.md` — stage 1
@@ -95,6 +96,21 @@ report · **§ 18** the final report with coverage statistics · **§ 19** stop 
 **§ 21.1** three gates — the map, every destructive action, and tracker filing.
 Never marks a page Completed on a partial pass; Partial and Blocked carry reasons.
 Writes `qa-output/system-exploration/`, evidence in `.qa/screenshots/system-exploration/`.
+
+### `skills/flow-to-test-plan/SKILL.md` — specialist
+Converges on what a flow actually *is* before testing it, for cases where the flow is the unknown:
+requirements, a rough idea, a live URL, or a URL plus a named feature.
+**Core principle** `flow.json` is the only source of truth and `flow.mmd` is generated from it ·
+**Input modes** four, all producing the same canonical model · **URL discovery rules** observation
+only — an explicit forbidden list, and ambiguous actions treated as mutating · **Phase A** understand,
+model, render, lint, domain review · **Gate 1** flow approval, a hard stop · **Phase B** the verified
+filter, journeys, cases, regression plan · **Gate 2** plan approval with eight hard-stop conditions.
+A node is `verified: true` only with a concrete reference; everything else is reported as a gap
+rather than assumed. Unverified nodes may appear in the diagram but never enter approved coverage.
+Writes `.qa/flows/<flow-slug>/` — seven artifacts. Ends at plan approval: no suite, no execution,
+no hand-off.
+`references/flow.schema.json` enforces the model contract — a verified node without evidence, or
+evidenced only by inference, fails validation.
 
 ### `install/shared/updating-the-workspace.md` — the only writer to `.qa/`, and not a skill
 The single command that records what a run learned. No other skill edits `.qa/memory.md`,

@@ -24,7 +24,7 @@ workspace in the project you ran it from. [Install](#install) covers what lands 
 
 ## Use
 
-Start at the entry point — it shows all six modes and routes you:
+Start at the entry point — it shows all seven modes and routes you:
 
 ```
 /qa-assistant
@@ -35,6 +35,7 @@ Or go straight to a mode — each works standalone:
 ```
 /qa-story-review   /qa-create-tc       /qa-run-tc
 /api-testing       /Smart_ReTest       /qa-system-explorer
+/flow-to-test-plan
 ```
 
 You can also attach the work to the entry point and skip the menu:
@@ -138,6 +139,7 @@ them when the task matches, and offers them when the core stages hit their limit
 | **`api-testing`** | API work beyond the basic per-endpoint cases stage 2 writes | `API_SWEEP` endpoint bug-hunting · `API_JOURNEY` ordered business flows · `API_CONTRACT` live behaviour vs spec |
 | **`Smart_ReTest`** | A bug needs retesting after a fix — does it hold, is nearby functionality still intact, is the dependency chain covered | Quick Retest · Deep Retest (five evidence-driven stages) |
 | **`qa-system-explorer`** | There is a running system rather than a story — you need to know what it does, where it breaks, and what your real coverage is | Systematic page-by-page exploration behind an approved map |
+| **`flow-to-test-plan`** | The flow itself is unclear — nobody can say what the steps are, or all you have is a URL or a feature name | Evidence-backed flow discovery behind two gates: a typed model and diagram, then a regression plan built only from verified nodes |
 
 `qa-system-explorer` starts from a **running system and a test account** rather than from a story,
 so it sits outside the three-stage chain — but it is mode 6 in the `/qa-assistant` menu like every
@@ -302,7 +304,7 @@ cd /path/to/your/project
 bash ~/qa-assistant-agent/uninstall.sh
 ```
 
-**Your work is kept by default.** It removes the agent and the seven skills from `~/.claude`, deletes
+**Your work is kept by default.** It removes the agent and the eight skills from every host, deletes
 `.mcp.json.example`, and strips the QA Assistant block from `.gitignore` — leaving every other rule
 in that file untouched. `.qa/` and `qa-output/` stay exactly where they are, so reinstalling later
 picks up where you left off. `.mcp.json` is never touched.
@@ -417,7 +419,7 @@ INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent
 skills/
-  qa-assistant/                   entry point — shows the six modes and routes
+  qa-assistant/                   entry point — shows the seven modes and routes
     SKILL.md
   qa-story-review/                stage 1
     SKILL.md
@@ -436,6 +438,10 @@ skills/
     references/foundation.md
   qa-system-explorer/             specialist — deep system exploration of a running app
     SKILL.md
+  flow-to-test-plan/              specialist — flow discovery to an approved regression plan
+    SKILL.md
+    references/foundation.md
+    references/flow.schema.json   the flow model contract, enforced not just documented
 ```
 
 ---
@@ -445,7 +451,7 @@ skills/
 **`foundation.md` is duplicated on purpose.** It is identical in all five skills so each can run
 standalone. Keep the five copies in sync when editing.
 
-**Every skill here is self-contained.** All seven read and write the same `.qa/` workspace, follow
+**Every skill here is self-contained.** All eight read and write the same `.qa/` workspace, follow
 the same foundation, and write to `qa-output/<STORY-ID>/<skill-name>/`. None requires a skill
 outside this repository — the specialists included, so `api-testing` continues from a story's API
 cases when they exist and files bugs through its own tracker rules.
