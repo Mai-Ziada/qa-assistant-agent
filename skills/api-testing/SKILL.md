@@ -1,6 +1,6 @@
 ---
 name: api-testing
-description: QA Assistant's general API testing skill. Supports three modes — API_SWEEP (endpoint-level bug hunting), API_JOURNEY (business flow validation through ordered API calls), and API_CONTRACT (live API behavior vs documented contract). Activate when the user asks to test an API, sweep API endpoints, test an API flow or journey, check if an API matches its spec, validate API auth or authorization, or run API contract checks. Entry point: /api-testing.
+description: "QA Assistant's general API testing skill. Supports three modes — API_SWEEP (endpoint-level bug hunting), API_JOURNEY (business flow validation through ordered API calls), and API_CONTRACT (live API behavior vs documented contract). Activate when the user asks to test an API, sweep API endpoints, test an API flow or journey, check if an API matches its spec, validate API auth or authorization, or run API contract checks. Entry point: /api-testing."
 ---
 
 # API_TESTING Skill
