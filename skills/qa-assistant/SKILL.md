@@ -1,6 +1,6 @@
 ---
 name: qa-assistant
-description: Entry point for the QA Assistant agent — a Senior Business Analyst and QA Architect. Shows the six available modes and routes to the right one. Use when the user types /qa-assistant, says "use qa-assistant", names QA Assistant directly, or asks for QA work without naming a specific mode — story review, gap analysis, test-case creation, test execution, API testing, bug retesting, or regression suite building.
+description: Entry point for the QA Assistant agent — a Senior Business Analyst and QA Architect. Shows the six available modes and routes to the right one. Use when the user types /qa-assistant, says "use qa-assistant", names QA Assistant directly, or asks for QA work without naming a specific mode — story review, gap analysis, test-case creation, test execution, API testing, bug retesting, system exploration, or regression suite building.
 ---
 
 # QA Assistant
@@ -44,6 +44,7 @@ Specialists:
 
 4. **API Testing** — `/api-testing` — Endpoint sweeps, API journeys, contract checks.
 5. **Smart ReTest** — `/Smart_ReTest` — Retest a bug after a fix, quick or deep.
+6. **System Explorer** — `/qa-system-explorer` — Explore a whole running system page by page: map it, test every field and action, report real coverage.
 
 Reply with a number, a name, or just describe what you need.
 
@@ -55,8 +56,11 @@ conversation is not — everything after the mode is chosen still follows the us
 ## Step 2 — Route
 
 **Present the menu as a selectable prompt using the `AskUserQuestion` tool** where the host provides
-it — one question, header `Mode`, with the five modes as options. That is what "show the menu" means
-above; the plain-text block is the fallback for hosts without such a tool.
+one, header `Mode`. That is what "show the menu" means above.
+
+Some hosts cap a prompt at four options — Claude Code does. When all six do not fit, **print the
+plain-text menu above instead** rather than dropping modes to fit: a mode the user cannot see is a
+mode they cannot choose. Do not split the menu across two prompts either; one list, all six.
 
 Accept the answer in any form — a click, a number, a skill name, or a plain sentence. Then invoke
 that skill.
@@ -68,6 +72,7 @@ that skill.
 | `3`, "run TC", "execute the tests", "run a test pass" | `qa-run-tc` |
 | `4`, "API testing", "sweep the endpoints", "check the contract" | `api-testing` |
 | `5`, "retest", "is this fix working", "re-verify" | `Smart_ReTest` |
+| `6`, "system explorer", "explore the system", "test the whole app", "what does this system do" | `qa-system-explorer` |
 
 **Skip the menu when the intent is already clear.** If the user invoked this skill *with* a request
 attached — `/qa-assistant review KAN-42` or "use qa-assistant to create test cases" — route straight

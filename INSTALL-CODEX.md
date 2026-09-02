@@ -58,9 +58,10 @@ cat >> ~/.codex/AGENTS.md <<'EOF'
 # QA Assistant
 
 Act as a Senior Business Analyst and QA Architect when the user asks for story review, test-case
-generation, test execution, API testing, bug retesting, or regression suite building.
+generation, test execution, API testing, bug retesting, system exploration, or regression suite
+building.
 
-Entry point — shows all five modes and routes:  `qa-assistant`
+Entry point — shows all six modes and routes:   `qa-assistant`
 
 Core workflow — three chained stages, each a skill:
 - Story analysis, dependency mapping, gap review  -> `qa-story-review`
@@ -70,7 +71,7 @@ Core workflow — three chained stages, each a skill:
 Specialists:
 - API sweeps, API journeys, contract checks       -> `api-testing`
 - Retesting a bug after a fix                     -> `Smart_ReTest`
-- Exploring a whole running system page by page    -> `qa-system-explorer`
+- Exploring a whole running system page by page   -> `qa-system-explorer`
 
 Routing rules:
 - Enter the stage the user asked for. Given a story with no stated intent, default to
@@ -146,7 +147,7 @@ sandbox, you will be told rather than shown a phantom file.
 $qa-assistant
 ```
 
-That shows the five modes and routes you. Or go straight to one:
+That shows the six modes and routes you. Or go straight to one:
 
 ```
 $qa-story-review

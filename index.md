@@ -38,11 +38,10 @@ project, not this file.
 
 Each skill is one `SKILL.md` with YAML frontmatter (`name`, `description`) that decides when it
 activates. The five chained and specialist skills each carry an identical `references/foundation.md`;
-`qa-system-explorer` carries its rules inline instead, because it is invoked directly rather than
-routed to.
+`qa-system-explorer` carries its rules inline instead.
 
 ### `skills/qa-assistant/SKILL.md`
-Entry point. Shows the five modes and routes to one. **Step 1** menu · **Step 2** routing table
+Entry point. Shows the six modes and routes to one. **Step 1** menu · **Step 2** routing table
 mapping numbers and phrases to skills · **Step 3** chaining rules. Routes rather than works.
 
 ### `skills/qa-story-review/SKILL.md` — stage 1
@@ -83,9 +82,9 @@ Retest a bug after a fix. **Quick Retest** — verify, update status, comment.
 mapped-bug dependency chain, final decision. Verifies UI and persisted data agree.
 Writes `qa-output/<BUG-ID>/Smart_ReTest/`.
 
-### `skills/qa-system-explorer/SKILL.md` — specialist, invoked directly
+### `skills/qa-system-explorer/SKILL.md` — specialist, mode 6
 Deep exploration of a **running system** rather than a story, so it sits outside the three-stage
-chain and is not reachable from the `/qa-assistant` menu.
+chain while still being reachable from the `/qa-assistant` menu.
 **§ 2** required inputs and workspace · **§ 3** safety rules · **§ 4** the six statuses ·
 **§ 5** environment and access validation · **§ 6** the System Exploration Map, persisted after
 every page as the run's recovery point · **§ 7** the per-page procedure · **§ 8–9** field and action

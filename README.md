@@ -57,10 +57,10 @@ them when the task matches, and offers them when the core stages hit their limit
 | **`Smart_ReTest`** | A bug needs retesting after a fix — does it hold, is nearby functionality still intact, is the dependency chain covered | Quick Retest · Deep Retest (five evidence-driven stages) |
 | **`qa-system-explorer`** | There is a running system rather than a story — you need to know what it does, where it breaks, and what your real coverage is | Systematic page-by-page exploration behind an approved map |
 
-`qa-system-explorer` is **invoked directly, not from the `/qa-assistant` menu** — it starts from a
-running system and a test account rather than from a story, so it sits outside the three-stage
-chain. Everything else it shares: the same `.qa/` workspace, the same gates, the same refusal to
-infer a pass.
+`qa-system-explorer` starts from a **running system and a test account** rather than from a story,
+so it sits outside the three-stage chain — but it is mode 6 in the `/qa-assistant` menu like every
+other skill. Everything else it shares: the same `.qa/` workspace, the same gates, the same refusal
+to infer a pass.
 
 ---
 
@@ -294,7 +294,7 @@ Restart the session so the agent is discovered.
 
 ### Use
 
-Start at the entry point — it shows all five modes and routes you:
+Start at the entry point — it shows all six modes and routes you:
 
 ```
 /qa-assistant
@@ -374,7 +374,7 @@ INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent
 skills/
-  qa-assistant/                   entry point — shows the five modes and routes
+  qa-assistant/                   entry point — shows the six modes and routes
     SKILL.md
   qa-story-review/                stage 1
     SKILL.md
@@ -391,7 +391,7 @@ skills/
   Smart_ReTest/                   specialist — quick and deep bug retesting
     SKILL.md
     references/foundation.md
-  qa-system-explorer/             specialist — deep system exploration, invoked directly
+  qa-system-explorer/             specialist — deep system exploration of a running app
     SKILL.md
 ```
 
