@@ -122,6 +122,7 @@ remove_host() {
   done
   # Shared reference and workspace templates. Removed only when the directory
   # holds nothing else, so a hand-added file is never taken with it.
+  drop "$root/qa-assistant/foundation.md" "qa-assistant/foundation.md"
   drop "$root/qa-assistant/updating-the-workspace.md" "qa-assistant/updating-the-workspace.md"
   drop "$root/qa-assistant/workspace-templates" "qa-assistant/workspace-templates"
   rmdir "$root/qa-assistant" 2>/dev/null && say "qa-assistant/ (empty)" || true

@@ -19,7 +19,7 @@ project, not this file.
 
 | You need | Go to |
 |---|---|
-| The rules every skill obeys — safety, gates, depth, workspace, output paths | `skills/*/references/foundation.md` § 1–9 |
+| The rules every skill obeys — safety, gates, depth, workspace, output paths | `install/shared/foundation.md` § 1–9 |
 | How a story is analysed and scored | `skills/qa-story-review/SKILL.md` |
 | How test cases are derived and prioritised | `skills/qa-create-tc/SKILL.md` |
 | How cases are executed and reported | `skills/qa-run-tc/SKILL.md` |
@@ -31,7 +31,7 @@ project, not this file.
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
 | What the workspace files are for | `install/templates/` |
 | How installation works | `install.sh`, `README.md` § Install |
-| How a missing `.qa/` gets created | `skills/*/references/foundation.md` § 8b, Create it when it is missing |
+| How a missing `.qa/` gets created | `install/shared/foundation.md` § 8b, Create it when it is missing |
 | How removal works, and what survives it | `uninstall.sh`, `README.md` § Uninstall |
 
 ---
@@ -39,8 +39,9 @@ project, not this file.
 ## Skills
 
 Each skill is one `SKILL.md` with YAML frontmatter (`name`, `description`) that decides when it
-activates. The five chained and specialist skills each carry an identical `references/foundation.md`;
-`qa-system-explorer` carries its rules inline instead.
+activates. All seven working skills read the shared `install/shared/foundation.md` — one copy, not
+one per skill. Only `flow-to-test-plan` carries a `references/` directory of its own, for the flow
+schema.
 
 ### `skills/qa-assistant/SKILL.md`
 Entry point. Shows the seven modes and routes to one. **Step 1** menu · **Step 2** routing table
@@ -123,8 +124,12 @@ inferred one; a contradiction is surfaced to the user, not silently resolved.
 Exists because those three files each used to carry their own update rules, so facts landed in the
 wrong file or in none at all.
 
-### `skills/*/references/foundation.md` — shared, five identical copies
-The rules every skill obeys. Duplicated so each skill runs standalone; **keep all five in sync**.
+### `install/shared/foundation.md` — the rules every skill obeys, and not a skill
+One copy, read by all seven working skills. It has no `SKILL.md`, so it is never a slash command
+and never listed. Installed to `~/.claude/qa-assistant/foundation.md` beside the workspace templates.
+Where a skill and this file differ on safety, **the foundation wins**.
+Until it moved here it was duplicated into all six skills — six files to keep byte-identical for
+one edit, and `qa-system-explorer` carried its own rules inline instead of any of them.
 
 | § | Holds |
 |---|---|

@@ -124,10 +124,10 @@ install_host() {
   cp "$TPL"/index.md "$TPL"/project-context.md "$TPL"/memory.md      "$TPL"/knowledge-README.md "$TPL"/screenshots-README.md "$TPL"/qa-output-README.md      "$TPL"/gitignore-block "$TPL"/mcp.json "$TPL"/mcp.json.example      "$root/qa-assistant/workspace-templates/"
   say "installed  workspace templates"
 
-  # Shared reference every skill reads before writing to .qa/. Not a skill:
-  # no SKILL.md, so it is never a slash command and never listed.
-  cp "$REPO/install/shared/updating-the-workspace.md" "$root/qa-assistant/"
-  say "installed  updating-the-workspace.md"
+  # Shared references every skill reads. Not skills: no SKILL.md, so they are
+  # never slash commands and never listed. One copy each, not one per skill.
+  cp "$REPO/install/shared/foundation.md" "$REPO/install/shared/updating-the-workspace.md"      "$root/qa-assistant/"
+  say "installed  foundation.md  updating-the-workspace.md"
 }
 
 if [ "$WORKSPACE_ONLY" -eq 0 ]; then

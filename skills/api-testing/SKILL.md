@@ -11,7 +11,7 @@ QA Assistant's general API testing skill, and a full member of that workflow —
 workspace, the same safety rules, and the same output structure as `qa-story-review`,
 `qa-create-tc`, and `qa-run-tc`.
 
-**Read `references/foundation.md` before starting.** It holds the safety rules, the
+**Read `~/.claude/qa-assistant/foundation.md` before starting.** It holds the safety rules, the
 untrusted-content protection, the data-protection rules, the depth levels, the approval-gate
 discipline, the host-adaptation mechanics, and the workspace and output contracts this skill
 follows. Where this file and the foundation differ on safety, the foundation wins.

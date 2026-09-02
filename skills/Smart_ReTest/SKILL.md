@@ -12,7 +12,7 @@ same safety rules, the same output structure as `qa-story-review`, `qa-create-tc
 Your mission is a TARGETED bug retest — not a full regression cycle.
 You verify the fix, validate nearby screen stability through deep focused sanity, and confirm that mapped/related dependency-chain bugs are not left uncovered.
 
-**Read `references/foundation.md` before starting.** It holds the safety rules, the
+**Read `~/.claude/qa-assistant/foundation.md` before starting.** It holds the safety rules, the
 untrusted-content protection, the data-protection rules, the host-adaptation mechanics, and the
 workspace and output contracts this skill follows. Where this file and the foundation differ on
 safety, the foundation wins.

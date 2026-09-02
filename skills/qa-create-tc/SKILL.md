@@ -11,7 +11,7 @@ the failures this story can produce — not a checklist that looks thorough and 
 This skill is **Mode 2** of a three-part workflow:
 `qa-story-review` → `qa-create-tc` → `qa-run-tc`. It ends by offering the next step.
 
-**Read `references/foundation.md` before starting.** It holds the safety rules, the depth levels,
+**Read `~/.claude/qa-assistant/foundation.md` before starting.** It holds the safety rules, the depth levels,
 the approval gates, and the host-adaptation mechanics this skill depends on.
 
 ---
@@ -19,7 +19,7 @@ the approval gates, and the host-adaptation mechanics this skill depends on.
 ## Step 0 — Set up and locate the analysis
 
 1. **Load the project workspace** — read `.qa/index.md` first (the map of every artifact: open what you need, do not sweep the tree), then `.qa/memory.md` (corrections, decisions, work log) and `.qa/project-context.md` (platforms, rules, roles, environments), and search `.qa/knowledge/` for material already supplied. Never repeat a recorded mistake, re-ask a settled decision, or ask for something the workspace already answers. If `.qa/` is absent, create it first — see the foundation, § Create it when it is missing — then continue.
-2. **Read the foundation** — `references/foundation.md`.
+2. **Read the foundation** — `~/.claude/qa-assistant/foundation.md`.
 3. **Check capabilities** and state the mode in one line.
 4. **Find the approved analysis.** Look for `./qa-output/<STORY-ID>/qa-story-review/analysis.md`, then the legacy `./ba-analysis/<STORY-ID>-analysis.md` — if one exists, read it and use its gaps, dependencies, and acceptance criteria. Continue from it rather than re-deriving. **If it carries a Section F2 design review, that section feeds category 6** — see Step 1, category 6.
 5. **Read the readiness score.** The analysis carries a Section G score and verdict.

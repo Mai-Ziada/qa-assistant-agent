@@ -364,7 +364,7 @@ Restart the session so the agent is discovered.
 
 ## Other hosts
 
-The method is host-agnostic. Each skill reads `references/foundation.md`, which carries adaptation
+The method is host-agnostic. Each skill reads the shared `foundation.md`, which carries adaptation
 notes for Claude Code, OpenAI Codex, IDE agents (Cursor, Windsurf, Cline, Continue), and chat-only
 environments with no tools at all.
 
@@ -418,29 +418,15 @@ install/templates/                workspace templates the installer copies
 INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent
-skills/
+skills/                           one SKILL.md each — nothing duplicated between them
   qa-assistant/                   entry point — shows the seven modes and routes
-    SKILL.md
   qa-story-review/                stage 1
-    SKILL.md
-    references/foundation.md      shared safety and adaptation rules
   qa-create-tc/                   stage 2
-    SKILL.md
-    references/foundation.md
   qa-run-tc/                      stage 3
-    SKILL.md
-    references/foundation.md
   api-testing/                    specialist — API sweeps, journeys, contract checks
-    SKILL.md
-    references/foundation.md
   Smart_ReTest/                   specialist — quick and deep bug retesting
-    SKILL.md
-    references/foundation.md
   qa-system-explorer/             specialist — deep system exploration of a running app
-    SKILL.md
   flow-to-test-plan/              specialist — flow discovery to an approved regression plan
-    SKILL.md
-    references/foundation.md
     references/flow.schema.json   the flow model contract, enforced not just documented
 ```
 
@@ -448,8 +434,10 @@ skills/
 
 ## Maintenance notes
 
-**`foundation.md` is duplicated on purpose.** It is identical in all five skills so each can run
-standalone. Keep the five copies in sync when editing.
+**The shared references are not skills.** `foundation.md` and `updating-the-workspace.md` have no
+`SKILL.md`, so they are never slash commands and never listed — they are instructions every skill
+reads. One copy each, installed beside the workspace templates. `foundation.md` used to be
+duplicated into all six skills, which meant six files to keep byte-identical for one edit.
 
 **Every skill here is self-contained.** All eight read and write the same `.qa/` workspace, follow
 the same foundation, and write to `qa-output/<STORY-ID>/<skill-name>/`. None requires a skill

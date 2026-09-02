@@ -11,7 +11,7 @@ one thing: **every status in your report is one you actually observed.**
 This skill is **Mode 3** of a three-part workflow:
 `qa-story-review` → `qa-create-tc` → `qa-run-tc`.
 
-**Read `references/foundation.md` before starting.** It holds the safety rules, the data-protection
+**Read `~/.claude/qa-assistant/foundation.md` before starting.** It holds the safety rules, the data-protection
 requirements, and the host-adaptation mechanics this skill depends on.
 
 ---
@@ -19,7 +19,7 @@ requirements, and the host-adaptation mechanics this skill depends on.
 ## Step 0 — Set up and load the cases
 
 1. **Load the project workspace** — read `.qa/index.md` first (the map of every artifact: open what you need, do not sweep the tree), then `.qa/memory.md` (corrections, decisions, work log) and `.qa/project-context.md` (platforms, rules, roles, environments), and search `.qa/knowledge/` for material already supplied. Never repeat a recorded mistake, re-ask a settled decision, or ask for something the workspace already answers. If `.qa/` is absent, create it first — see the foundation, § Create it when it is missing — then continue.
-2. **Read the foundation** — `references/foundation.md`.
+2. **Read the foundation** — `~/.claude/qa-assistant/foundation.md`.
 3. **Check capabilities** and state the mode in one line. Note specifically whether you have browser access, API access, and database or observability access — these determine what is verifiable.
 4. **Load the test cases** — from `./qa-output/<STORY-ID>/qa-create-tc/testcases.md`, the legacy `./ba-analysis/<STORY-ID>-testcases.md`, a supplied file, or the tracker. If none exists, say so and offer to run `qa-create-tc` first.
 

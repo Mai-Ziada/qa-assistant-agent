@@ -10,7 +10,7 @@ verified, evidence-backed QA regression plan — one where every approved test c
 something concretely observed or supplied, and everything else is reported as a gap rather than
 quietly assumed.
 
-**Read `references/foundation.md` before starting.** It holds the safety rules, the approval gates,
+**Read `~/.claude/qa-assistant/foundation.md` before starting.** It holds the safety rules, the approval gates,
 the workspace conventions, and the host-adaptation mechanics this skill depends on.
 
 The workflow:
@@ -465,4 +465,4 @@ reduced where it does not apply.
 Match the user's language completely — headings, table headers, table contents, and narrative all
 take it. Keep in English only: identifiers (`N001`, `TC-001`, `AC-2`), priorities and severities,
 statuses, verdicts, markers, field names, node type values, JSON keys, API paths, status codes,
-untranslatable technical terms, and `Given/When/Then` blocks. See `references/foundation.md` §10.
+untranslatable technical terms, and `Given/When/Then` blocks. See the foundation, §10.

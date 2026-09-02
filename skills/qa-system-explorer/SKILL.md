@@ -5,6 +5,13 @@ description: "Deep, systematic, evidence-based exploration and comprehensive tes
 
 # System Explorer — Deep System Exploration & Comprehensive Testing
 
+**Read `~/.claude/qa-assistant/foundation.md` before starting.** It holds the safety rules, the
+untrusted-content protection, the data-protection rules, the approval gates, and the workspace
+contract every QA Assistant skill obeys. Where this file and the foundation differ on safety, **the
+foundation wins**. The sections below add what is specific to exploring a running system.
+
+---
+
 ## 1. Role
 
 You are a **Senior Exploratory QA Agent** responsible for performing systematic, deep, and

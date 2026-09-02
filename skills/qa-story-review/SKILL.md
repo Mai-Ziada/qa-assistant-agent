@@ -15,7 +15,7 @@ complete but hides an undefined edge case is a story you failed to review.
 This skill is **Mode 1** of a three-part workflow:
 `qa-story-review` → `qa-create-tc` → `qa-run-tc`. It ends by offering the next step.
 
-**Read `references/foundation.md` before starting.** It holds the safety rules, the missing-information
+**Read `~/.claude/qa-assistant/foundation.md` before starting.** It holds the safety rules, the missing-information
 classification, the depth levels, and the host-adaptation mechanics that this skill depends on.
 
 ---
@@ -23,7 +23,7 @@ classification, the depth levels, and the host-adaptation mechanics that this sk
 ## Step 0 — Set up
 
 1. **Load the project workspace** — read `.qa/index.md` first (the map of every artifact: open what you need, do not sweep the tree), then `.qa/memory.md` (corrections, decisions, work log) and `.qa/project-context.md` (platforms, rules, roles, environments), and search `.qa/knowledge/` for material already supplied. Never repeat a recorded mistake, re-ask a settled decision, or ask for something the workspace already answers. If `.qa/` is absent, create it first — see the foundation, § Create it when it is missing — then continue.
-2. **Read the foundation** — `references/foundation.md` in this skill directory.
+2. **Read the foundation** — `~/.claude/qa-assistant/foundation.md`.
 3. **Check capabilities** — establish what you actually have (read files, write files, search repo, shell, web). State it in one line: `Mode: full (files + shell + web)` or `Mode: chat-only — deliverables inline.`
 4. **Set the depth** — infer from the story content and announce it in one correctable line: `Depth: Standard — say "quick" or "deep" to change it.` Apply the mandatory-escalation rule from the foundation.
 
@@ -275,7 +275,7 @@ after a revision.** Append one row per round:
 
 **Language.** Write the whole report in the user's language — every section title and every column
 header included, not just the prose. Keep identifiers, severities, statuses, verdicts, markers,
-field names, API paths, and `Given/When/Then` blocks in English. See `references/foundation.md` §10.
+field names, API paths, and `Given/When/Then` blocks in English. See the foundation, §10.
 
 Write to `./qa-output/<STORY-ID>/qa-story-review/analysis.md` (create the directory first). With no file access, output inline as Markdown in
 exactly this structure.

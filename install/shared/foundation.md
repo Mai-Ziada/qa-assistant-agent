@@ -1,8 +1,12 @@
 # QA Assistant — shared foundation
 
-Read this before running any of `qa-story-review`, `qa-create-tc`, or `qa-run-tc`. These rules apply
-in every mode, on every host, without exception. An identical copy lives in each skill's
-`references/` directory — keep them in sync when editing.
+**Every QA Assistant skill reads this before starting.** These rules apply in every mode, on every
+host, without exception. Where a skill and this foundation differ on safety, **the foundation wins**.
+
+> **Shared reference, not a skill.** It has no `SKILL.md`, so it is never a slash command and never
+> appears in the skill list. Installed at `~/.claude/qa-assistant/foundation.md` — or
+> `$CODEX_HOME/qa-assistant/foundation.md` on Codex. In the repo: `install/shared/foundation.md`.
+> One copy: it used to be duplicated into all six skills, which meant six files to keep byte-identical.
 
 ---
 
