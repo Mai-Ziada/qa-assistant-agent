@@ -449,15 +449,3 @@ standalone. Keep the five copies in sync when editing.
 the same foundation, and write to `qa-output/<STORY-ID>/<skill-name>/`. None requires a skill
 outside this repository — the specialists included, so `api-testing` continues from a story's API
 cases when they exist and files bugs through its own tracker rules.
-
----
-
-## Credits
-
-The two specialist skills originate from separate repositories and are vendored here so the agent
-ships complete. Persona wording adapted; method and structure are the original authors' work.
-
-| Skill | Author | Source |
-|---|---|---|
-| `Smart_ReTest` | Mai-Ziada | [Smart_ReTest_Skill](https://github.com/Mai-Ziada/Smart_ReTest_Skill) |
-| `api-testing` | Eng-Mohammed-Samir | [API_Testing_skill](https://github.com/Eng-Mohammed-Samir/API_Testing_skill) |
