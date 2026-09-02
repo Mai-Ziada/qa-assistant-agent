@@ -1,10 +1,67 @@
 # QA Assistant
 
-A Senior Business Analyst and QA Architect agent for Claude Code.
+A Senior Business Analyst and QA Architect agent for Claude Code and Codex.
 
 It takes an idea or user story from any tracking tool, file, or copy-paste and drives the full
 quality workflow — story analysis, test-case generation, and execution — behind three human
 approval gates.
+
+## Quick start
+
+```bash
+git clone https://github.com/Mai-Ziada/qa-assistant-agent.git
+cd /path/to/your/project
+bash /path/to/qa-assistant-agent/install.sh
+```
+
+Then restart the session and run `/qa-assistant`.
+
+It installs into **every host on your machine** — `~/.claude` and `~/.codex` — and scaffolds a `.qa/`
+workspace in the project you ran it from. [Install](#install) covers what lands where.
+
+## Use
+
+Start at the entry point — it shows all six modes and routes you:
+
+```
+/qa-assistant
+```
+
+Or go straight to a mode — each works standalone:
+
+```
+/qa-story-review   /qa-create-tc       /qa-run-tc
+/api-testing       /Smart_ReTest       /qa-system-explorer
+```
+
+You can also attach the work to the entry point and skip the menu:
+
+```
+/qa-assistant review KAN-42
+/qa-assistant <paste a story>
+```
+
+Given a story with no stated intent, it defaults to Story Review and says so in one correctable
+line. It only shows the menu when the intent is genuinely ambiguous.
+
+> **Note on `@`:** in Claude Code the `@` prefix attaches *files*, not agents — typing
+> `@qa-assistant` searches for a file by that name and finds nothing. Use `/qa-assistant`, or just
+> name the agent in a sentence ("use qa-assistant to review this story").
+
+## Update
+
+```bash
+cd /path/to/qa-assistant-agent
+git pull
+bash install.sh --skills-only
+```
+
+The same command as installing, minus the workspace. It refreshes every host and therefore every
+project at once, because the agent and skills are shared rather than copied per project. Restart the
+session afterwards.
+
+On Codex, re-paste the routing block into `~/.codex/AGENTS.md` if it changed — see
+[INSTALL-CODEX.md](INSTALL-CODEX.md).
 
 ---
 
@@ -199,49 +256,28 @@ templates restored.
 
 Then: put real credentials in `.mcp.json`, fill in `.qa/project-context.md`, restart the session.
 
-### Update
+### What an update does to your work
 
-> This upgrades your **installed copy of the agent** from this repo. For how QA findings are
-> recorded into a project's workspace, see
-> [Recording what was learned](#recording-what-was-learned).
+Nothing. `--skills-only` never touches `.qa/` or `qa-output/` — see [Update](#update) for the
+command itself.
 
-Pull the repo, then re-run the installer with `--skills-only`:
-
-```bash
-cd /path/to/qa-assistant-agent
-git pull
-bash install.sh --skills-only
-```
-
-You can run it from anywhere — `--skills-only` writes to the host directories and never touches
-the directory you happen to be standing in, so there is no need to `cd` into a project first.
-
-**It updates every host you have.** With no `--host`, the installer refreshes each one present on
-the machine — `~/.claude` and `$CODEX_HOME` (default `~/.codex`) — so a single command covers Claude
-Code and Codex together. `--host claude`, `--host codex`, or `--host both` picks explicitly.
-
-**And every project at once**, because the agent and skills are shared from those directories rather
-than copied per project. Restart the session afterwards so the new versions are discovered.
-
-**`--force` is not needed here, and you should not use it.** The two halves of the installer behave
-differently on purpose:
+The two halves of the installer behave differently on purpose:
 
 | What | On re-run |
 |---|---|
-| Agent, skills, workspace templates → `~/.claude` | **Always overwritten** — that is what makes this an update |
+| Agent, skills, shared reference, templates → the hosts | **Always overwritten** — that is what makes it an update |
 | Project workspace → `.qa/`, `qa-output/`, `.mcp.json` | **Never overwritten** unless you pass `--force` |
 
-So `--skills-only` gives you the new skills while leaving your credentials, `project-context.md`,
-and `memory.md` exactly as they are. Passing `--force` would reset those files to blank templates —
-it is for deliberately restoring a workspace, not for updating.
+So an update gives you the new skills while leaving your credentials, `project-context.md`, and
+`memory.md` exactly as they are. **`--force` is for deliberately restoring a workspace to blank
+templates, not for updating** — you should not need it here.
 
-**Your work is never at risk from an update.** `.qa/` and `qa-output/` are not touched by
-`--skills-only` at all.
+`--host claude`, `--host codex`, or `--host both` targets one host explicitly; with none, every host
+present is refreshed.
 
-#### Updating a single project's copy
+#### If you installed into a project instead of a host
 
-If you installed into a project instead of `~/.claude` — `.claude/skills/` in the project root —
-copy the skills over directly:
+For `.claude/skills/` in a project root rather than `~/.claude`, copy the files over directly:
 
 ```bash
 REPO=/path/to/qa-assistant-agent
@@ -251,7 +287,7 @@ cp "$REPO"/install/shared/updating-the-workspace.md .claude/qa-assistant/
 ```
 
 The third line matters: the skills read that file before writing to `.qa/`, and it lives outside
-`skills/`, so a copy of `skills/*` alone leaves it behind.
+`skills/`, so copying `skills/*` alone leaves it behind.
 
 ### Uninstall
 
@@ -317,37 +353,6 @@ For a single project, use `.claude/agents/` and `.claude/skills/` in the project
 The skills work without the workspace — they say once that `./install.sh` would scaffold it.
 
 Restart the session so the agent is discovered.
-
-### Use
-
-Start at the entry point — it shows all six modes and routes you:
-
-```
-/qa-assistant
-```
-
-Or go straight to a mode — each works standalone:
-
-```
-/qa-story-review   /qa-create-tc       /qa-run-tc
-/api-testing       /Smart_ReTest       /qa-system-explorer
-```
-
-You can also attach the work to the entry point and skip the menu:
-
-```
-/qa-assistant review KAN-42
-/qa-assistant <paste a story>
-```
-
-Given a story with no stated intent, it defaults to Story Review and says so in one correctable
-line. It only shows the menu when the intent is genuinely ambiguous.
-
-> **Note on `@`:** in Claude Code the `@` prefix attaches *files*, not agents — typing
-> `@qa-assistant` searches for a file by that name and finds nothing. Use `/qa-assistant`, or just
-> name the agent in a sentence ("use qa-assistant to review this story").
-
----
 
 ## Other hosts
 
