@@ -70,24 +70,17 @@ Work that is unfinished, and gaps still blocking. This is what a new session nee
 
 ---
 
-## How the agent updates this file
+## Who writes here
 
-**Read it at the start of every run**, before searching for anything. Then update it whenever an
-artifact is created, moved, or superseded — in the same turn that creates the artifact, never later.
+**One shared procedure writes to this file.** The agent reads
+`~/.claude/qa-assistant/updating-the-workspace.md` and follows it: that file holds which artifact
+gets indexed in which section, and the rule that matters most here — **index an artifact in the same
+turn you create it.** An index updated "later" drifts, and a drifted index sends the reader to a file
+that is not there.
 
-| When | Update |
-|---|---|
-| A skill writes a deliverable | § 3 Deliverables, and § 2 Stories if the stage advanced |
-| A document is supplied or a report produced | § 4 Knowledge |
-| Screenshots are captured | § 5 Evidence |
-| A run ends with work unfinished or a gap unanswered | § 6 Open threads |
-| A gap is answered or work completes | Remove from § 6 |
-| A file is deleted or replaced | Remove or update its row |
+Summaries are written to be decisive: enough to choose the file without opening it. Not "test cases
+for US1", but "153 cases · 93 P1 · 8 open gaps". Rows for files that no longer exist are deleted — a
+wrong path costs more than a missing one.
 
-**Rules:**
-
-1. **Index the artifact in the same turn you create it.** An index updated "later" is an index that drifts, and a drifted index is worse than none — it sends the reader to a file that is not there.
-2. **Summaries must be decisive.** Enough to choose the file without opening it.
-3. **Delete rows for files that no longer exist.** A wrong path costs more than a missing one.
-4. **Do not duplicate content here.** This file points at facts; it does not hold them.
-5. **Never record secrets or personal data** — not even in a summary.
+**This file points at facts; it does not hold them.** And it never records a secret or personal
+data, not even in a summary.

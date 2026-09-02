@@ -63,24 +63,17 @@ Business answers already obtained. Prevents re-raising a gap that has been settl
 
 ---
 
-## How the agent updates this file
+## Who writes here
 
-**Read this file at the start of every run**, before planning any work. Then update it:
+**One shared procedure writes to this file** — never a skill editing it ad hoc, and never you
+being asked the same question twice because a correction went unrecorded.
 
-| When | Write to |
-|---|---|
-| A stage completes | § 1 Work log |
-| The user corrects you | § 2 Corrections — *always*, no exceptions |
-| The user chooses between options | § 3 Decisions |
-| The same defect appears again | § 4 Recurring defects |
-| The environment behaves unexpectedly | § 5 Environment quirks |
-| A `[MISSING-BLOCKING]` gap gets answered | § 6 Answered questions, and update `project-context.md` if the answer is durable |
+The agent reads `~/.claude/qa-assistant/updating-the-workspace.md` and follows it: that file holds
+which fact belongs in which section here, and the rules that keep this file worth reading —
+corrections are mandatory, record the reasoning and not just the outcome, keep it short, prune what
+is dead, and never record a secret or a customer record.
 
-**Rules:**
+**You can edit it too.** It is a plain markdown file in your repository. Anything you write here the
+agent reads at the start of every run, and treats corrections and decisions as binding.
 
-1. **Corrections are mandatory.** Being corrected and not recording it guarantees the same mistake returns.
-2. **Record the reasoning, not just the outcome.** "Do not X" is weak; "Do not X because Y" transfers.
-3. **Keep it short.** This file is read in full on every run — a bloated file gets skimmed, and a skimmed memory is no memory.
-4. **Prune what is dead.** A quirk for an environment that no longer exists is noise; delete it.
-5. **Never record secrets, personal data, or customer records.** Findings only.
-6. **This file is not the deliverable.** It supports the work; the work itself lives in `qa-output/`.
+**This file is not the deliverable.** It supports the work; the work itself lives in `qa-output/`.

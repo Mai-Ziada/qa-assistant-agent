@@ -89,14 +89,23 @@ Questions asked and still unanswered. Move them out once answered — into the s
 
 ---
 
-## How the agent updates this file
+## Who writes here
 
-Update it whenever a session learns something durable — the user states a business rule, a new
-environment appears, a role is clarified, an integration surfaces.
+**One shared procedure writes to this file.** The agent reads
+`~/.claude/qa-assistant/updating-the-workspace.md` and follows it, recording here whatever a session
+learns that stays true — a business rule you state, a platform it determines, an environment, a
+role, an integration.
 
-1. **Only durable facts.** True next month, for the next story too. Otherwise it belongs in `qa-output/`.
-2. **Never overwrite a confirmed fact with an inferred one.** A fact the user stated outranks anything you deduced.
-3. **Cite the source** — who said it, or which file it came from.
-4. **Contradiction is a finding.** When a new fact contradicts one recorded here, do not silently replace it: surface both to the user and let them settle it.
-5. **Say what you changed** in one line, so an incorrect entry can be caught immediately.
-6. **Never write a secret here.** Record where it lives, never its value.
+Two rules govern what lands here:
+
+1. **Only durable facts.** True next month, for the next story too. Anything specific to one story
+   belongs in that story's folder under `qa-output/`.
+2. **A fact you stated outranks anything the agent deduced.** Where a new fact contradicts one
+   recorded here, that is a finding — the agent surfaces both and lets you settle it, rather than
+   silently overwriting.
+
+`[NOT PROVIDED]` is a truthful answer; a guessed value is not. **Never write a secret here** —
+record where it lives, never what it is.
+
+**You can edit it too.** It is a plain markdown file in your repository, and the agent reads it
+before every run.
