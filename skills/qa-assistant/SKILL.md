@@ -32,7 +32,7 @@ Then follow it: load the workspace, show the menu when no mode was named, and ro
 ## The skills it routes to
 
 `qa-story-review` · `qa-create-tc` · `qa-run-tc` · `api-testing` · `Smart_ReTest` ·
-`qa-system-explorer` · `qa-update`
+`qa-system-explorer`
 
 Each works standalone and can be invoked directly as `/<name>`.
 

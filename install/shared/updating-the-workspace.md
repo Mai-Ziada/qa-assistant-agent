@@ -1,12 +1,13 @@
----
-name: qa-update
-description: The single command that records everything QA work learned — work log, corrections, decisions, deliverables, knowledge, evidence, and open threads — across .qa/memory.md, .qa/index.md, and .qa/project-context.md in one pass. Use when a QA stage finishes, when the user corrects the agent, when the user settles a decision, when an artifact is created, or when the user says "update", "save this", "record that", "حدّث", or "سجّل". Every QA skill calls this instead of writing to the workspace files itself.
----
+# Updating the workspace
 
-# QA Update — one command, all the files
+> **Shared reference, not a skill.** It has no `SKILL.md`, so it is never a slash command and
+> never appears in the skill list. Every QA skill reads it before writing to `.qa/`.
 
-This is the **only** thing that writes to the QA workspace. No skill edits `.qa/memory.md`,
-`.qa/index.md`, or `.qa/project-context.md` directly — they all call this instead.
+> Installed at `~/.claude/qa-assistant/updating-the-workspace.md`. In the repo:
+> `install/shared/updating-the-workspace.md` — one copy, no duplicates to keep in sync.
+
+This is the **only** procedure that writes to the QA workspace. No skill edits `.qa/memory.md`,
+`.qa/index.md`, or `.qa/project-context.md` directly — they all follow this instead.
 
 **Why it exists:** those three files each carried their own "How the agent updates this file"
 rules, and every skill decided on its own which to touch. Three rulebooks for one action meant
@@ -16,7 +17,7 @@ things landed in the wrong file, or in no file at all. One command, one pass, on
 
 ## The one rule
 
-**Take what you learned, route each fact to its file, write them all in a single pass, then say in
+**Take what the run learned, route each fact to its file, write them all in a single pass, then say in
 one line what you recorded.**
 
 Never write to one file and leave the others stale — that is the drift this command exists to

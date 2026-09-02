@@ -48,14 +48,16 @@ qa-output/
 
 ## Recording what was learned
 
-One command writes to the workspace: **`/qa-update`**. No skill edits `.qa/memory.md`,
-`.qa/index.md`, or `.qa/project-context.md` directly — they all route through it.
+One shared procedure writes to the workspace, and **it is not a skill** — it has no `SKILL.md`, so
+it is never a slash command and never appears in the skill list. No skill edits `.qa/memory.md`,
+`.qa/index.md`, or `.qa/project-context.md` directly; they all read and follow
+`~/.claude/qa-assistant/updating-the-workspace.md` instead.
 
 ```
-/qa-update  ─▶  memory.md           work log · corrections · decisions · quirks
-                index.md            stories · deliverables · knowledge · evidence
-                project-context.md  platforms · rules · roles · environments
-                                    ▲ one pass, every file, one-line confirmation
+updating-the-workspace.md  ─▶  memory.md           work log · corrections · decisions
+                           ─▶  index.md            stories · deliverables · evidence
+                           ─▶  project-context.md  platforms · rules · roles · envs
+                               ▲ one pass, every file, one-line confirmation
 ```
 
 Each of those three files used to carry its own update rules, and every skill decided on its own
@@ -75,12 +77,11 @@ Call it in the turn the thing happens, not at the end of a session:
 A fact can route to more than one file — an answered blocking gap is both a memory entry and a
 durable project fact, so it is written to both.
 
-It answers to plain language in any language too: "update", "save this", "record that",
-"حدّث", "سجّل".
+Ask for it in plain language in any language — "update", "save this", "record that", "حدّث",
+"سجّل" — and the agent follows the procedure. There is no command to type.
 
 > **Not to be confused with [Update](#update)**, which upgrades your *installed copy of the agent*
-> from this repo. `/qa-update` records QA findings into a project's workspace; `Update` pulls new
-> skills. Different things, similar names.
+> from this repo. This records QA findings into a project's workspace; `Update` pulls new skills.
 
 ---
 
@@ -200,8 +201,8 @@ Then: put real credentials in `.mcp.json`, fill in `.qa/project-context.md`, res
 
 ### Update
 
-> This upgrades your **installed copy of the agent** from this repo. For `/qa-update`, the command
-> that records QA findings into a project's workspace, see
+> This upgrades your **installed copy of the agent** from this repo. For how QA findings are
+> recorded into a project's workspace, see
 > [Recording what was learned](#recording-what-was-learned).
 
 Pull the repo, then re-run the installer with `--skills-only`:
@@ -411,6 +412,8 @@ README.md                         this file
 index.md                          index of every file in this repo and what it holds
 install.sh                        installer — skills to ~/.claude, workspace to your project
 uninstall.sh                      uninstaller — keeps your work unless --purge-work
+install/shared/                   shared references — not skills, never slash commands
+  updating-the-workspace.md       the only writer to .qa/ — what every stage records
 install/templates/                workspace templates the installer copies
                                   (mcp.json is the working file, mcp.json.example the committed copy)
 INSTALL-CODEX.md                  OpenAI Codex install guide
@@ -435,8 +438,6 @@ skills/
     SKILL.md
     references/foundation.md
   qa-system-explorer/             specialist — deep system exploration of a running app
-    SKILL.md
-  qa-update/                      the only writer to .qa/ — records what every stage learned
     SKILL.md
 ```
 

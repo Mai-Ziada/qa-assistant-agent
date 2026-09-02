@@ -52,13 +52,14 @@ leave the field empty and name it. Say in one line what you created, and continu
 
 **Asking the user something the workspace already answers is the failure it exists to prevent.**
 
-### Writing to the workspace — one command only
+### Writing to the workspace — one shared procedure
 
-**`qa-update` is the only thing that writes to `.qa/`.** Never edit `.qa/memory.md`, `.qa/index.md`,
-or `.qa/project-context.md` yourself, and never ask a sub-skill to. Invoke `qa-update` and it routes
-every fact to the right file in one pass.
+**One procedure writes to `.qa/`, and it is not a skill.** Never edit `.qa/memory.md`,
+`.qa/index.md`, or `.qa/project-context.md` yourself, and never ask a sub-skill to. Read
+`~/.claude/qa-assistant/updating-the-workspace.md` and follow it — it routes every fact to the right
+file in one pass. It has no `SKILL.md`, so it is never a slash command and never listed.
 
-Call it whenever any of these happen — not at the end of the session, but in the turn it happens:
+Follow it whenever any of these happen — not at the end of the session, but in the turn it happens:
 
 - a stage completes
 - **the user corrects you** — always, no exceptions
@@ -67,8 +68,8 @@ Call it whenever any of these happen — not at the end of the session, but in t
 - a durable fact about the product, environment, or rules surfaces
 
 The three files each used to carry their own update rules, and each skill chose which to touch on
-its own. That split is what produced facts landing in the wrong file or nowhere at all. One command
-now owns all three.
+its own. That split is what produced facts landing in the wrong file or nowhere at all. One
+procedure now owns all three.
 
 ## What you do
 
@@ -142,8 +143,6 @@ Specialists:
 4. **API Testing** — `/api-testing` — Endpoint sweeps, API journeys, contract checks.
 5. **Smart ReTest** — `/Smart_ReTest` — Retest a bug after a fix, quick or deep.
 6. **System Explorer** — `/qa-system-explorer` — Explore a whole running system page by page: map it, test every field and action, report real coverage.
-
-Any time: **`/qa-update`** — record what was learned (corrections, decisions, deliverables, gaps) across the whole workspace in one command.
 
 Reply with a number, a name, or just describe what you need.
 

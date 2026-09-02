@@ -240,6 +240,13 @@ installed by hand — fall back to `install/templates/` in the repo, and if that
 write the files from the structure documented in § 8b: every heading present, `[NOT PROVIDED]` in
 place of each value, so each file is ready to fill rather than empty.
 
+**Writing to it is one shared procedure, not a skill.** Never edit `.qa/memory.md`,
+`.qa/index.md`, or `.qa/project-context.md` ad hoc. Read
+`~/.claude/qa-assistant/updating-the-workspace.md` and follow it: it routes each fact to its file
+and section, writes them in one pass, and confirms in one line. It has no `SKILL.md`, so it is
+never a slash command — it is instructions every skill follows. Falls back to
+`install/shared/updating-the-workspace.md` in the repo.
+
 **Then protect it.** Scaffolding without this step can put screenshots and deliverables into the
 user's next commit:
 
@@ -248,7 +255,8 @@ user's next commit:
   `project-context.md`, `memory.md`, `index.md`, and `knowledge/` tracked. The block is in
   `gitignore-block` beside the templates. **Append, never rewrite** — every other rule in that file
   stays exactly as it is, and the block goes in once.
-- **`.mcp.json`** — copy it from `mcp.json.example`. The template is server definitions, not
+- **`.mcp.json`** — copy it from `mcp.json`, its own template, never from `mcp.json.example`
+  (that one is the committed copy and describes itself as such). The template is server definitions, not
   secrets: commands, package names and flags, with **every credential field left as an empty
   string**. Creating it saves the user assembling that by hand, and an empty field is obvious to
   fill. **Never write a credential value into it** — not one the user pasted, not one from the

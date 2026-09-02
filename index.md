@@ -26,7 +26,7 @@ project, not this file.
 | API sweeps, journeys, contract checks | `skills/api-testing/SKILL.md` |
 | Retesting a bug after a fix | `skills/Smart_ReTest/SKILL.md` |
 | Exploring a whole running system page by page | `skills/qa-system-explorer/SKILL.md` |
-| Recording what a run learned — the only writer to `.qa/` | `skills/qa-update/SKILL.md` |
+| Recording what a run learned — the only writer to `.qa/` | `install/shared/updating-the-workspace.md` |
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
 | What the workspace files are for | `install/templates/` |
 | How installation works | `install.sh`, `README.md` § Install |
@@ -96,7 +96,7 @@ report · **§ 18** the final report with coverage statistics · **§ 19** stop 
 Never marks a page Completed on a partial pass; Partial and Blocked carry reasons.
 Writes `qa-output/system-exploration/`, evidence in `.qa/screenshots/system-exploration/`.
 
-### `skills/qa-update/SKILL.md` — the only writer to `.qa/`
+### `install/shared/updating-the-workspace.md` — the only writer to `.qa/`, and not a skill
 The single command that records what a run learned. No other skill edits `.qa/memory.md`,
 `.qa/index.md`, or `.qa/project-context.md` — they all route through this one, which reads all
 three, routes each fact to its file, writes in one pass, and confirms in one line.
