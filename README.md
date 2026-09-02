@@ -244,39 +244,14 @@ If you installed into a project instead of `~/.claude` — `.claude/skills/` in 
 copy the skills over directly:
 
 ```bash
-cp -r /path/to/qa-assistant-agent/skills/* .claude/skills/
-cp /path/to/qa-assistant-agent/agents/qa-assistant.md .claude/agents/
+REPO=/path/to/qa-assistant-agent
+cp -r "$REPO"/skills/* .claude/skills/
+cp "$REPO"/agents/qa-assistant.md .claude/agents/
+cp "$REPO"/install/shared/updating-the-workspace.md .claude/qa-assistant/
 ```
 
-#### Removing a skill that no longer ships
-
-The installer copies files in; it never deletes. A skill that was removed from the repo stays on
-your machine until you delete it yourself:
-
-```bash
-ls ~/.claude/skills          # compare against skills/ in the repo
-rm -rf ~/.claude/skills/<name-that-is-no-longer-in-the-repo>
-```
-
-This only matters when a skill is renamed or retired — a normal update needs nothing here.
-
-#### Checking what you have
-
-```bash
-git -C /path/to/qa-assistant-agent log --oneline -1   # the version you pulled
-ls ~/.claude/skills                                    # the skills now installed
-```
-
-Both lists should match `skills/` in the repo.
-
-#### Codex
-
-The same command as above — no separate step. `bash install.sh --skills-only` refreshes Codex too
-whenever `$CODEX_HOME` exists, carrying the agent definition and the shared reference along with the
-skills, which a plain `cp -r skills/*` would miss.
-
-Only the routing block is manual: re-paste it into `~/.codex/AGENTS.md` if it changed — see
-[INSTALL-CODEX.md](INSTALL-CODEX.md).
+The third line matters: the skills read that file before writing to `.qa/`, and it lives outside
+`skills/`, so a copy of `skills/*` alone leaves it behind.
 
 ### Uninstall
 
@@ -330,7 +305,13 @@ If you would rather not run the script:
 ```bash
 cp agents/qa-assistant.md ~/.claude/agents/
 cp -r skills/* ~/.claude/skills/
+mkdir -p ~/.claude/qa-assistant
+cp install/shared/updating-the-workspace.md ~/.claude/qa-assistant/
+cp -r install/templates ~/.claude/qa-assistant/workspace-templates
 ```
+
+The last three lines are the part a `cp -r skills/*` misses: the shared reference the skills read
+before writing to `.qa/`, and the templates they scaffold a missing workspace from.
 
 For a single project, use `.claude/agents/` and `.claude/skills/` in the project root instead.
 The skills work without the workspace — they say once that `./install.sh` would scaffold it.
@@ -405,7 +386,7 @@ that can silently drop your project instructions, and the sandbox behaviour to e
 On hosts without file access, every deliverable is produced inline in the same structure. The three
 approval gates still apply.
 
-Deliverables use the same `./ba-analysis/` layout on every host, so a story review started in Codex
+Deliverables use the same `qa-output/` layout on every host, so a story review started in Codex
 can be finished in Claude Code without conversion.
 
 ---
@@ -453,14 +434,10 @@ skills/
 **`foundation.md` is duplicated on purpose.** It is identical in all five skills so each can run
 standalone. Keep the five copies in sync when editing.
 
-**`api-testing` is a full member of the workflow.** It reads and writes the same `.qa/` workspace,
-follows the same foundation, writes to `qa-output/<STORY-ID>/api-testing/`, and files bugs through
-its own tracker rules. It depends on no skill outside this repository, and continues from a story's
-API cases when they exist.
-
-**Every skill here is self-contained.** All five read and write the same `.qa/` workspace, follow
-the same foundation, and write to `qa-output/<STORY-ID>/<skill-name>/`. None of them requires a
-skill outside this repository.
+**Every skill here is self-contained.** All seven read and write the same `.qa/` workspace, follow
+the same foundation, and write to `qa-output/<STORY-ID>/<skill-name>/`. None requires a skill
+outside this repository — the specialists included, so `api-testing` continues from a story's API
+cases when they exist and files bugs through its own tracker rules.
 
 ---
 
