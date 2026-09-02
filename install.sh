@@ -64,7 +64,7 @@ if [ "$WORKSPACE_ONLY" -eq 0 ]; then
   # Workspace templates, once, at agent level. A skill running in a project with
   # no .qa/ scaffolds one from here, so it never depends on the cloned repo.
   mkdir -p "$HOME/.claude/qa-assistant/workspace-templates"
-  cp "$TPL"/index.md "$TPL"/project-context.md "$TPL"/memory.md      "$TPL"/knowledge-README.md "$TPL"/screenshots-README.md "$TPL"/qa-output-README.md      "$TPL"/gitignore-block "$TPL"/mcp.json.example      "$HOME/.claude/qa-assistant/workspace-templates/"
+  cp "$TPL"/index.md "$TPL"/project-context.md "$TPL"/memory.md      "$TPL"/knowledge-README.md "$TPL"/screenshots-README.md "$TPL"/qa-output-README.md      "$TPL"/gitignore-block "$TPL"/mcp.json "$TPL"/mcp.json.example      "$HOME/.claude/qa-assistant/workspace-templates/"
   say "installed  workspace templates"
 fi
 
@@ -73,8 +73,8 @@ if [ "$SKILLS_ONLY" -eq 0 ]; then
   head_ "Workspace -> $PROJECT"
   cd "$PROJECT"
 
-  mkdir -p .qa/knowledge .qa/screenshots qa-output
-  say "created  .qa/knowledge/  .qa/screenshots/  qa-output/"
+  mkdir -p .qa/knowledge/sources .qa/screenshots qa-output
+  say "created  .qa/knowledge/sources/  .qa/screenshots/  qa-output/"
 
   place "$TPL/index.md"           ".qa/index.md"           ".qa/index.md"
   place "$TPL/project-context.md" ".qa/project-context.md" ".qa/project-context.md"
@@ -83,7 +83,7 @@ if [ "$SKILLS_ONLY" -eq 0 ]; then
   place "$TPL/screenshots-README.md" ".qa/screenshots/README.md" ".qa/screenshots/README.md"
   place "$TPL/qa-output-README.md" "qa-output/README.md"   "qa-output/README.md"
   place "$TPL/mcp.json.example"   ".mcp.json.example"      ".mcp.json.example"
-  place "$TPL/mcp.json.example"   ".mcp.json"              ".mcp.json"
+  place "$TPL/mcp.json"           ".mcp.json"              ".mcp.json"
 
   # .gitignore — append our block only if it is not already there
   MARK="# --- QA Assistant ---"

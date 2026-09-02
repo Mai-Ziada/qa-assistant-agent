@@ -46,6 +46,44 @@ qa-output/
 
 ---
 
+## Recording what was learned
+
+One command writes to the workspace: **`/qa-update`**. No skill edits `.qa/memory.md`,
+`.qa/index.md`, or `.qa/project-context.md` directly — they all route through it.
+
+```
+/qa-update  ─▶  memory.md           work log · corrections · decisions · quirks
+                index.md            stories · deliverables · knowledge · evidence
+                project-context.md  platforms · rules · roles · environments
+                                    ▲ one pass, every file, one-line confirmation
+```
+
+Each of those three files used to carry its own update rules, and every skill decided on its own
+which to touch — three rulebooks for one action, so facts landed in the wrong file or in none at
+all. One command now owns all three.
+
+Call it in the turn the thing happens, not at the end of a session:
+
+| When | Lands in |
+|---|---|
+| A stage completes | Work log |
+| **The user corrects the agent** | Corrections — *always, no exceptions* |
+| A decision is settled, or a blocking gap answered | Decisions · Answered questions · Project context |
+| A deliverable, report, or screenshot set is written | Deliverables · Stories · Evidence |
+| A durable fact about the product or environment surfaces | Project context |
+
+A fact can route to more than one file — an answered blocking gap is both a memory entry and a
+durable project fact, so it is written to both.
+
+It answers to plain language in any language too: "update", "save this", "record that",
+"حدّث", "سجّل".
+
+> **Not to be confused with [Update](#update)**, which upgrades your *installed copy of the agent*
+> from this repo. `/qa-update` records QA findings into a project's workspace; `Update` pulls new
+> skills. Different things, similar names.
+
+---
+
 ## Specialist skills
 
 Three deeper skills handle work the core workflow deliberately keeps shallow. The agent routes to
@@ -161,6 +199,10 @@ templates restored.
 Then: put real credentials in `.mcp.json`, fill in `.qa/project-context.md`, restart the session.
 
 ### Update
+
+> This upgrades your **installed copy of the agent** from this repo. For `/qa-update`, the command
+> that records QA findings into a project's workspace, see
+> [Recording what was learned](#recording-what-was-learned).
 
 Pull the repo, then re-run the installer with `--skills-only`:
 
@@ -370,6 +412,7 @@ index.md                          index of every file in this repo and what it h
 install.sh                        installer — skills to ~/.claude, workspace to your project
 uninstall.sh                      uninstaller — keeps your work unless --purge-work
 install/templates/                workspace templates the installer copies
+                                  (mcp.json is the working file, mcp.json.example the committed copy)
 INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent
@@ -392,6 +435,8 @@ skills/
     SKILL.md
     references/foundation.md
   qa-system-explorer/             specialist — deep system exploration of a running app
+    SKILL.md
+  qa-update/                      the only writer to .qa/ — records what every stage learned
     SKILL.md
 ```
 

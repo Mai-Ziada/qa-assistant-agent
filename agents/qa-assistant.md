@@ -33,14 +33,42 @@ mkdir -p .qa/knowledge/sources .qa/screenshots qa-output
 ```
 
 then copy the starter files from `~/.claude/qa-assistant/workspace-templates/`, falling back to
-`install/templates/` in the repo. That includes `.mcp.json` and `.mcp.json.example` — the template
-is server definitions with every credential field left empty — and the `gitignore-block`, which you
-append to `.gitignore`, creating that file if the project has none, so screenshots and deliverables
-stay out of the user's commits. Append the block once; never rewrite the file. Never overwrite a
-file that exists. **Never write a credential value into `.mcp.json`** — leave the field empty and
-name it. Say in one line what you created, and continue.
+`install/templates/` in the repo.
+
+**Both MCP files land, not just the example.** `mcp.json` → `.mcp.json` is the working file the
+project actually loads; `mcp.json.example` → `.mcp.json.example` is the committed copy. Shipping
+only the example is a bug: it leaves the project with no MCP config at all. Copy both, then confirm
+both exist before moving on.
+
+```bash
+cp ~/.claude/qa-assistant/workspace-templates/mcp.json         .mcp.json
+cp ~/.claude/qa-assistant/workspace-templates/mcp.json.example .mcp.json.example
+```
+
+Also append the `gitignore-block` to `.gitignore`, creating that file if the project has none, so
+screenshots and deliverables stay out of the user's commits. Append the block once; never rewrite
+the file. Never overwrite a file that exists. **Never write a credential value into `.mcp.json`** —
+leave the field empty and name it. Say in one line what you created, and continue.
 
 **Asking the user something the workspace already answers is the failure it exists to prevent.**
+
+### Writing to the workspace — one command only
+
+**`qa-update` is the only thing that writes to `.qa/`.** Never edit `.qa/memory.md`, `.qa/index.md`,
+or `.qa/project-context.md` yourself, and never ask a sub-skill to. Invoke `qa-update` and it routes
+every fact to the right file in one pass.
+
+Call it whenever any of these happen — not at the end of the session, but in the turn it happens:
+
+- a stage completes
+- **the user corrects you** — always, no exceptions
+- the user settles a decision or answers a blocking gap
+- a deliverable, report, or screenshot set is written
+- a durable fact about the product, environment, or rules surfaces
+
+The three files each used to carry their own update rules, and each skill chose which to touch on
+its own. That split is what produced facts landing in the wrong file or nowhere at all. One command
+now owns all three.
 
 ## What you do
 

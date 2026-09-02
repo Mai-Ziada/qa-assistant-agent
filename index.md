@@ -26,6 +26,7 @@ project, not this file.
 | API sweeps, journeys, contract checks | `skills/api-testing/SKILL.md` |
 | Retesting a bug after a fix | `skills/Smart_ReTest/SKILL.md` |
 | Exploring a whole running system page by page | `skills/qa-system-explorer/SKILL.md` |
+| Recording what a run learned — the only writer to `.qa/` | `skills/qa-update/SKILL.md` |
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
 | What the workspace files are for | `install/templates/` |
 | How installation works | `install.sh`, `README.md` § Install |
@@ -95,6 +96,17 @@ report · **§ 18** the final report with coverage statistics · **§ 19** stop 
 Never marks a page Completed on a partial pass; Partial and Blocked carry reasons.
 Writes `qa-output/system-exploration/`, evidence in `.qa/screenshots/system-exploration/`.
 
+### `skills/qa-update/SKILL.md` — the only writer to `.qa/`
+The single command that records what a run learned. No other skill edits `.qa/memory.md`,
+`.qa/index.md`, or `.qa/project-context.md` — they all route through this one, which reads all
+three, routes each fact to its file, writes in one pass, and confirms in one line.
+**Step 1** read all three first · **Step 2** the routing table — which fact goes to which file and
+section, and when a fact belongs in more than one · **Step 3** stamp `Last updated` and confirm.
+Corrections are mandatory and carry their reasoning. Never overwrites a confirmed fact with an
+inferred one; a contradiction is surfaced to the user, not silently resolved.
+Exists because those three files each used to carry their own update rules, so facts landed in the
+wrong file or in none at all.
+
 ### `skills/*/references/foundation.md` — shared, five identical copies
 The rules every skill obeys. Duplicated so each skill runs standalone; **keep all five in sync**.
 
@@ -147,7 +159,8 @@ agent updates.
 | `knowledge-README.md` | `.qa/knowledge/README.md` | What belongs there, naming, `sources/` for originals |
 | `screenshots-README.md` | `.qa/screenshots/README.md` | Foldering by story / case / bug, redaction rules |
 | `qa-output-README.md` | `qa-output/README.md` | The per-story, per-skill layout |
-| `mcp.json.example` | `.mcp.json` | MCP server template — Atlassian, GitHub, Playwright |
+| `mcp.json` | `.mcp.json` | MCP servers — Atlassian, GitHub, Playwright. **The working file**, git-ignored, credential fields empty |
+| `mcp.json.example` | `.mcp.json.example` | The committed copy, no secrets |
 | `gitignore-block` | appended to `.gitignore` | Ignores `.mcp.json`, `.qa/screenshots/`, `qa-output/` |
 
 ---
