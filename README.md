@@ -48,13 +48,19 @@ qa-output/
 
 ## Specialist skills
 
-Two deeper skills handle work the core workflow deliberately keeps shallow. The agent routes to
+Three deeper skills handle work the core workflow deliberately keeps shallow. The agent routes to
 them when the task matches, and offers them when the core stages hit their limit.
 
 | Skill | Use when | Modes |
 |---|---|---|
 | **`api-testing`** | API work beyond the basic per-endpoint cases stage 2 writes | `API_SWEEP` endpoint bug-hunting · `API_JOURNEY` ordered business flows · `API_CONTRACT` live behaviour vs spec |
 | **`Smart_ReTest`** | A bug needs retesting after a fix — does it hold, is nearby functionality still intact, is the dependency chain covered | Quick Retest · Deep Retest (five evidence-driven stages) |
+| **`qa-system-explorer`** | There is a running system rather than a story — you need to know what it does, where it breaks, and what your real coverage is | Systematic page-by-page exploration behind an approved map |
+
+`qa-system-explorer` is **invoked directly, not from the `/qa-assistant` menu** — it starts from a
+running system and a test account rather than from a story, so it sits outside the three-stage
+chain. Everything else it shares: the same `.qa/` workspace, the same gates, the same refusal to
+infer a pass.
 
 ---
 
@@ -161,7 +167,7 @@ cd /path/to/your/project
 bash /path/to/qa-assistant-agent/uninstall.sh
 ```
 
-**Your work is kept by default.** It removes the agent and the six skills from `~/.claude`, deletes
+**Your work is kept by default.** It removes the agent and the seven skills from `~/.claude`, deletes
 `.mcp.json.example`, and strips the QA Assistant block from `.gitignore` — leaving every other rule
 in that file untouched. `.qa/` and `qa-output/` stay exactly where they are, so reinstalling later
 picks up where you left off. `.mcp.json` is never touched.
@@ -225,7 +231,7 @@ Or go straight to a mode — each works standalone:
 
 ```
 /qa-story-review   /qa-create-tc       /qa-run-tc
-/api-testing       /Smart_ReTest
+/api-testing       /Smart_ReTest       /qa-system-explorer
 ```
 
 You can also attach the work to the entry point and skip the menu:
@@ -252,7 +258,7 @@ environments with no tools at all.
 
 ### OpenAI Codex
 
-Codex supports skills natively in the same `SKILL.md` format, so all seven copy across directly:
+Codex supports skills natively in the same `SKILL.md` format, so all eight copy across directly:
 
 ```bash
 mkdir -p ~/.codex/skills
@@ -308,12 +314,12 @@ skills/
     references/foundation.md
   api-testing/                    specialist — API sweeps, journeys, contract checks
     SKILL.md
+    references/foundation.md
   Smart_ReTest/                   specialist — quick and deep bug retesting
     SKILL.md
+    references/foundation.md
+  qa-system-explorer/             specialist — deep system exploration, invoked directly
     SKILL.md
-    README.md
-    USAGE.md
-    flow.schema.json
 ```
 
 ---

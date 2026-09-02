@@ -70,6 +70,7 @@ Core workflow — three chained stages, each a skill:
 Specialists:
 - API sweeps, API journeys, contract checks       -> `api-testing`
 - Retesting a bug after a fix                     -> `Smart_ReTest`
+- Exploring a whole running system page by page    -> `qa-system-explorer`
 
 Routing rules:
 - Enter the stage the user asked for. Given a story with no stated intent, default to
@@ -171,6 +172,7 @@ can start a story review in Codex and finish the test cases in Claude Code — o
 rm -rf ~/.codex/skills/qa-assistant ~/.codex/skills/qa-story-review
 rm -rf ~/.codex/skills/qa-create-tc ~/.codex/skills/qa-run-tc
 rm -rf ~/.codex/skills/api-testing ~/.codex/skills/Smart_ReTest
+rm -rf ~/.codex/skills/qa-system-explorer
 ```
 
 Then delete the block between `<!-- qa-assistant:start -->` and `<!-- qa-assistant:end -->` in

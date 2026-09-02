@@ -25,6 +25,7 @@ project, not this file.
 | How cases are executed and reported | `skills/qa-run-tc/SKILL.md` |
 | API sweeps, journeys, contract checks | `skills/api-testing/SKILL.md` |
 | Retesting a bug after a fix | `skills/Smart_ReTest/SKILL.md` |
+| Exploring a whole running system page by page | `skills/qa-system-explorer/SKILL.md` |
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
 | What the workspace files are for | `install/templates/` |
 | How installation works | `install.sh`, `README.md` § Install |
@@ -36,7 +37,9 @@ project, not this file.
 ## Skills
 
 Each skill is one `SKILL.md` with YAML frontmatter (`name`, `description`) that decides when it
-activates. The five working skills each carry an identical `references/foundation.md`.
+activates. The five chained and specialist skills each carry an identical `references/foundation.md`;
+`qa-system-explorer` carries its rules inline instead, because it is invoked directly rather than
+routed to.
 
 ### `skills/qa-assistant/SKILL.md`
 Entry point. Shows the five modes and routes to one. **Step 1** menu · **Step 2** routing table
@@ -79,6 +82,19 @@ Retest a bug after a fix. **Quick Retest** — verify, update status, comment.
 **Deep Retest** — five evidence-driven stages: readiness gate, original retest, deep sanity,
 mapped-bug dependency chain, final decision. Verifies UI and persisted data agree.
 Writes `qa-output/<BUG-ID>/Smart_ReTest/`.
+
+### `skills/qa-system-explorer/SKILL.md` — specialist, invoked directly
+Deep exploration of a **running system** rather than a story, so it sits outside the three-stage
+chain and is not reachable from the `/qa-assistant` menu.
+**§ 2** required inputs and workspace · **§ 3** safety rules · **§ 4** the six statuses ·
+**§ 5** environment and access validation · **§ 6** the System Exploration Map, persisted after
+every page as the run's recovery point · **§ 7** the per-page procedure · **§ 8–9** field and action
+checklists · **§ 10–12** scenario categories, dependency analysis, expected-result sourcing ·
+**§ 13–15** evidence, reproduction, severity · **§ 16** the page completion gate · **§ 17** the page
+report · **§ 18** the final report with coverage statistics · **§ 19** stop conditions ·
+**§ 21.1** three gates — the map, every destructive action, and tracker filing.
+Never marks a page Completed on a partial pass; Partial and Blocked carry reasons.
+Writes `qa-output/system-exploration/`, evidence in `.qa/screenshots/system-exploration/`.
 
 ### `skills/*/references/foundation.md` — shared, five identical copies
 The rules every skill obeys. Duplicated so each skill runs standalone; **keep all five in sync**.

@@ -11,7 +11,7 @@ PURGE_WORK=0
 SKILLS_ONLY=0
 WORKSPACE_ONLY=0
 
-SKILLS="qa-assistant qa-story-review qa-create-tc qa-run-tc api-testing Smart_ReTest"
+SKILLS="qa-assistant qa-story-review qa-create-tc qa-run-tc api-testing Smart_ReTest qa-system-explorer"
 
 usage() {
   cat <<'USAGE'
