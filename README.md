@@ -9,12 +9,15 @@ approval gates.
 ## Quick start
 
 ```bash
-git clone https://github.com/Mai-Ziada/qa-assistant-agent.git
+git clone https://github.com/Mai-Ziada/qa-assistant-agent.git ~/qa-assistant-agent
 cd /path/to/your/project
-bash /path/to/qa-assistant-agent/install.sh
+bash ~/qa-assistant-agent/install.sh
 ```
 
 Then restart the session and run `/qa-assistant`.
+
+> Clone it wherever you like — `~/qa-assistant-agent` is just the path the rest of this README
+> uses. The installer works out its own location, so it can be run from anywhere.
 
 It installs into **every host on your machine** — `~/.claude` and `~/.codex` — and scaffolds a `.qa/`
 workspace in the project you ran it from. [Install](#install) covers what lands where.
@@ -51,14 +54,15 @@ line. It only shows the menu when the intent is genuinely ambiguous.
 ## Update
 
 ```bash
-cd /path/to/qa-assistant-agent
-git pull
-bash install.sh --skills-only
+bash ~/qa-assistant-agent/install.sh --update
 ```
 
-The same command as installing, minus the workspace. It refreshes every host and therefore every
-project at once, because the agent and skills are shared rather than copied per project. Restart the
-session afterwards.
+One command from anywhere: `--update` pulls this repo, then installs from it. It refreshes every
+host — and therefore every project at once, because the agent and skills are shared rather than
+copied per project. Restart the session afterwards.
+
+To pull and install separately, `git -C ~/qa-assistant-agent pull` then
+`bash ~/qa-assistant-agent/install.sh --skills-only` does the same thing.
 
 On Codex, re-paste the routing block into `~/.codex/AGENTS.md` if it changed — see
 [INSTALL-CODEX.md](INSTALL-CODEX.md).
@@ -215,7 +219,7 @@ partial result labelled complete is treated as the most damaging output it can p
 ```bash
 git clone https://github.com/Mai-Ziada/qa-assistant-agent.git
 cd /path/to/your/project
-bash /path/to/qa-assistant-agent/install.sh
+bash ~/qa-assistant-agent/install.sh
 ```
 
 That does two things:
@@ -280,7 +284,7 @@ present is refreshed.
 For `.claude/skills/` in a project root rather than `~/.claude`, copy the files over directly:
 
 ```bash
-REPO=/path/to/qa-assistant-agent
+REPO=~/qa-assistant-agent
 cp -r "$REPO"/skills/* .claude/skills/
 cp "$REPO"/agents/qa-assistant.md .claude/agents/
 cp "$REPO"/install/shared/updating-the-workspace.md .claude/qa-assistant/
@@ -293,7 +297,7 @@ The third line matters: the skills read that file before writing to `.qa/`, and 
 
 ```bash
 cd /path/to/your/project
-bash /path/to/qa-assistant-agent/uninstall.sh
+bash ~/qa-assistant-agent/uninstall.sh
 ```
 
 **Your work is kept by default.** It removes the agent and the seven skills from `~/.claude`, deletes
@@ -313,7 +317,7 @@ It prints what it will remove and what it will keep, then asks before doing anyt
 To remove everything including your work:
 
 ```bash
-bash /path/to/qa-assistant-agent/uninstall.sh --purge-work
+bash ~/qa-assistant-agent/uninstall.sh --purge-work
 ```
 
 ### What the agent maintains for you

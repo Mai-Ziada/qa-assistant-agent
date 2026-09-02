@@ -27,6 +27,12 @@ bash install.sh --host codex --skills-only     # Codex only
 bash install.sh --host both  --skills-only     # both, even if one is not yet present
 ```
 
+To update later, from anywhere:
+
+```bash
+bash ~/qa-assistant-agent/install.sh --update
+```
+
 That copies three things, which a manual `cp -r skills/*` would miss:
 
 | What | Where | Why |

@@ -11,6 +11,7 @@ PROJECT="$(pwd)"
 FORCE=0
 SKILLS_ONLY=0
 WORKSPACE_ONLY=0
+UPDATE=0
 HOST=auto
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 
@@ -20,6 +21,7 @@ Usage: ./install.sh [options] [project-dir]
 
   --skills-only      install the agent and skills into ~/.claude, skip the workspace
   --workspace-only   scaffold the project workspace only, skip ~/.claude
+  --update           git pull this repo first, then install (self-updating)
   --force            overwrite existing files (default: never overwrite)
   -h, --help         show this help
 
@@ -32,6 +34,7 @@ while [ $# -gt 0 ]; do
     --force) FORCE=1 ;;
     --skills-only) SKILLS_ONLY=1 ;;
     --workspace-only) WORKSPACE_ONLY=1 ;;
+    --update) UPDATE=1; SKILLS_ONLY=1 ;;
     --host) shift; HOST="${1:-}" ;;
     --host=*) HOST="${1#*=}" ;;
     -h|--help) usage; exit 0 ;;
@@ -59,6 +62,20 @@ case "$HOST" in
     if [ "$DO_CLAUDE" -eq 0 ] && [ "$DO_CODEX" -eq 0 ]; then DO_CLAUDE=1; fi
     ;;
 esac
+
+# --update: refresh the repo itself first, so one command covers pull + install.
+# $REPO is this script's own directory, so it works from anywhere.
+if [ "$UPDATE" -eq 1 ]; then
+  if [ -d "$REPO/.git" ]; then
+    printf '
+Updating %s
+' "$REPO"
+    git -C "$REPO" pull --ff-only || {
+      echo "  git pull failed — resolve it in $REPO, then re-run" >&2; exit 1; }
+  else
+    echo "  not a git checkout, skipping pull: $REPO" >&2
+  fi
+fi
 
 say()  { printf '  %s\n' "$1"; }
 head_() { printf '\n%s\n' "$1"; }
