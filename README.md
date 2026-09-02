@@ -160,6 +160,79 @@ templates restored.
 
 Then: put real credentials in `.mcp.json`, fill in `.qa/project-context.md`, restart the session.
 
+### Update
+
+Pull the repo, then re-run the installer with `--skills-only`:
+
+```bash
+cd /path/to/qa-assistant-agent
+git pull
+bash install.sh --skills-only
+```
+
+You can run it from anywhere — `--skills-only` writes to `~/.claude` and never touches the
+directory you happen to be standing in, so there is no need to `cd` into a project first.
+
+**That updates every project at once**, because the agent and skills live in `~/.claude` and are
+shared. Restart the session afterwards so the new versions are discovered.
+
+**`--force` is not needed here, and you should not use it.** The two halves of the installer behave
+differently on purpose:
+
+| What | On re-run |
+|---|---|
+| Agent, skills, workspace templates → `~/.claude` | **Always overwritten** — that is what makes this an update |
+| Project workspace → `.qa/`, `qa-output/`, `.mcp.json` | **Never overwritten** unless you pass `--force` |
+
+So `--skills-only` gives you the new skills while leaving your credentials, `project-context.md`,
+and `memory.md` exactly as they are. Passing `--force` would reset those files to blank templates —
+it is for deliberately restoring a workspace, not for updating.
+
+**Your work is never at risk from an update.** `.qa/` and `qa-output/` are not touched by
+`--skills-only` at all.
+
+#### Updating a single project's copy
+
+If you installed into a project instead of `~/.claude` — `.claude/skills/` in the project root —
+copy the skills over directly:
+
+```bash
+cp -r /path/to/qa-assistant-agent/skills/* .claude/skills/
+cp /path/to/qa-assistant-agent/agents/qa-assistant.md .claude/agents/
+```
+
+#### Removing a skill that no longer ships
+
+The installer copies files in; it never deletes. A skill that was removed from the repo stays on
+your machine until you delete it yourself:
+
+```bash
+ls ~/.claude/skills          # compare against skills/ in the repo
+rm -rf ~/.claude/skills/<name-that-is-no-longer-in-the-repo>
+```
+
+This only matters when a skill is renamed or retired — a normal update needs nothing here.
+
+#### Checking what you have
+
+```bash
+git -C /path/to/qa-assistant-agent log --oneline -1   # the version you pulled
+ls ~/.claude/skills                                    # the skills now installed
+```
+
+Both lists should match `skills/` in the repo.
+
+#### Codex
+
+```bash
+cd /path/to/qa-assistant-agent
+git pull
+cp -r skills/* ~/.codex/skills/
+```
+
+Then re-paste the routing block into `~/.codex/AGENTS.md` if it changed — see
+[INSTALL-CODEX.md](INSTALL-CODEX.md).
+
 ### Uninstall
 
 ```bash
