@@ -11,6 +11,8 @@ PROJECT="$(pwd)"
 FORCE=0
 SKILLS_ONLY=0
 WORKSPACE_ONLY=0
+HOST=auto
+CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 
 usage() {
   cat <<'USAGE'
@@ -30,12 +32,33 @@ while [ $# -gt 0 ]; do
     --force) FORCE=1 ;;
     --skills-only) SKILLS_ONLY=1 ;;
     --workspace-only) WORKSPACE_ONLY=1 ;;
+    --host) shift; HOST="${1:-}" ;;
+    --host=*) HOST="${1#*=}" ;;
     -h|--help) usage; exit 0 ;;
     -*) echo "unknown option: $1" >&2; usage; exit 2 ;;
     *) PROJECT="$1" ;;
   esac
   shift
 done
+
+case "$HOST" in
+  auto|claude|codex|both) ;;
+  *) echo "unknown --host: $HOST (use claude, codex, both, or auto)" >&2; exit 2 ;;
+esac
+
+# Which hosts to write to. auto = every one already on this machine.
+DO_CLAUDE=0; DO_CODEX=0
+case "$HOST" in
+  claude) DO_CLAUDE=1 ;;
+  codex)  DO_CODEX=1 ;;
+  both)   DO_CLAUDE=1; DO_CODEX=1 ;;
+  auto)
+    [ -d "$HOME/.claude" ] && DO_CLAUDE=1
+    [ -d "$CODEX_HOME" ]   && DO_CODEX=1
+    # Neither present yet: install Claude, the default host.
+    if [ "$DO_CLAUDE" -eq 0 ] && [ "$DO_CODEX" -eq 0 ]; then DO_CLAUDE=1; fi
+    ;;
+esac
 
 say()  { printf '  %s\n' "$1"; }
 head_() { printf '\n%s\n' "$1"; }
@@ -52,25 +75,53 @@ place() {
   fi
 }
 
-# ---------------------------------------------------------------- skills
-if [ "$WORKSPACE_ONLY" -eq 0 ]; then
-  head_ "Skills and agent -> ~/.claude"
-  mkdir -p "$HOME/.claude/agents" "$HOME/.claude/skills"
-  cp "$REPO/agents/qa-assistant.md" "$HOME/.claude/agents/"
-  say "installed  agents/qa-assistant.md"
-  cp -r "$REPO/skills/." "$HOME/.claude/skills/"
+# ---------------------------------------------------------------- hosts
+# Install the agent, the skills, the shared reference, and the workspace
+# templates into one host directory. Called once per host, so Claude and Codex
+# get byte-identical content and an update refreshes both the same way.
+install_host() {
+  local host="$1" root="$2" skills_dir="$3"
+
+  head_ "Skills and agent -> $root"
+  mkdir -p "$skills_dir" "$root/qa-assistant"
+
+  cp -r "$REPO/skills/." "$skills_dir/"
   say "installed  $(find "$REPO/skills" -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ') skills"
+
+  # The agent definition. Claude reads agents/ directly; Codex has no such
+  # directory, so it travels inside the entry-point skill, which is where the
+  # skill already looks for it on that host.
+  if [ "$host" = "claude" ]; then
+    mkdir -p "$root/agents"
+    cp "$REPO/agents/qa-assistant.md" "$root/agents/"
+    say "installed  agents/qa-assistant.md"
+  else
+    mkdir -p "$skills_dir/qa-assistant/agents"
+    cp "$REPO/agents/qa-assistant.md" "$skills_dir/qa-assistant/agents/"
+    say "installed  qa-assistant/agents/qa-assistant.md"
+  fi
 
   # Workspace templates, once, at agent level. A skill running in a project with
   # no .qa/ scaffolds one from here, so it never depends on the cloned repo.
-  mkdir -p "$HOME/.claude/qa-assistant/workspace-templates"
-  cp "$TPL"/index.md "$TPL"/project-context.md "$TPL"/memory.md      "$TPL"/knowledge-README.md "$TPL"/screenshots-README.md "$TPL"/qa-output-README.md      "$TPL"/gitignore-block "$TPL"/mcp.json "$TPL"/mcp.json.example      "$HOME/.claude/qa-assistant/workspace-templates/"
+  mkdir -p "$root/qa-assistant/workspace-templates"
+  cp "$TPL"/index.md "$TPL"/project-context.md "$TPL"/memory.md      "$TPL"/knowledge-README.md "$TPL"/screenshots-README.md "$TPL"/qa-output-README.md      "$TPL"/gitignore-block "$TPL"/mcp.json "$TPL"/mcp.json.example      "$root/qa-assistant/workspace-templates/"
   say "installed  workspace templates"
 
   # Shared reference every skill reads before writing to .qa/. Not a skill:
   # no SKILL.md, so it is never a slash command and never listed.
-  cp "$REPO/install/shared/updating-the-workspace.md" "$HOME/.claude/qa-assistant/"
+  cp "$REPO/install/shared/updating-the-workspace.md" "$root/qa-assistant/"
   say "installed  updating-the-workspace.md"
+}
+
+if [ "$WORKSPACE_ONLY" -eq 0 ]; then
+  [ "$DO_CLAUDE" -eq 1 ] && install_host claude "$HOME/.claude" "$HOME/.claude/skills"
+  [ "$DO_CODEX"  -eq 1 ] && install_host codex  "$CODEX_HOME"   "$CODEX_HOME/skills"
+
+  if [ "$DO_CODEX" -eq 1 ]; then
+    say ""
+    say "Codex: skills and agent are installed. The routing block for"
+    say "~/.codex/AGENTS.md is in INSTALL-CODEX.md — add it once, by hand."
+  fi
 fi
 
 # ------------------------------------------------------------- workspace

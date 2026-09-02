@@ -213,11 +213,15 @@ git pull
 bash install.sh --skills-only
 ```
 
-You can run it from anywhere — `--skills-only` writes to `~/.claude` and never touches the
-directory you happen to be standing in, so there is no need to `cd` into a project first.
+You can run it from anywhere — `--skills-only` writes to the host directories and never touches
+the directory you happen to be standing in, so there is no need to `cd` into a project first.
 
-**That updates every project at once**, because the agent and skills live in `~/.claude` and are
-shared. Restart the session afterwards so the new versions are discovered.
+**It updates every host you have.** With no `--host`, the installer refreshes each one present on
+the machine — `~/.claude` and `$CODEX_HOME` (default `~/.codex`) — so a single command covers Claude
+Code and Codex together. `--host claude`, `--host codex`, or `--host both` picks explicitly.
+
+**And every project at once**, because the agent and skills are shared from those directories rather
+than copied per project. Restart the session afterwards so the new versions are discovered.
 
 **`--force` is not needed here, and you should not use it.** The two halves of the installer behave
 differently on purpose:
@@ -267,13 +271,11 @@ Both lists should match `skills/` in the repo.
 
 #### Codex
 
-```bash
-cd /path/to/qa-assistant-agent
-git pull
-cp -r skills/* ~/.codex/skills/
-```
+The same command as above — no separate step. `bash install.sh --skills-only` refreshes Codex too
+whenever `$CODEX_HOME` exists, carrying the agent definition and the shared reference along with the
+skills, which a plain `cp -r skills/*` would miss.
 
-Then re-paste the routing block into `~/.codex/AGENTS.md` if it changed — see
+Only the routing block is manual: re-paste it into `~/.codex/AGENTS.md` if it changed — see
 [INSTALL-CODEX.md](INSTALL-CODEX.md).
 
 ### Uninstall
@@ -374,14 +376,17 @@ environments with no tools at all.
 
 ### OpenAI Codex
 
-Codex supports skills natively in the same `SKILL.md` format, so all eight copy across directly:
+Codex supports skills natively in the same `SKILL.md` format, so the installer handles it — the
+same script and the same command as on Claude:
 
 ```bash
-mkdir -p ~/.codex/skills
-cp -r skills/* ~/.codex/skills/
+bash install.sh --skills-only              # every host present, Codex included
+bash install.sh --host codex --skills-only # Codex only
 ```
 
-The agent becomes routing instructions in `~/.codex/AGENTS.md` rather than a registered agent.
+The agent definition travels inside the entry-point skill at
+`$CODEX_HOME/skills/qa-assistant/agents/`, because Codex has no `agents/` registry — and that is
+where the skill looks for it. Its routing block goes in `~/.codex/AGENTS.md` by hand.
 **See [INSTALL-CODEX.md](INSTALL-CODEX.md)** for the routing block, the 32 KiB instruction budget
 that can silently drop your project instructions, and the sandbox behaviour to expect.
 

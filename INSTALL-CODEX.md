@@ -1,8 +1,9 @@
 # Installing QA Assistant on OpenAI Codex
 
-Codex supports skills natively, in the same `SKILL.md` format Claude Code uses — so all seven
-skills port across with a copy. Only the agent file needs adapting, because Codex has no equivalent of
-Claude Code's `agents/` registry.
+Codex supports skills natively, in the same `SKILL.md` format Claude Code uses, so the whole agent
+ports across. `install.sh` handles it — the same script, the same command as on Claude. Only the
+`AGENTS.md` routing block is manual, because Codex has no equivalent of Claude Code's `agents/`
+registry.
 
 Verified against **codex-cli 0.79.0**.
 
@@ -10,30 +11,40 @@ Verified against **codex-cli 0.79.0**.
 
 ## 1. Install the skills
 
-Codex loads skills from `$CODEX_HOME/skills/`, which defaults to `~/.codex/skills`:
+Run the installer. It detects Codex from `$CODEX_HOME` (default `~/.codex`) and installs there:
 
 ```bash
 git clone https://github.com/Mai-Ziada/qa-assistant-agent.git
 cd qa-assistant-agent
-
-mkdir -p ~/.codex/skills
-cp -r skills/* ~/.codex/skills/
+bash install.sh --skills-only
 ```
 
-To take only the core workflow:
+With no `--host`, it installs into **every host present on the machine** — so if you run both Claude
+Code and Codex, one command covers both, and so does every update afterwards. To be explicit:
 
 ```bash
-cp -r skills/qa-assistant skills/qa-story-review skills/qa-create-tc skills/qa-run-tc ~/.codex/skills/
+bash install.sh --host codex --skills-only     # Codex only
+bash install.sh --host both  --skills-only     # both, even if one is not yet present
 ```
+
+That copies three things, which a manual `cp -r skills/*` would miss:
+
+| What | Where | Why |
+|---|---|---|
+| The seven skills | `$CODEX_HOME/skills/` | The workflow itself |
+| The agent definition | `$CODEX_HOME/skills/qa-assistant/agents/qa-assistant.md` | Codex has no `agents/`, so it travels inside the entry-point skill — which is exactly where that skill looks for it |
+| `updating-the-workspace.md` and the workspace templates | `$CODEX_HOME/qa-assistant/` | The shared reference every skill reads before writing to `.qa/`, and the files it scaffolds from |
 
 Verify:
 
 ```bash
-ls ~/.codex/skills | grep -E 'qa-|api-testing|Smart_ReTest'
+ls $CODEX_HOME/skills | grep -E 'qa-|api-testing|Smart_ReTest'
+ls $CODEX_HOME/skills/qa-assistant/agents/    # the agent definition
+ls $CODEX_HOME/qa-assistant/                  # shared reference + templates
 ```
 
-> If you have set `CODEX_HOME` to a custom location, use `$CODEX_HOME/skills/` instead of
-> `~/.codex/skills`. Everything else below is unchanged.
+> `CODEX_HOME` is honoured if you have set it to a custom location — the installer reads it, and so
+> do the paths above. Everything else below is unchanged.
 
 Skills are invoked by typing `$` and the skill name, through `/skills`, or implicitly when your
 request matches a skill's `description` frontmatter.

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # QA Assistant uninstaller.
-#   Removes the agent and skills from ~/.claude, and the scaffolding from a project.
+#   Removes the agent and skills from every host present (~/.claude and $CODEX_HOME),
+#   and the scaffolding from a project.
 #   Your work -- .qa/ and qa-output/ -- is KEPT unless you explicitly ask for it to go.
 set -euo pipefail
 
@@ -107,13 +108,28 @@ if [ "$YES" -eq 0 ]; then
   esac
 fi
 
-# ------------------------------------------------------------------ ~/.claude
-if [ "$WORKSPACE_ONLY" -eq 0 ]; then
-  head_ "Removing from ~/.claude"
-  drop "$HOME/.claude/agents/qa-assistant.md" "agents/qa-assistant.md"
+# -------------------------------------------------------------------- hosts
+# Remove from every host present, mirroring the installer.
+CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+
+remove_host() {
+  local root="$1" skills_dir="$2"
+  [ -d "$root" ] || return 0
+  head_ "Removing from $root"
+  drop "$root/agents/qa-assistant.md" "agents/qa-assistant.md"
   for s in $SKILLS; do
-    drop "$HOME/.claude/skills/$s" "skills/$s"
+    drop "$skills_dir/$s" "skills/$s"
   done
+  # Shared reference and workspace templates. Removed only when the directory
+  # holds nothing else, so a hand-added file is never taken with it.
+  drop "$root/qa-assistant/updating-the-workspace.md" "qa-assistant/updating-the-workspace.md"
+  drop "$root/qa-assistant/workspace-templates" "qa-assistant/workspace-templates"
+  rmdir "$root/qa-assistant" 2>/dev/null && say "qa-assistant/ (empty)" || true
+}
+
+if [ "$WORKSPACE_ONLY" -eq 0 ]; then
+  remove_host "$HOME/.claude" "$HOME/.claude/skills"
+  remove_host "$CODEX_HOME"   "$CODEX_HOME/skills"
 fi
 
 # ------------------------------------------------------------------- project
