@@ -51,24 +51,6 @@ line. It only shows the menu when the intent is genuinely ambiguous.
 > `@qa-assistant` searches for a file by that name and finds nothing. Use `/qa-assistant`, or just
 > name the agent in a sentence ("use qa-assistant to review this story").
 
-## Update
-
-```bash
-bash ~/qa-assistant-agent/install.sh --update
-```
-
-One command from anywhere: `--update` pulls this repo, then installs from it. It refreshes every
-host — and therefore every project at once, because the agent and skills are shared rather than
-copied per project. Restart the session afterwards.
-
-To pull and install separately, `git -C ~/qa-assistant-agent pull` then
-`bash ~/qa-assistant-agent/install.sh --skills-only` does the same thing.
-
-On Codex, re-paste the routing block into `~/.codex/AGENTS.md` if it changed — see
-[INSTALL-CODEX.md](INSTALL-CODEX.md).
-
----
-
 ## The workflow
 
 Three chained stages. Each is a standalone skill; each ends by offering the next.
@@ -260,6 +242,24 @@ templates restored.
 
 Then: put real credentials in `.mcp.json`, fill in `.qa/project-context.md`, restart the session.
 
+## Update
+
+```bash
+bash ~/qa-assistant-agent/install.sh --update
+```
+
+One command from anywhere: `--update` pulls this repo, then installs from it. It refreshes every
+host — and therefore every project at once, because the agent and skills are shared rather than
+copied per project. Restart the session afterwards.
+
+To pull and install separately, `git -C ~/qa-assistant-agent pull` then
+`bash ~/qa-assistant-agent/install.sh --skills-only` does the same thing.
+
+On Codex, re-paste the routing block into `~/.codex/AGENTS.md` if it changed — see
+[INSTALL-CODEX.md](INSTALL-CODEX.md).
+
+---
+
 ### What an update does to your work
 
 Nothing. `--skills-only` never touches `.qa/` or `qa-output/` — see [Update](#update) for the
@@ -293,7 +293,9 @@ cp "$REPO"/install/shared/updating-the-workspace.md .claude/qa-assistant/
 The third line matters: the skills read that file before writing to `.qa/`, and it lives outside
 `skills/`, so copying `skills/*` alone leaves it behind.
 
-### Uninstall
+---
+
+## Uninstall
 
 ```bash
 cd /path/to/your/project
