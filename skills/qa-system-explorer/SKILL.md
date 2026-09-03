@@ -124,7 +124,8 @@ The scenario was executed and the actual result did not match the expected resul
 ### Blocked
 
 The scenario could not be completed because of permissions, unavailable data, environment failure,
-external dependency, prerequisite failure, or another documented blocker.
+external dependency, prerequisite failure, **a read-only answer at the §6.1 depth gate**, or another
+documented blocker.
 
 ### Not Tested
 
@@ -213,6 +214,7 @@ Record every discovered page:
 | Dependencies | Required data, services, roles, or previous states |
 | Risk Level | Critical, High, Medium, or Low |
 | Exploration Status | Discovered, In Progress, Completed, Partial, or Blocked |
+| Execution Depth | The §6.1 answer in force for this page: `read-only` or `full execution` |
 | Notes | Additional information |
 
 Do not navigate randomly.
@@ -233,6 +235,53 @@ Prioritize:
 
 **Persist the map to disk as soon as it exists**, and rewrite it after every page. It is the run's
 recovery point.
+
+---
+
+## 6.1 Mandatory stop — how far may I go? ⛔
+
+**The map is finished. Nothing has been tested yet. Stop here and ask one question before the first
+scenario runs.**
+
+While building the map you inventoried every action on every page. Sort them now:
+
+| Class | What it covers |
+|---|---|
+| **Read-only** | Navigate, open, expand, filter, search, sort, paginate, view a detail page |
+| **State-changing** | Create · edit · update · delete · submit · upload · send · publish · approve · reject · pay · refund · invite · reset |
+
+**An action you cannot confidently classify is state-changing.** Sort it there and say so.
+
+Then present the question with `AskUserQuestion`, header `Depth`, **listing the read-only option
+first**:
+
+> **لقيت في النظام أزرار إنشاء وتعديل وحذف. أضغطهم فعلاً ولا أختبر قراءة بس؟**
+>
+> *I found create, edit and delete actions in this system. Should I actually click them, or test
+> read-only?*
+
+Name the counts and the specific risks in the same breath — `12 read-only, 9 state-changing,
+including 3 that send email and 1 that charges a card` — so the answer is informed rather than
+reflexive. Never soften a destructive action's description to make it sound safe.
+
+| Answer | What it means |
+|---|---|
+| **Read-only** | Execute read-only scenarios only. Every state-changing action becomes `Blocked — not authorized for execution`, listed in the map and the final report with what it would have covered. |
+| **Full execution** | State-changing actions may run — **still subject to §3 and the environment check in §5.** Irreversible actions (delete, pay, refund, publish, send) each need their own confirmation at the moment they arise, even under this answer. |
+
+**Environment outranks the answer.** On production, `Full execution` does not license
+state-changing actions — say so plainly and continue read-only, whatever was chosen here. A user
+answering "full execution" is telling you their intent for a test environment, not waiving the
+production rule.
+
+**Record the answer** in the map and in the final report, and carry it for the whole run. Do not
+re-ask per page. If the user later changes it, note where in the run it changed and which pages were
+explored under which answer — a report where half the pages ran read-only and half did not is
+misleading unless it says so.
+
+**This gate is not optional and has no silent default.** Beginning execution without asking is the
+failure it exists to prevent: an unasked question here is how a test pass sends real email, deletes
+a real record, or charges a real card.
 
 ---
 
@@ -820,6 +869,10 @@ Include:
 
 * System and environment.
 * Accounts and roles used.
+* **Execution depth** — the §6.1 answer, stated in the opening lines. A read-only run must say so
+  before any coverage number appears: `read-only — no state-changing action was executed`. Coverage
+  measured read-only is not comparable to coverage measured with execution, and a reader who is not
+  told will assume the larger meaning.
 * Executed scope.
 * Excluded scope.
 * Main findings.
@@ -989,12 +1042,16 @@ Begin by performing the following actions:
 
 ### 21.1 Approval gates
 
-Three points require an explicit answer from the user before proceeding. Present each as a
+Four points require an explicit answer from the user before proceeding. Present each as a
 selectable prompt where the host provides one, listing the non-destructive option first.
 
 1. **After the exploration map is presented** — the map and the proposed module order are approved
    before deep testing begins.
-2. **Before any destructive, financial, irreversible, or Production action** — a separate explicit
-   confirmation each time, never inherited from an earlier approval.
-3. **Before writing anything to a tracking tool** — filing discovered failures as tickets is its own
+2. **Before the first scenario runs — how far may I go?** — §6.1. Read-only, or may state-changing
+   actions be clicked? A separate question from approving the map: one settles *what* gets explored,
+   this settles *what may be done* there. Never assume an answer.
+3. **Before any destructive, financial, irreversible, or Production action** — a separate explicit
+   confirmation each time, never inherited from an earlier approval. **A "full execution" answer at
+   §6.1 does not satisfy this** — it permits the class, not the individual act.
+4. **Before writing anything to a tracking tool** — filing discovered failures as tickets is its own
    decision. Approving the report is never approval to publish it.
