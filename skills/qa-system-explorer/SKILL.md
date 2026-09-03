@@ -255,10 +255,10 @@ While building the map you inventoried every action on every page. Sort them now
 Then present the question with `AskUserQuestion`, header `Depth`, **listing the read-only option
 first**:
 
-> **لقيت في النظام أزرار إنشاء وتعديل وحذف. أضغطهم فعلاً ولا أختبر قراءة بس؟**
->
-> *I found create, edit and delete actions in this system. Should I actually click them, or test
-> read-only?*
+> **I found create, edit and delete actions in this system. Should I actually click them, or test
+> read-only?**
+
+Ask it in the user's language, like everything else this skill says — see §20.1.
 
 Name the counts and the specific risks in the same breath — `12 read-only, 9 state-changing,
 including 3 that send email and 1 that charges a card` — so the answer is informed rather than
