@@ -1,0 +1,19 @@
+{
+  "name": "agentic-flow-builder-runtime",
+  "runtimeVersion": "1.0.0",
+  "node": ">=20",
+  "peerDependencies": {
+    "@playwright/test": ">=1.38.0",
+    "yaml": ">=2.0.0"
+  },
+  "notes": [
+    "pressSequentially requires Playwright 1.38 or newer.",
+    "Playwright trace should be configured with retain-on-failure when trace evidence is desired.",
+    "The workspace runtime must not be silently overwritten after initialization.",
+    "compatibility-check.ts is the executable readiness gate and must remain aligned with this manifest."
+  ],
+  "requiredTooling": {
+    "typescript": ">=5.0.0",
+    "@types/node": ">=20.0.0"
+  }
+}

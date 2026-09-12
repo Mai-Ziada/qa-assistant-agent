@@ -1,0 +1,650 @@
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: agentic-flow-builder/run.schema.yaml
+title: Agentic Flow Builder - Run
+description: 'Defines one immutable execution record for a Flow Run.
+
+  '
+type: object
+additionalProperties: false
+required:
+- run
+properties:
+  run:
+    type: object
+    additionalProperties: false
+    required:
+    - id
+    - flow
+    - started_at
+    - type
+    - execution_mode
+    - map_revision
+    - map_status_before
+    - map_status_after
+    - result
+    - summary
+    - test_cases
+    - locator_execution
+    - failures
+    - evidence
+    - status_transition
+    - agent_summary
+    - selection
+    - actor
+    properties:
+      id:
+        type: string
+        minLength: 1
+      flow:
+        type: string
+        minLength: 1
+      started_at:
+        $ref: '#/$defs/dateTime'
+      finished_at:
+        oneOf:
+        - $ref: '#/$defs/dateTime'
+        - type: 'null'
+      duration_ms:
+        type:
+        - integer
+        - 'null'
+        minimum: 0
+      type:
+        type: string
+        enum:
+        - verification
+        - normal
+        - revalidation
+        - repair_validation
+      execution_mode:
+        type: string
+        enum:
+        - normal
+        - primary_only
+        - fallback_only
+        - last_resort_only
+      map_revision:
+        type: integer
+        minimum: 1
+      map_status_before:
+        $ref: '#/$defs/mapStatus'
+      map_status_after:
+        $ref: '#/$defs/mapStatus'
+      selection:
+        type: object
+        additionalProperties: false
+        properties:
+          mode:
+            type: string
+            enum:
+            - all_test_cases
+            - selected_test_cases
+          test_cases:
+            type: array
+            uniqueItems: true
+            items:
+              type: string
+        required:
+        - mode
+        - test_cases
+      environment:
+        type: object
+        additionalProperties: false
+        properties:
+          base_url:
+            type:
+            - string
+            - 'null'
+          browser:
+            type: string
+            enum:
+            - chromium
+            - firefox
+            - webkit
+            - other
+          browser_version:
+            type:
+            - string
+            - 'null'
+          viewport:
+            type:
+            - object
+            - 'null'
+            properties:
+              width:
+                type: integer
+                minimum: 1
+              height:
+                type: integer
+                minimum: 1
+          project:
+            type:
+            - string
+            - 'null'
+      actor:
+        type: object
+        additionalProperties: false
+        properties:
+          role:
+            type:
+            - string
+            - 'null'
+          auth_mode:
+            type: string
+            enum:
+            - inline
+            - flow_scoped_shared
+            - none
+        required:
+        - auth_mode
+      result:
+        $ref: '#/$defs/runResult'
+      summary:
+        type: object
+        additionalProperties: false
+        required:
+        - total_test_cases
+        - passed
+        - failed
+        - blocked
+        - locator_recoveries
+        - automation_failures
+        - application_failures
+        - other_failures
+        properties:
+          total_test_cases:
+            type: integer
+            minimum: 0
+          passed:
+            type: integer
+            minimum: 0
+          failed:
+            type: integer
+            minimum: 0
+          blocked:
+            type: integer
+            minimum: 0
+          pass_rate:
+            type:
+            - number
+            - 'null'
+            minimum: 0
+            maximum: 100
+          total_steps:
+            type:
+            - integer
+            - 'null'
+            minimum: 0
+          completed_steps:
+            type:
+            - integer
+            - 'null'
+            minimum: 0
+          locator_recoveries:
+            type: integer
+            minimum: 0
+          automation_failures:
+            type: integer
+            minimum: 0
+          application_failures:
+            type: integer
+            minimum: 0
+          other_failures:
+            type: integer
+            minimum: 0
+            default: 0
+      test_cases:
+        type: array
+        items:
+          $ref: '#/$defs/testCaseExecution'
+      locator_execution:
+        type: object
+        additionalProperties: false
+        required:
+        - strategy_mode
+        - recoveries
+        - failures
+        properties:
+          strategy_mode:
+            type: string
+            enum:
+            - normal
+            - primary_only
+            - fallback_only
+            - last_resort_only
+          recoveries:
+            type: array
+            items:
+              $ref: '#/$defs/locatorRecovery'
+          failures:
+            type: array
+            items:
+              $ref: '#/$defs/locatorFailure'
+      failures:
+        type: array
+        items:
+          $ref: '#/$defs/failure'
+      evidence:
+        type: object
+        additionalProperties: false
+        required:
+        - captured
+        - items
+        properties:
+          captured:
+            type: boolean
+          items:
+            type: array
+            items:
+              $ref: '#/$defs/evidenceItem'
+          capture_error:
+            type:
+            - object
+            - 'null'
+            additionalProperties:
+              type: string
+      status_transition:
+        type: object
+        additionalProperties: false
+        required:
+        - changed
+        - from
+        - to
+        - reason
+        properties:
+          changed:
+            type: boolean
+          from:
+            $ref: '#/$defs/mapStatus'
+          to:
+            $ref: '#/$defs/mapStatus'
+          reason:
+            type:
+            - string
+            - 'null'
+      agent_summary:
+        type: object
+        additionalProperties: false
+        required:
+        - health
+        - automation_action_required
+        - recommended_action
+        - message
+        properties:
+          health:
+            type: string
+            enum:
+            - healthy
+            - degraded
+            - degraded_critical
+            - product_failure
+            - automation_failure
+            - blocked
+            - mixed_failure
+            - unknown
+          automation_action_required:
+            type: boolean
+          recommended_action:
+            type: string
+            enum:
+            - none
+            - report_application_failure
+            - analyze_failure
+            - repair_locator
+            - repair_interaction
+            - repair_automation_code
+            - repair_data
+            - investigate_auth
+            - investigate_environment
+            - revalidate_flow
+            - update_flow
+            - manual_review
+          message:
+            type: string
+            minLength: 1
+$defs:
+  dateTime:
+    type: string
+    format: date-time
+  mapStatus:
+    type: string
+    enum:
+    - drafted
+    - primary_validated
+    - fallback_validated
+    - verified
+    - degraded
+    - degraded_critical
+    - broken
+    - revalidation_required
+  runResult:
+    type: string
+    enum:
+    - passed
+    - passed_with_recovery
+    - partial_failed
+    - partial_blocked
+    - failed
+    - blocked
+  testCaseResult:
+    type: string
+    enum:
+    - passed
+    - failed
+    - blocked
+  failureClassification:
+    type: string
+    enum:
+    - application_failure
+    - locator_failure
+    - interaction_failure
+    - assertion_failure
+    - data_failure
+    - auth_failure
+    - environment_failure
+    - navigation_failure
+    - automation_code_failure
+    - unknown
+  stepExecution:
+    type: object
+    additionalProperties: false
+    required:
+    - id
+    - result
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      result:
+        type: string
+        enum:
+        - passed
+        - failed
+        - blocked
+      duration_ms:
+        type:
+        - integer
+        - 'null'
+        minimum: 0
+  testCaseExecution:
+    type: object
+    additionalProperties: false
+    required:
+    - id
+    - name
+    - result
+    - steps
+    - failure_ids
+    properties:
+      id:
+        type: string
+        minLength: 1
+      name:
+        type: string
+        minLength: 1
+      result:
+        $ref: '#/$defs/testCaseResult'
+      started_at:
+        oneOf:
+        - $ref: '#/$defs/dateTime'
+        - type: 'null'
+      finished_at:
+        oneOf:
+        - $ref: '#/$defs/dateTime'
+        - type: 'null'
+      duration_ms:
+        type:
+        - integer
+        - 'null'
+        minimum: 0
+      data:
+        type: object
+        additionalProperties: false
+        properties:
+          ref:
+            type: string
+          refs:
+            type: array
+            uniqueItems: true
+            items:
+              type: string
+          instance_id:
+            type: string
+      steps:
+        type: array
+        items:
+          $ref: '#/$defs/stepExecution'
+      blocked_by:
+        type:
+        - object
+        - 'null'
+        properties:
+          test_case:
+            type: string
+          reason:
+            type: string
+        additionalProperties: false
+      failure_ids:
+        type: array
+        uniqueItems: true
+        items:
+          type: string
+  locatorAttempt:
+    type: object
+    additionalProperties: false
+    required:
+    - tier
+    - strategy
+    - result
+    properties:
+      tier:
+        $ref: '#/$defs/locatorTier'
+      strategy:
+        $ref: '#/$defs/locatorStrategy'
+      result:
+        type: string
+        enum:
+        - passed
+        - failed
+      reason:
+        type:
+        - string
+        - 'null'
+      target_contract_valid:
+        type:
+        - boolean
+        - 'null'
+      match_count:
+        type:
+        - integer
+        - 'null'
+        minimum: 0
+      error:
+        type:
+        - object
+        - 'null'
+        additionalProperties: false
+        required:
+        - type
+        - message
+        properties:
+          type:
+            type: string
+          message:
+            type: string
+  locatorRecovery:
+    type: object
+    additionalProperties: false
+    required:
+    - element
+    - step
+    - attempted
+    - recovered_with
+    properties:
+      test_case:
+        type: string
+      element:
+        type: string
+      step:
+        type: string
+      attempted:
+        type: array
+        minItems: 2
+        items:
+          $ref: '#/$defs/locatorAttempt'
+      recovered_with:
+        type: string
+        enum:
+        - fallback
+        - last_resort
+  locatorFailure:
+    type: object
+    additionalProperties: false
+    required:
+    - element
+    - step
+    - attempted
+    properties:
+      test_case:
+        type: string
+      element:
+        type: string
+      step:
+        type: string
+      attempted:
+        type: array
+        minItems: 1
+        items:
+          $ref: '#/$defs/locatorAttempt'
+  failure:
+    type: object
+    additionalProperties: false
+    required:
+    - id
+    - test_case
+    - step
+    - classification
+    - summary
+    - automation
+    properties:
+      id:
+        type: string
+        minLength: 1
+      test_case:
+        type: string
+      step:
+        type: string
+      element:
+        type:
+        - string
+        - 'null'
+      classification:
+        $ref: '#/$defs/failureClassification'
+      summary:
+        type: string
+        minLength: 1
+      phase:
+        type:
+        - string
+        - 'null'
+        enum:
+        - locator_resolution
+        - interaction
+        - assertion
+        - navigation
+        - authentication
+        - data
+        - runtime
+        - unknown
+        - null
+      automation:
+        type: object
+        additionalProperties: false
+        required:
+        - repair_required
+        properties:
+          locator_resolved:
+            type:
+            - boolean
+            - 'null'
+          interaction_completed:
+            type:
+            - boolean
+            - 'null'
+          repair_required:
+            type: boolean
+      expected: {}
+      actual: {}
+      locator_attempts:
+        type: array
+        items:
+          $ref: '#/$defs/locatorAttempt'
+      application_observation:
+        type:
+        - object
+        - 'null'
+        additionalProperties: true
+      recovery:
+        type:
+        - object
+        - 'null'
+        additionalProperties: false
+        properties:
+          succeeded:
+            type: boolean
+          strategy:
+            type: string
+  evidenceItem:
+    type: object
+    additionalProperties: false
+    required:
+    - type
+    - path
+    properties:
+      type:
+        type: string
+        enum:
+        - screenshot
+        - trace
+        - console
+        - network
+        - log
+        - other
+      test_case:
+        type:
+        - string
+        - 'null'
+      path:
+        type: string
+        minLength: 1
+      reason:
+        type:
+        - string
+        - 'null'
+      description:
+        type:
+        - string
+        - 'null'
+  locatorStrategy:
+    type: string
+    enum:
+    - test_id
+    - role
+    - label
+    - scoped
+    - placeholder
+    - text
+    - alt_text
+    - attribute
+    - css
+    - xpath
+    - nth
+  locatorTier:
+    type: string
+    enum:
+    - primary
+    - fallback
+    - last_resort
+$comment: RunWriter additionally enforces immutability, filename safety, exact selected/executed TC agreement, aggregate-result
+  consistency, failure ownership rules, state-transition consistency, and secret exclusion.

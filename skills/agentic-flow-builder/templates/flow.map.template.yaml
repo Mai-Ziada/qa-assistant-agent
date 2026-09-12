@@ -1,0 +1,153 @@
+flow:
+  # Replace these ordered steps with the real business journey.
+  # Keep this section first so humans and agents can understand the flow quickly.
+  steps:
+    - id: STEP-01
+      name: Open flow start page
+      description: Navigate to the configured starting page.
+      optional: false
+
+    - id: STEP-02
+      name: Perform primary business action
+      description: Perform the main action and verify the expected state.
+      optional: false
+
+  metadata:
+    # Replace template-flow with the generated kebab-case Flow ID.
+    id: template-flow
+    name: Template Flow
+    description: Replace with the business objective of this flow.
+    module: replace-me
+    type: e2e
+    status: drafted
+    revision: 1
+    created_at: "1970-01-01T00:00:00Z"
+    updated_at: "1970-01-01T00:00:00Z"
+    tags: []
+
+  execution:
+    # Replace with the real application route/URL.
+    start_url: /replace-me
+    role: null
+
+    auth:
+      # Allowed: inline | flow_scoped_shared | none
+      mode: none
+      user_data_ref: null
+
+      isolation:
+        # This must always remain false.
+        cross_flow_session_reuse: false
+
+    timeout_profile: null
+
+  data:
+    # Reference the project's existing data architecture.
+    # Do not duplicate full data records into the Flow Map.
+    sources: []
+
+  test_cases:
+    - id: TC-TEMPLATE-01
+      name: Execute primary business action successfully
+      description: Replace with the real test-case objective.
+      steps:
+        - STEP-01
+        - STEP-02
+      expected_result: Replace with the expected business result.
+      preconditions: []
+      depends_on: []
+      tags: []
+
+  elements:
+    example_action_button:
+      description: Replace with the real business meaning of this element.
+      used_in:
+        - STEP-02
+
+      knowledge_source:
+        type: discovered
+
+      target_contract:
+        role: button
+        accessible_name: Replace Me Action
+        unique: true
+
+      locators:
+        primary:
+          strategy: test_id
+          value:
+            test_id: replace-me-action
+          quality: high
+          validation_status: pending
+
+        fallback:
+          strategy: role
+          value:
+            role: button
+            name: Replace Me Action
+          quality: high
+          validation_status: pending
+
+        last_resort:
+          strategy: css
+          value:
+            selector: 'button[data-action="replace-me-action"]'
+          quality: medium
+          validation_status: pending
+
+      interaction:
+        preferred:
+          method: click
+
+      expected_state:
+        after_action:
+          assertions:
+            - ASSERT-EXAMPLE-ACTION-DISABLED
+
+  assertions:
+    ASSERT-EXAMPLE-ACTION-DISABLED:
+      after_step: STEP-02
+      type: disabled
+      target:
+        element: example_action_button
+      expected: true
+      business_critical: false
+
+  verification:
+    required_strategies:
+      primary:
+        required: true
+      fallback:
+        required: true
+      last_resort:
+        required: true
+
+    current_revision: 1
+    verified_revision: null
+
+    latest_runs:
+      primary: null
+      fallback: null
+      last_resort: null
+
+    revalidation_reason: null
+
+  project:
+    # These paths are interpreted relative to the project workspace root
+    # by the workspace runtime where supported.
+    data_root: data
+    evidence_root: evidences
+
+    evidence:
+      capture_on_pass: false
+      capture_on_failure: true
+      screenshot_on_failure: true
+      trace_on_failure: true
+
+  agent_notes:
+    - Replace every template value before first verification.
+    - MCP references are discovery-only and must never be stored as locators.
+    - Prefer getByTestId as Primary when a stable project test ID exists.
+    - Keep Primary, Fallback, and Last Resort independent where practical.
+
+  change_reason: null
