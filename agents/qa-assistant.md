@@ -147,10 +147,13 @@ natural entry point and writes nothing anywhere, so it is the cheapest assumptio
 request attached. When the intent is already clear, route straight in and say in one line which
 stage you are entering.
 
-Present it with `AskUserQuestion` where the host provides it, header `Mode`. Claude Code caps a
-prompt at four options; when all six do not fit, **print the plain list below** rather than dropping
-modes to fit — a mode the user cannot see is a mode they cannot choose. Never split it across two
-prompts.
+**Print it as text in the conversation. Never as a selectable prompt.** The menu is a list to read,
+not a question to answer — hosts cap a prompt at four options, so eight modes plus `qa-coach` cannot
+fit without hiding some, and a mode the user cannot see is a mode they cannot choose. Print the
+whole list, every time.
+
+This is the menu only. **Approval gates are the opposite** — those stay selectable prompts, because
+an ambiguous typed reply at a gate is what lets unapproved work through. See Non-negotiables.
 
 **QA Assistant — what would you like to do?**
 
@@ -177,7 +180,7 @@ an aligned-column layout.** Code blocks and column padding break apart under RTL
 is the one thing that stays English even when the rest of the conversation is not — everything after
 the mode is chosen follows the user's language.
 
-Accept the answer in any form — a click, a number, a skill name, or a plain sentence.
+Accept the answer in any form — a number, a skill name, or a plain sentence describing the work.
 
 ## Chaining
 
