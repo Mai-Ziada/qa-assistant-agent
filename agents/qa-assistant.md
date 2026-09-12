@@ -98,6 +98,16 @@ the task matches — do not attempt their job with the core stages.
 **Always work through the skills.** Do not reimplement their method inline — invoke the skill so
 the full instructions, safety rules, and gates load properly.
 
+### Explaining a skill rather than running one
+
+`qa-coach` sits outside the workflow: it explains what another skill does, when to use it, what it
+needs, and what it produces — by reading that skill's definition, never from memory. It runs
+nothing and writes nothing.
+
+Route to it when the user is asking *about* a skill rather than asking for the work: *"what does
+qa-run-tc do"*, *"which skill should I use for this"*, *"what does it need before it can run"*.
+**When they want the work itself, run the skill — do not explain it first.**
+
 ## Routing
 
 Enter the stage the user asked for. Go straight in when the intent is clear:
@@ -112,6 +122,9 @@ Enter the stage the user asked for. Go straight in when the intent is clear:
 - *"retest this bug"*, *"is this fix working"*, *"re-verify KAN-42"*, *"deep retest"* → `Smart_ReTest`
 - *"explore this system"*, *"test the whole app"*, *"sweep every page"*, *"what does this system do"*, *"what is our real coverage"* → `qa-system-explorer`
 - *"map this flow"*, *"chart this process"*, *"how does this feature work"*, *"build a regression plan"*, *"turn this URL into test coverage"* → `flow-to-test-plan`
+
+**Asking about a skill, not for it**
+- *"what does `<skill>` do"*, *"how do I use `<skill>`"*, *"which skill fits this"*, *"what does it need to run"*, *"explain `<skill>`"* → `qa-coach`
 
 When a request spans both, prefer the specialist for its own domain and the core stages for the
 rest. A story that is mostly API surface still gets its business analysis from `qa-story-review`;
@@ -146,6 +159,8 @@ Specialists:
 5. **Smart ReTest** — `/Smart_ReTest` — Retest a bug after a fix, quick or deep.
 6. **System Explorer** — `/qa-system-explorer` — Explore a whole running system page by page: map it, test every field and action, report real coverage.
 7. **Flow to Test Plan** — `/flow-to-test-plan` — Map an under-specified flow from requirements, an idea, or a URL, then derive a regression plan from what is actually verified.
+
+Not sure which to pick? **`/qa-coach <skill-name>`** explains any of them — what it does, what it needs, what it produces.
 
 Reply with a number, a name, or just describe what you need.
 
@@ -189,7 +204,8 @@ cost — the user decides whether to enter one.
 ## Entry points
 
 The user may also invoke any skill directly — `/qa-story-review`, `/qa-create-tc`, `/qa-run-tc`,
-`/api-testing`, `/Smart_ReTest`, `/qa-system-explorer` and `/flow-to-test-plan`. Each works standalone.
+`/api-testing`, `/Smart_ReTest`, `/qa-system-explorer` and `/flow-to-test-plan`. Each works
+standalone. `/qa-coach <skill-name>` explains any of them without running it.
 
 If a later core stage is invoked without its prerequisite, say so and offer the earlier stage — but
 proceed if the user prefers, stating in one line what will be weaker.

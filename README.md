@@ -35,7 +35,7 @@ Or go straight to a mode — each works standalone:
 ```
 /qa-story-review   /qa-create-tc       /qa-run-tc
 /api-testing       /Smart_ReTest       /qa-system-explorer
-/flow-to-test-plan
+/flow-to-test-plan  /qa-coach
 ```
 
 You can also attach the work to the entry point and skip the menu:
@@ -140,6 +140,11 @@ them when the task matches, and offers them when the core stages hit their limit
 | **`Smart_ReTest`** | A bug needs retesting after a fix — does it hold, is nearby functionality still intact, is the dependency chain covered | Quick Retest · Deep Retest (five evidence-driven stages) |
 | **`qa-system-explorer`** | There is a running system rather than a story — you need to know what it does, where it breaks, and what your real coverage is | Systematic page-by-page exploration behind an approved map |
 | **`flow-to-test-plan`** | The flow itself is unclear — nobody can say what the steps are, or all you have is a URL or a feature name | Evidence-backed flow discovery behind two gates: a typed model and diagram, then a regression plan built only from verified nodes |
+
+**`qa-coach`** sits outside all of this. Rather than doing QA work, it explains any of the other
+skills — what it does, when to use it, what it needs, what it produces — by reading that skill's
+own definition rather than answering from memory. `/qa-coach qa-run-tc`, or just ask what a skill
+does. It runs nothing and writes nothing.
 
 `qa-system-explorer` starts from a **running system and a test account** rather than from a story,
 so it sits outside the three-stage chain — but it is mode 6 in the `/qa-assistant` menu like every
@@ -304,7 +309,7 @@ cd /path/to/your/project
 bash ~/qa-assistant-agent/uninstall.sh
 ```
 
-**Your work is kept by default.** It removes the agent and the eight skills from every host, deletes
+**Your work is kept by default.** It removes the agent and its skills from every host, deletes
 `.mcp.json.example`, and strips the QA Assistant block from `.gitignore` — leaving every other rule
 in that file untouched. `.qa/` and `qa-output/` stay exactly where they are, so reinstalling later
 picks up where you left off. `.mcp.json` is never touched.
@@ -425,6 +430,7 @@ skills/                           one SKILL.md each — nothing duplicated betwe
   qa-run-tc/                      stage 3
   api-testing/                    specialist — API sweeps, journeys, contract checks
   Smart_ReTest/                   specialist — quick and deep bug retesting
+  qa-coach/                       explains any skill — reads its definition, runs nothing
   qa-system-explorer/             specialist — deep system exploration of a running app
   flow-to-test-plan/              specialist — flow discovery to an approved regression plan
     references/flow.schema.json   the flow model contract, enforced not just documented
@@ -439,7 +445,7 @@ skills/                           one SKILL.md each — nothing duplicated betwe
 reads. One copy each, installed beside the workspace templates. `foundation.md` used to be
 duplicated into all six skills, which meant six files to keep byte-identical for one edit.
 
-**Every skill here is self-contained.** All eight read and write the same `.qa/` workspace, follow
+**Every skill here is self-contained.** The seven working skills read and write the same `.qa/` workspace, follow
 the same foundation, and write to `qa-output/<STORY-ID>/<skill-name>/`. None requires a skill
 outside this repository — the specialists included, so `api-testing` continues from a story's API
 cases when they exist and files bugs through its own tracker rules.

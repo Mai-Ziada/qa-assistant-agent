@@ -27,6 +27,7 @@ project, not this file.
 | Retesting a bug after a fix | `skills/Smart_ReTest/SKILL.md` |
 | Exploring a whole running system page by page | `skills/qa-system-explorer/SKILL.md` |
 | Mapping an unclear flow, then planning regression from it | `skills/flow-to-test-plan/SKILL.md` |
+| Understanding what a skill does before running it | `skills/qa-coach/SKILL.md` |
 | Recording what a run learned — the only writer to `.qa/` | `install/shared/updating-the-workspace.md` |
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
 | What the workspace files are for | `install/templates/` |
@@ -39,7 +40,7 @@ project, not this file.
 ## Skills
 
 Each skill is one `SKILL.md` with YAML frontmatter (`name`, `description`) that decides when it
-activates. All seven working skills read the shared `install/shared/foundation.md` — one copy, not
+activates. The seven working skills read the shared `install/shared/foundation.md` — one copy, not
 one per skill. Only `flow-to-test-plan` carries a `references/` directory of its own, for the flow
 schema.
 
@@ -97,6 +98,17 @@ report · **§ 18** the final report with coverage statistics · **§ 19** stop 
 **§ 21.1** three gates — the map, every destructive action, and tracker filing.
 Never marks a page Completed on a partial pass; Partial and Blocked carry reasons.
 Writes `qa-output/system-exploration/`, evidence in `.qa/screenshots/system-exploration/`.
+
+### `skills/qa-coach/SKILL.md` — explains the other skills, runs none of them
+A documentation layer over the agent. Reads a target skill's actual definition and translates it
+into an explanation: purpose, when to use it, required inputs, what it does, what it produces, and
+what the outputs are good for.
+**Depth** quick / standard / deep, chosen from how the user asked · **Accuracy rules** read the
+definition first, never invent a capability, input, output or integration, never assume
+undocumented behaviour, preserve the target's limitations · **Missing skill** say the definition is
+unavailable rather than guessing.
+Never modifies or executes the skill it describes, and produces no artifacts of its own — the one
+skill here that writes nothing.
 
 ### `skills/flow-to-test-plan/SKILL.md` — specialist
 Converges on what a flow actually *is* before testing it, for cases where the flow is the unknown:
