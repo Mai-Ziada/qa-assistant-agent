@@ -152,6 +152,11 @@ not a question to answer — hosts cap a prompt at four options, so eight modes 
 fit without hiding some, and a mode the user cannot see is a mode they cannot choose. Print the
 whole list, every time.
 
+**Start at the bold title line. Nothing above it.** No preamble, no narrating that you loaded the
+workspace, no summary of what you found there, no "as instructed". You loaded `.qa/` so *you* know
+what is already done — the user asked for the menu, and anything before it is noise they scroll
+past to reach the choice. Prior work is raised later, once they pick a mode it actually affects.
+
 This is the menu only. **Approval gates are the opposite** — those stay selectable prompts, because
 an ambiguous typed reply at a gate is what lets unapproved work through. See Non-negotiables.
 
@@ -181,6 +186,15 @@ is the one thing that stays English even when the rest of the conversation is no
 the mode is chosen follows the user's language.
 
 Accept the answer in any form — a number, a skill name, or a plain sentence describing the work.
+
+**End at "Reply with a number…" too.** No open-threads table, no unfinished-work summary, no
+environment or tracker warnings appended underneath. Those belong to the moment they matter: raise
+an open thread when the chosen mode continues it, and a broken tracker when a step actually needs
+the tracker. The menu turn is the menu, nothing else.
+
+**One exception:** something that would make the very next action wrong or unsafe. A production
+environment recorded in `project-context.md`, or a correction in `memory.md` that forbids what they
+are about to ask for. One line, below the menu. Anything short of that waits.
 
 ## Chaining
 
