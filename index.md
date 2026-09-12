@@ -27,6 +27,7 @@ project, not this file.
 | Retesting a bug after a fix | `skills/Smart_ReTest/SKILL.md` |
 | Exploring a whole running system page by page | `skills/qa-system-explorer/SKILL.md` |
 | Mapping an unclear flow, then planning regression from it | `skills/flow-to-test-plan/SKILL.md` |
+| Automating a flow in Playwright, and keeping it working | `skills/agentic-flow-builder/SKILL.md` |
 | Understanding what a skill does before running it | `skills/qa-coach/SKILL.md` |
 | Recording what a run learned — the only writer to `.qa/` | `install/shared/updating-the-workspace.md` |
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
@@ -40,12 +41,12 @@ project, not this file.
 ## Skills
 
 Each skill is one `SKILL.md` with YAML frontmatter (`name`, `description`) that decides when it
-activates. The seven working skills read the shared `install/shared/foundation.md` — one copy, not
+activates. The nine working skills read the shared `install/shared/foundation.md` — one copy, not
 one per skill. Only `flow-to-test-plan` carries a `references/` directory of its own, for the flow
 schema.
 
 ### `skills/qa-assistant/SKILL.md`
-Entry point. Shows the seven modes and routes to one. **Step 1** menu · **Step 2** routing table
+Entry point. Shows the eight modes and routes to one. **Step 1** menu · **Step 2** routing table
 mapping numbers and phrases to skills · **Step 3** chaining rules. Routes rather than works.
 
 ### `skills/qa-story-review/SKILL.md` — stage 1
@@ -99,6 +100,23 @@ report · **§ 18** the final report with coverage statistics · **§ 19** stop 
 Never marks a page Completed on a partial pass; Partial and Blocked carry reasons.
 Writes `qa-output/system-exploration/`, evidence in `.qa/screenshots/system-exploration/`.
 
+### `skills/agentic-flow-builder/SKILL.md` — specialist, and the only skill with its own package
+Builds and maintains Playwright automation for a business flow. The largest skill here, and the
+only one shipping supporting directories rather than a single file:
+`commands/` (8, one per command) · `policies/` (6 — locator, interaction, isolation, evidence,
+repair, state) · `schemas/` (Flow Map and Run contracts) · `templates/` (map, flow, spec) ·
+`runtime/` (the canonical runtime copied into a project on first use, ~20 TypeScript files).
+**§ 0** workspace and the environment gate — never production without unambiguous confirmation ·
+**§ 1** core principles · **§ 2–3** skill package versus project workspace, and the readiness gate ·
+**§ 4–17** flow structure, Map, locator and interaction policy, isolation, auth, data ·
+**§ 18–20** verification, revalidation, revisions · **§ 21–30** runs, results, health states,
+failure classification, evidence · **§ 31–35** the read-only and mutating commands ·
+**§ 36–44** MCP policy, reuse, concurrency, secrets, philosophy.
+Two rules carry the design: a flow is `DRAFTED` until it passes three runs — primary, fallback and
+last-resort locators separately — and every failure is classified before anything is changed, so an
+application bug is never hidden by a locator edit.
+Writes `<workspace>/agentic-flow-builder/flows/<flow>/` — map, flow, spec, and immutable `runs/`.
+
 ### `skills/qa-coach/SKILL.md` — explains the other skills, runs none of them
 A documentation layer over the agent. Reads a target skill's actual definition and translates it
 into an explanation: purpose, when to use it, required inputs, what it does, what it produces, and
@@ -137,7 +155,7 @@ Exists because those three files each used to carry their own update rules, so f
 wrong file or in none at all.
 
 ### `install/shared/foundation.md` — the rules every skill obeys, and not a skill
-One copy, read by all seven working skills. It has no `SKILL.md`, so it is never a slash command
+One copy, read by all nine working skills. It has no `SKILL.md`, so it is never a slash command
 and never listed. Installed to `~/.claude/qa-assistant/foundation.md` beside the workspace templates.
 Where a skill and this file differ on safety, **the foundation wins**.
 Until it moved here it was duplicated into all six skills — six files to keep byte-identical for

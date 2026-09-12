@@ -94,6 +94,7 @@ the task matches — do not attempt their job with the core stages.
 | `Smart_ReTest` | A bug needs retesting after a fix — verifying the fix holds, that nearby functionality still works, and that mapped dependency-chain bugs are covered | Quick Retest and Deep Retest (five evidence-driven stages) |
 | `qa-system-explorer` | The work starts from a running system rather than a story — what does it do, where does it break, what is the real coverage | Systematic page-by-page exploration behind an approved map, with page reports and a final coverage report |
 | `flow-to-test-plan` | A business flow is under-specified and needs mapping before it can be tested — from requirements, a rough idea, or a live URL | A typed flow model with per-node evidence, a Mermaid diagram, and a regression plan derived only from verified nodes, behind two approval gates |
+| `agentic-flow-builder` | A flow should be **automated** rather than run by hand — built, verified, re-run, diagnosed when it fails, and repaired without hiding the failure | Playwright automation behind a Flow Knowledge Map: primary, fallback and last-resort locators, three verification runs before `VERIFIED`, immutable run history, and diagnosis before any repair |
 
 **Always work through the skills.** Do not reimplement their method inline — invoke the skill so
 the full instructions, safety rules, and gates load properly.
@@ -122,6 +123,12 @@ Enter the stage the user asked for. Go straight in when the intent is clear:
 - *"retest this bug"*, *"is this fix working"*, *"re-verify KAN-42"*, *"deep retest"* → `Smart_ReTest`
 - *"explore this system"*, *"test the whole app"*, *"sweep every page"*, *"what does this system do"*, *"what is our real coverage"* → `qa-system-explorer`
 - *"map this flow"*, *"chart this process"*, *"how does this feature work"*, *"build a regression plan"*, *"turn this URL into test coverage"* → `flow-to-test-plan`
+- *"automate this flow"*, *"write Playwright tests for this"*, *"run the automated flow"*, *"why did this test fail"*, *"fix this flaky test"*, *"update the automation, the requirement changed"* → `agentic-flow-builder`
+
+**`flow-to-test-plan` and `agentic-flow-builder` are not the same job.** The first decides *what
+should be tested* and stops at a written plan; the second turns a known flow into *running code*.
+A flow nobody can describe yet goes to the first. A flow that is understood and should now run by
+itself goes to the second.
 
 **Asking about a skill, not for it**
 - *"what does `<skill>` do"*, *"how do I use `<skill>`"*, *"which skill fits this"*, *"what does it need to run"*, *"explain `<skill>`"* → `qa-coach`
@@ -159,6 +166,7 @@ Specialists:
 5. **Smart ReTest** — `/Smart_ReTest` — Retest a bug after a fix, quick or deep.
 6. **System Explorer** — `/qa-system-explorer` — Explore a whole running system page by page: map it, test every field and action, report real coverage.
 7. **Flow to Test Plan** — `/flow-to-test-plan` — Map an under-specified flow from requirements, an idea, or a URL, then derive a regression plan from what is actually verified.
+8. **Agentic Flow Builder** — `/agentic-flow-builder` — Turn a known flow into Playwright automation: build it, verify it three ways, run it, diagnose failures, repair without hiding bugs.
 
 Not sure which to pick? **`/qa-coach <skill-name>`** explains any of them — what it does, what it needs, what it produces.
 
@@ -204,7 +212,8 @@ cost — the user decides whether to enter one.
 ## Entry points
 
 The user may also invoke any skill directly — `/qa-story-review`, `/qa-create-tc`, `/qa-run-tc`,
-`/api-testing`, `/Smart_ReTest`, `/qa-system-explorer` and `/flow-to-test-plan`. Each works
+`/api-testing`, `/Smart_ReTest`, `/qa-system-explorer`, `/flow-to-test-plan` and
+`/agentic-flow-builder`. Each works
 standalone. `/qa-coach <skill-name>` explains any of them without running it.
 
 If a later core stage is invoked without its prerequisite, say so and offer the earlier stage — but

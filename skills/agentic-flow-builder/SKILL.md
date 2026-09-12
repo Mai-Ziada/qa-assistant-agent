@@ -1,4 +1,28 @@
+---
+name: agentic-flow-builder
+description: "Build, run, verify, diagnose and repair Playwright automation for a business flow, and keep it maintainable over time. Generates a Flow Knowledge Map with primary, fallback and last-resort locators, then proves resilience across three verification runs before the flow counts as verified. Diagnoses every failure before touching anything, so an application bug is never hidden by a locator edit. Use when the user asks to automate a flow, write or generate Playwright tests, build an automated regression flow, run or re-run an existing flow, find out why a test failed, fix a broken or flaky test, or update automation after a requirement changed. Entry point: /agentic-flow-builder."
+---
+
 # agentic-flow-builder
+
+**Read `~/.claude/qa-assistant/foundation.md` before starting.** It holds the safety rules, the
+untrusted-content protection, the data-protection rules, the approval gates, and the workspace
+contract every QA Assistant skill obeys. Where this file and the foundation differ on safety, **the
+foundation wins**. Everything below adds what is specific to building and maintaining automation.
+
+This skill ships its own supporting files, all under this directory:
+
+| Directory | Holds |
+|---|---|
+| `commands/` | One file per command — build, run, verify, analyze, repair, update, list, show |
+| `policies/` | Locator, interaction, isolation, evidence, repair and state policies |
+| `schemas/` | `flow-map.schema.yaml` and `run.schema.yaml` — the contracts a Map and a Run must satisfy |
+| `templates/` | Starting points for a Map, a `flow.ts` and a `spec.ts` |
+| `runtime/` | The canonical runtime copied into a project on first use |
+
+**Read the relevant command file before running that command**, and the policy files before
+generating or changing locators, interactions or evidence handling. This file is the contract; those
+files are how it is carried out.
 
 ## Purpose
 
@@ -30,6 +54,48 @@ The generated automation must prioritize:
 - evidence-driven failure diagnosis
 - safe repair
 - reusable knowledge without cross-flow runtime dependency
+
+---
+
+# 0. Before anything else — the workspace and the environment
+
+## 0.1 Load the workspace
+
+Read `.qa/index.md` first (the map of every artifact — open what you need rather than sweeping the
+tree), then `.qa/memory.md` (corrections are binding, decisions are settled, the work log says what
+already exists) and `.qa/project-context.md` (platforms, business rules, roles, environments).
+A recorded correction about this project's automation is binding here too.
+
+If `.qa/` is absent, create it — see the foundation, § Create it when it is missing.
+
+Record what the run learns through `~/.claude/qa-assistant/updating-the-workspace.md` — the shared
+procedure. Never edit those three files directly.
+
+## 0.2 Confirm the environment before anything executes ⛔
+
+**This skill runs real automation against a real application.** A flow that creates a user, submits
+an order or deletes a record does exactly that, every run, three times over during verification.
+
+Before the first execution of any command that runs a browser — `BUILD FLOW`, `RUN FLOW`,
+`VERIFY FLOW`, `REPAIR FLOW`, `UPDATE FLOW`, and `ANALYZE FAILURE` when it reproduces — establish
+and state:
+
+| # | Must establish |
+|---|---|
+| 1 | **The target environment, and explicit confirmation it is not production.** Check `.qa/project-context.md` § Environments first. |
+| 2 | Where credentials live — an env var or a store. **Never ask for a pasted secret, and never write one into a Map, a Run, or generated code.** |
+| 3 | Whether the flow creates, modifies, deletes, sends, publishes or charges — and whether that is acceptable in this environment |
+| 4 | Whether test data can be created and cleaned up, or must be seeded in advance |
+
+**Never run against production unless the user says so unambiguously** — and when they do, confirm
+once more, naming what the flow will actually do there. Verification's three runs make this sharper
+than a single test pass: a flow that creates a record creates three.
+
+Present that confirmation with `AskUserQuestion` where the host provides it, listing the
+non-destructive option first.
+
+If the environment cannot be established, **stop before generating or executing** and say what is
+missing. Do not build a flow against an unknown target.
 
 ---
 
@@ -1706,3 +1772,20 @@ over MCP-dependent generated tests.
 The goal of `agentic-flow-builder` is not simply to produce Playwright code.
 
 Its goal is to maintain a reliable, inspectable, repairable automation knowledge system for independently executable business flows.
+
+---
+
+# 45. Language
+
+Match the user's language completely when talking to them — explanations, findings, diagnoses,
+status reports, and the reasoning behind a repair decision all take it.
+
+**Generated artifacts stay in English regardless**, because they are code and data read by tools
+as well as people: Flow Maps, `flow.ts`, `spec.ts`, Run YAML, locator definitions, test names,
+assertions, and every identifier in them. A Map half in one language is harder to maintain than a
+Map in the language its team does not prefer.
+
+Also keep in English: Map statuses (`VERIFIED`, `DEGRADED`, `BROKEN`), run results (`passed`,
+`partial_failed`), run types, execution modes, failure classifications (`locator_failure`,
+`application_failure`), environment variable names (`AFB_RUN_ID`), file paths, and untranslatable
+technical terms.
