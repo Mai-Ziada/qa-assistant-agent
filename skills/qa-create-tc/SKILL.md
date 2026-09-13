@@ -1,6 +1,6 @@
 ---
 name: qa-create-tc
-description: Generate test cases from a user story or an approved analysis — functional positive and negative, applicable edge cases, integration, API, UI/UX, and threat-based basic security — with mobile lifecycle and platform checks folded into those same categories when the story ships in a mobile app. Delivers each category in its own framed section. Runs a derivation sweep so stated rules, applied techniques, and raised gaps each owe a case. Produces a coverage matrix and priority-justified cases, then asks separately before publishing anything to a tracking tool. Use when the user asks to create test cases, write TCs, generate test coverage, or continues from a qa-story-review analysis.
+description: Generate test cases from a user story or an approved analysis — functional positive and negative, applicable edge cases, integration, API, UI/UX, and threat-based basic security — with mobile lifecycle and platform checks folded into those same categories when the story ships in a mobile app. Delivers each category in its own framed section. Runs a derivation sweep so stated rules, applied techniques, and raised gaps each owe a case. Produces a coverage matrix and priority-justified cases in either Standard or Gherkin format, then asks separately before publishing anything to a tracking tool. Use when the user asks to create test cases, write TCs, generate test coverage, or continues from a qa-story-review analysis.
 ---
 
 # QA Create TC — Mode 2 of the QA Assistant workflow
@@ -31,6 +31,30 @@ the approval gates, and the host-adaptation mechanics this skill depends on.
 6. **If no analysis exists** — say so and offer to run `qa-story-review` first. If the user prefers to proceed on the raw story, do so, but state in one line what will be weaker without it: no dependency map means integration coverage is guesswork, and no gap list means untestable requirements go unflagged.
 7. **Confirm the depth** — inherit it from the analysis if present, otherwise infer and announce it. Apply the mandatory-escalation rule from the foundation.
 8. **Identify the delivery platform** and announce it in the same line as the depth — `mobile app`, `web`, `backend/API`, or a combination. **Check `.qa/project-context.md` § Platforms first** — when it records the platform, use it rather than re-deriving; when you determine the platform and it is absent or wrong there, update that file. Screenshots of phone frames, an app store, an `.apk` or `.ipa`, or any wording about a mobile app settles it. When the platform is genuinely unclear, state your reading and continue; do not stop to ask. The platform decides whether the mobile additions are mandatory or skipped, and whether category 6 (UI / UX) applies at all.
+
+9. **Settle the output format** — the last decision before any derivation begins.
+
+   Check first whether it is already settled: the user named a format in this request, or
+   `.qa/memory.md` § Decisions records one for this project. **A settled decision is not re-asked.**
+   Never infer a format from an unrelated earlier suite, from a reference document, or from Gherkin
+   appearing in the source material.
+
+   Otherwise ask with `AskUserQuestion`, header `Format`, **Standard first** as the default:
+
+   | Option | Description |
+   |---|---|
+   | **Standard Test Cases** | Title, Preconditions, Test data, numbered Steps, Expected result — the Step 3 schema unchanged |
+   | **Gherkin Test Cases** | Given / When / Then, with every existing metadata, coverage, priority and expected-result obligation preserved — see Add-on C |
+
+   Without `AskUserQuestion`, ask in plain text with the same two choices and **wait**. Never choose
+   silently.
+
+   **This changes presentation only** — not scope, depth, applicability, derivation, priority,
+   coverage, or any approval requirement. It is not approval to publish or execute anything, and it
+   does not replace or reorder a single gate below.
+
+   When the user answers, record it through `~/.claude/qa-assistant/updating-the-workspace.md` so the
+   next suite in this project does not ask again.
 
 ## Step 1 — Coverage: applicability-based, not checklist-based
 
@@ -133,6 +157,90 @@ presentation additions listed below land in this category too.
 
 **Priority.** A UI case carries the impact of the action behind it. A confirmation dialog missing
 before a delete is `P1`; a truncated label on an admin screen is `P3`.
+
+#### 6b. UI coverage patterns and element-level grouping
+
+An **additive** derivation layer for this category — never a replacement for a row above, a design
+obligation, a mobile addition, or a Step 1b sweep. Apply it only when UI/UX is applicable. It does
+not create a new category or a separate mobile frame.
+
+**Build an inventory before writing cases.** From the approved analysis, acceptance criteria,
+project context and supplied designs — **not** from guessing at an inaccessible design or reading
+unrelated project files. Identify the pages, sections, components and elements; their types, labels,
+initial values, required status, editability, visibility and enabled state; documented options,
+formats and limits; roles, actions, observable results, and parent-child dependencies.
+
+Record the source of every rule, and keep defined behaviour distinct from a gap or a labelled
+assumption. **A field that appears in a design with no defined behaviour gets the missing-rule
+treatment** — Sweep 4 — not a demotion to a display check.
+
+Keep a compact internal register while you work: `Page / Section` · `Element` · `Type` ·
+`Pattern` · `Rule / source` · `State or data variation` · `Expected observable behaviour` ·
+`Category owner` · `TC ID(s)`. It organises generation; it is not a new workspace file.
+**Use the actual element name and the actual documented values. Never invent an option, a maximum
+length, a validation message, a calculation, a breakpoint or a default because a pattern implies one.**
+
+**Patterns by element type — prompts, not a quota.** Evaluate only what the story and contract
+admit. Every mandatory obligation above still holds wherever its precondition does.
+
+| Element / scope | Patterns to consider when relevant |
+|---|---|
+| Page / section | Authorized access and navigation; correct destination, breadcrumb, title, section presence and order; defined initial and dynamic layout; supported viewport and locale |
+| Text / numeric input | Presence, label, placeholder, required marker, initial state, editability, entry and clearing; valid and invalid classes; required, documented format, length/range/step boundaries; whitespace; field-level feedback and correction |
+| Dropdown / lookup | Presence and default; opening and closing; configured options and labels; selection and displayed value; cardinality, replacement, clearing, search, empty results; dependent values |
+| Read-only / auto-populated | Presence, label, defined value or source, non-editability, and updates when the documented user, role, selection or request context changes |
+| Button / action | Presence, label, initial enabled state; each enablement condition and transition; permitted click and observable outcome; loading, error, success, duplicate action, irreversible-action confirmation |
+| Checkbox / radio / toggle | Presence and labels; initial state; select, deselect, mutual exclusion or cardinality; dependent state changes and validation |
+| Date / date range | Picker and manual entry; selection and display format; required and documented boundaries; invalid dates; From/To relationships; locale and timezone |
+| File upload | Instructions and picker; valid selection and visible file details; documented type, size, count, extension and content rules; upload states and errors; replacement, removal, retry. **Direct file-processing, API and database assertions stay with their own category owner.** |
+| Table / list | Defined columns, labels, order and presentation; loading, empty and error states; documented sorting, filtering, searching, pagination, selection, row actions, result consistency |
+| Dialog / drawer / multi-step | Opening, defined content and controls, focus and keyboard behaviour, close/cancel/confirm, validation feedback, state retention, navigation outcomes |
+| Displayed / calculated values | Documented labels, formatting, values, totals, and changes from supported inputs — **using the stated source or calculation rule, never an invented formula** |
+
+**Model states and dependencies.** For each dependency record the controlling element, the affected
+elements, the starting state, the trigger, the expected next state, and any reset behaviour. Cover
+the meaningful transitions: empty → selected, invalid → corrected, disabled → enabled, visible →
+hidden, selection replaced, dependent value refreshed, action result. **Do not assume a reset, a
+disabled state or a hidden state because it seems conventional** — undefined behaviour goes to the
+gap and provisional-case rules.
+
+**Smart atomicity — group by objective, never by assertion count.** Identify every required check
+first, then organise those checks into cases. Group only when they share **one coherent objective,
+compatible preconditions and data, and a practical execution flow**. A grouped case may carry
+several assertions; each must stay independently understandable and diagnosable.
+
+| Grouping | What it means |
+|---|---|
+| **Page-level** | Related static first-render checks — breadcrumb, title, headings, section order — sharing one initial state, each keeping its own explicit assertion |
+| **Element-level basic** | Presence, label, placeholder, required marker, initial state and simple interaction, where they form one basic-behaviour objective |
+| **Rule-level separation** | Distinct validation rules, material business conditions, security and permission risks, significant state transitions and action outcomes stay **separate** when their setup, outcome or failure diagnosis differs |
+| **Data-driven** | Values testing the same rule may share a Scenario Outline or an explicit data-driven case — **preserving every boundary class Edge and Step 1b owe.** Never reduce min, min−1, min+1, max, max−1, max+1 to a convenient three-value sample |
+| **Safe grouping** | Prefer a separate case when a check needs its own setup, a different role or state, an incompatible fixture, an irreversible action, a distinct risk, or would block the remaining assertions on failure |
+
+**Never merge unrelated rules, unrelated elements, or separate end-to-end outcomes to shorten the
+suite.** A grouped case must not depend on another case having run.
+
+**Priority and traceability.** A grouped case inherits the **highest** priority among the risks it
+covers, critical-path AC obligations included. **If grouping would obscure a required P1, split it.**
+Keep every `Covers` reference, and map each individual check to a case and, where useful, to its
+step. Never lower a priority or erase coverage to make the suite shorter, and never impose a maximum
+case count per element or page — a short suite with omitted checks is not an improvement.
+
+**Category ownership survives.** The register is a discovery tool, not a licence to move form
+validation into UI/UX or to duplicate Functional and Edge cases. The "do not duplicate —
+cross-reference" rule stands: one owner per risk, other case IDs in `Covers`. Direct API, persisted,
+audit, downstream and security assertions stay with their existing categories, and every applicable
+expected-result layer stays in the full-suite case — including layers you cannot reach today.
+
+**A request for UI-only cases narrows the requested output, not the standard.** It limits what is
+generated to UI-facing checks and their observable business-rule outcomes; it never authorises
+weakening whole-story coverage when the full suite was asked for.
+
+**The register must satisfy all four Step 1b sweeps** — every rule inversion, every eligible target
+of an applied technique, every gap-to-case obligation, every undocumented behaviour owing a
+provisional case. **Grouping satisfies an obligation only when that obligation has its own explicit
+assertion and a traceable case ID.** Naming it in a title, a precondition or a generic expected
+result does not count.
 
 ### 7. Basic security — threat-based
 Include a check when its precondition is present in this story:
@@ -359,6 +467,45 @@ Never do the second without the access — but never skip the first because you 
 Every expected result must be **observable and objectively verifiable**. "Works correctly" is not an
 expected result.
 
+### 3b. Gherkin rendering
+
+Apply **only** when the user chose Gherkin at Step 0.9. Otherwise use the schema above unchanged.
+
+**This is a rendering adapter.** It changes nothing about derivation, scope, priority, category
+ownership, coverage, data policy, or expected-result obligations. Keep the `TC-<STORY-ID>-<NNN>`
+identity, every metadata field, the existing category names, and the `P1 | P2 | P3` scale — **never
+swap that scale for a numeric convention**. Category frames, the coverage matrix, the derivation
+record, readiness and provisional markings, the output path and every gate stay as they are.
+
+````markdown
+TC-<STORY-ID>-<NNN>
+Title           : <action + condition + expected outcome, in one line>
+Category        : Functional-Positive | Functional-Negative | Edge | Integration | API | UI-UX | Security
+Priority        : P1 | P2 | P3
+Priority reason : <one clause — which of the four factors drove it>
+Covers          : AC-<n> | GAP-<n> | DEP-<story-id>
+Preconditions   : <state, data, role, environment>
+Test data       : <exact values, or a labelled marker — see Step 3>
+
+```gherkin
+@Priority=P2
+Scenario: UI | Verify that <specific condition produces the expected outcome>
+  Given <the required starting state, actor, and context>
+  And <any other necessary precondition>
+  When <the user performs the action>
+  Then <the specific observable result>
+  And <the additional assertion required by this case>
+```
+````
+
+- **`Given` is state, `When` is action, `Then` is outcome.** `And` continues whichever keyword precedes it. Never put an action in a `Then` or an expectation in a `When`.
+- Title UI cases `Scenario: UI | …`; other categories use their own name or a risk-oriented title. The `@Priority` tag carries the P-value; the full reason stays in the metadata.
+- **Every applicable expected-result layer becomes an explicit `Then`/`And`** with its layer clear — UI, API, Persisted, Audit/event, Downstream. **A rendering choice never discards a persisted or audit expectation**, and never licenses inventing a status code.
+- Keep the exact test data, the `[ASSUMED]` and `[MISSING-BLOCKING]` markers, the access prerequisites, and `[PROVISIONAL — depends on GAP-<n>]`. **A format choice never turns a provisional case final.**
+- Use `Scenario Outline` with `Examples` only where data-driven grouping fits. Every row states its input variation and expected outcome so a failed row stays diagnosable, and **every boundary class and rule inversion survives** — an outline is one case with several examples, not proof that one execution suffices.
+- Scenarios stay independent: none may rely on another having run. **Never generate automation code or run anything here** — that is `agentic-flow-builder` and `qa-run-tc`.
+- The schema has no Arabic description field. Do not silently add or drop fields. If the user or a project convention requires one, add it **alongside** the existing fields, never in place of one.
+
 ## Step 4 — Deliverables
 
 Write to `./qa-output/<STORY-ID>/qa-create-tc/testcases.md` (create the directory first):
@@ -393,6 +540,7 @@ Write to `./qa-output/<STORY-ID>/qa-create-tc/testcases.md` (create the director
   - **Gaps to cases** — each `[MISSING-BLOCKING]` you raised → the case that catches what it permits
   - **Undocumented behaviour** — each screen element with no stated rule → its behavioural case + the raised gap
   - **Design findings** — each Section F2 row → its case, or `Improvement — no case owed`. Include only when a design review existed.
+  - **UI pattern map** — include when category 6 applies. Columns: `Page / Element` · `Pattern or rule` · `Source / AC / GAP` · `TC ID(s)` · `Grouping or omission reason`. Reference the exact case, and the step or assertion when a case carries several checks. Mark an inapplicable pattern with its reason rather than generating noise; missing behaviour keeps the gap and provisional treatment. **The map, the coverage matrix and the four sweeps must agree** — a grouped case still accounts for every original obligation. Counts reflect the actual numbered cases; data-driven examples stay explicit and are never dropped from coverage or execution planning.
 
   A sweep row with no case beside it is an admission of a hole, not a formatting slip. Fill it or
   move it to "not covered" with its reason.
@@ -463,7 +611,9 @@ feasibility check.
 - **Applicability over volume.** A shorter suite of cases that all apply beats a long one padded with checks the endpoint does not implement. Record every omission and why.
 - **Mobile is not a category — it deepens every category.** A mobile story gets the same categories as any other, each carrying its mobile additions: lifecycle and interruption into Edge at every irreversible step, platform and presentation into UI/UX, deep-link IDOR and screenshot protection into Security. Never open a separate Mobile frame. The additions are mandatory, not a depth-dependent extra — the OS backgrounds, kills, rotates, and disconnects the app without asking the user. What is mandatory is the reasoning, not a case count: cover what this story's platform admits, add what the tables never listed, and record what you omit. Priority follows business impact, so a lifecycle case on a payment step is `P1`.
 - **Run the Step 1b sweeps and publish the record.** Applicability decides *whether* a check belongs; it never excuses failing to *look*. Every rule you state owes its violation, every technique owes all its targets, every gap you raise owes the case for what it permits, and undocumented behaviour owes a behavioural case plus the gap. Silent narrowing of scope is the failure this step exists to prevent.
-- **Never invent test data or status codes.** Unknown contract → `[MISSING-BLOCKING]` or a labelled `[ASSUMED]`, plus an API contract gap.
+- **Never invent test data or status codes.** Unknown contract → `[MISSING-BLOCKING]` or a labelled `[ASSUMED]`, plus an API contract gap. The UI pattern table in 6b is bound by this too: it prompts you to *look* for a maximum length, an option list or a calculation — never to supply one.
+- **Format is presentation, never substance.** Standard or Gherkin changes how a case is rendered and nothing else — not scope, derivation, priority, category ownership, coverage, or a single gate. Ask once at Step 0.9, honour a settled decision, and never choose silently. A Gherkin suite carries the same persisted, audit and downstream expectations a Standard one does.
+- **Group by objective, never to shorten the suite.** Checks may share a case when they share one objective, compatible preconditions and a practical flow — each keeping its own explicit, diagnosable assertion. Distinct validation rules, permission risks, state transitions and action outcomes stay separate. A grouped case takes the highest priority among the risks it covers; if grouping would obscure a required P1, split it. There is no maximum case count, and a short suite with omitted checks is not an improvement.
 - **Write cases for the whole story, not for your current tooling.** Missing database or API access is an execution prerequisite to note on the case, never a reason to leave the expectation out. Claiming a result was observed still requires real access — that rule lives in `qa-run-tc`.
 - **One frame per category.** Every category that produced cases is delivered as its own framed block with its name, case count, and priority split in the header; a category with no cases gets no frame and is recorded in "not covered" instead. Mixing categories into one undifferentiated list hides which kind of risk is thin.
 - **Respect the readiness score.** Below 70% the default is to close the gaps first, not to write a suite over unanswered questions. If the user chooses to proceed anyway — here or already in `qa-story-review` — generate the full suite, mark it `PROVISIONAL`, flag the cases resting on unresolved gaps, and list what to re-verify once they are answered.
