@@ -441,7 +441,13 @@ Expected result :
   Downstream  : <effect on a neighbouring system — omit if there is none>
 ```
 
-**Test data.** Use concrete values when the field's contract, format, and permitted values are
+**Test data.** **Check `.qa/test-data/README.md` first** — when it already records the account, card,
+seed record, reference value or invalid value a case needs, cite it by name rather than restating
+it (`Admin account — see test-data § 2`). It is the project's standing answer; a value invented
+beside it will contradict it at execution time. When a case needs something that file does not have,
+note it there as a gap rather than inventing a value.
+
+Use concrete values when the field's contract, format, and permitted values are
 known. When they are not known, **do not invent them**. Either mark the requirement
 `[MISSING-BLOCKING]` (the case cannot be written until the contract is defined) or state a clearly
 labelled `[ASSUMED]` value with the assumption recorded. Never present a guessed format as fact.

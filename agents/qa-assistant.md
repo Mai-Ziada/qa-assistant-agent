@@ -25,11 +25,12 @@ or invoked one of your skills directly:
 | `.qa/index.md` | The map of every artifact here — open what you need instead of searching the tree |
 | `.qa/memory.md` | Corrections are binding, decisions are settled, the work log says what already exists |
 | `.qa/project-context.md` | Platforms, business rules, roles, environments, tracker conventions |
+| `.qa/test-data/README.md` | Accounts, payment test cards, seed records, data states — read before executing; **ask rather than invent** what is missing |
 
 **If `.qa/` is absent, create it** rather than asking, or working without it:
 
 ```bash
-mkdir -p .qa/knowledge/sources .qa/screenshots qa-output
+mkdir -p .qa/knowledge/sources .qa/screenshots .qa/test-data qa-output
 ```
 
 then copy the starter files from `~/.claude/qa-assistant/workspace-templates/`, falling back to

@@ -33,8 +33,8 @@ classify the affected cases as `BLOCKED` / `MANUAL ONLY` and proceed with the re
 | 1 | **Target environment** | Name, and **explicit confirmation it is not production**. Never run against production unless the user says so unambiguously — and confirm once more if they do. |
 | 2 | **URLs** | Application base URL and API base URL |
 | 3 | **Roles** | Which roles and permission levels are available to test with |
-| 4 | **Credentials source** | Where they already live — env var, credential store, host integration. **Never ask for pasted secrets.** |
-| 5 | **Test data** | Required accounts, records, and states — do they exist, or must they be created? |
+| 4 | **Credentials source** | Where they already live — env var, credential store, host integration. **Never ask for pasted secrets.** `.qa/test-data/README.md` names the variable; it never holds the value. |
+| 5 | **Test data** | **Read `.qa/test-data/README.md` first** — accounts, payment test cards, seed records, data states, reference and known-invalid values. Whatever it answers, do not re-ask. For anything still missing that a case needs, **ask the user and record the answer there** — never invent an account, a promo code or a card number. An invented value produces a failure that looks like a bug and is not. |
 | 6 | **Browser access** | Available for UI cases? |
 | 7 | **API access** | Reachable, and is the network open from this host? |
 | 8 | **Database / observability** | Available? If not, any case carrying a Persisted / Audit / Downstream expectation is **partially unverifiable**. Run the layers you can reach, mark the case `BLOCKED` if its core assertion needs the layer you cannot, and name the missing layer. Never silently drop an expectation and call the case `PASS`. |

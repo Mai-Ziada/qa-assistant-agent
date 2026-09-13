@@ -5,6 +5,12 @@
 # Test evidence — heavy, constantly changing, may contain sensitive data
 .qa/screenshots/
 
+# Test accounts and data. No secret value belongs in here either — the file
+# records where a secret lives, never what it is — but a list of test accounts
+# is still worth keeping out of the repository. Delete this line if your team
+# wants it shared, after checking it holds no secret values.
+.qa/test-data/
+
 # Deliverables — remove this line if your team wants them versioned
 qa-output/
 
