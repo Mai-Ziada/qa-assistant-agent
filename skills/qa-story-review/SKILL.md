@@ -87,6 +87,25 @@ Classify each **confirmed** relationship:
 | **Conflicts / overlaps** | Duplicate or contradictory rules with this story |
 | **Same journey** | A different step in the same end-to-end user journey |
 
+**Read requirement-bearing related items now, not later.** For every related item found —
+Confirmed or Suspected — determine its work item type before deciding whether to read it in full:
+
+- **Requirement-bearing item** (another User Story, Epic, or Feature): open and read its content
+  in this same Story Review pass, not later. A `Suspected` relationship stays `Suspected` only when
+  the item is genuinely unreachable (no tracker access, permissions, deleted) — never because it
+  was merely not opened. Any rule, contradiction, or gap this produces is scored here, in Section
+  B/C/G, exactly as a directly-stated rule would be.
+- **Implementation-level item** (Task, Bug not yet relevant to this review, or similar): note its
+  existence and relationship only — do not read its full content unless the story's own text
+  specifically points to it as a rule source.
+- **Existing Test Case** (a `TestedBy` link): do not read its content here. Note the count and that
+  it exists (for `qa-create-tc` to extend rather than duplicate) and leave the actual reading to
+  `qa-create-tc`, whose job that is.
+
+Before opening anything in full, a lightweight batch fetch of just Title + Work Item Type across
+all related IDs is enough to route each one correctly without the cost of reading everything in
+full.
+
 Produce:
 
 - **Relationship output.** Use a Mermaid flowchart **only when it materially helps** — three or more related stories, or a non-obvious chain. For one or two neighbours, a table is clearer. **Never invent a neighbouring story to populate a diagram** — every node must trace to something you actually read.
@@ -234,6 +253,14 @@ already recorded, never a feel:
 | Unanswered Section D question marked as blocking | −5 |
 | Confirmed dependency whose contract or behaviour is undefined | −5 |
 | Design material referenced by the story but unreachable | −5 |
+
+**Why the dependency deduction cannot wait for `qa-create-tc`.** The −5 for "Confirmed dependency
+whose contract or behaviour is undefined" is exactly why Step 2 requires reading every
+requirement-bearing related item in this same pass. A related item left `Suspected` because it was
+never opened is not a defined dependency — it is an unread one, and its rules, contradictions, or
+gaps cannot be scored here if they were never surfaced. By the time `qa-create-tc` opens it, Gate 1
+has already passed and the score is locked in; a contradiction found then arrives too late to
+change a verdict it should have informed.
 
 Floor the result at 0 and **show the arithmetic** as a short table — starting value, each deduction
 line with its count, and the total. A score whose working is hidden cannot be argued with, and this
