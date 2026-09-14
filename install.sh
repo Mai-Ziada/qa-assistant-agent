@@ -121,7 +121,7 @@ install_host() {
   # Workspace templates, once, at agent level. A skill running in a project with
   # no .qa/ scaffolds one from here, so it never depends on the cloned repo.
   mkdir -p "$root/qa-assistant/workspace-templates"
-  cp "$TPL"/index.md "$TPL"/project-context.md "$TPL"/memory.md      "$TPL"/knowledge-README.md "$TPL"/screenshots-README.md "$TPL"/qa-output-README.md      "$TPL"/gitignore-block "$TPL"/test-data-README.md "$TPL"/mcp.json "$TPL"/mcp.json.example      "$root/qa-assistant/workspace-templates/"
+  cp "$TPL"/index.md "$TPL"/project-context.md "$TPL"/memory.md      "$TPL"/knowledge-README.md "$TPL"/screenshots-README.md "$TPL"/qa-output-README.md      "$TPL"/gitignore-block "$TPL"/test-data-README.md "$TPL"/mcp.json      "$root/qa-assistant/workspace-templates/"
   say "installed  workspace templates"
 
   # Shared references every skill reads. Not skills: no SKILL.md, so they are
@@ -156,7 +156,6 @@ if [ "$SKILLS_ONLY" -eq 0 ]; then
   place "$TPL/screenshots-README.md" ".qa/screenshots/README.md" ".qa/screenshots/README.md"
   place "$TPL/qa-output-README.md" "qa-output/README.md"   "qa-output/README.md"
   place "$TPL/test-data-README.md" ".qa/test-data/README.md" ".qa/test-data/README.md"
-  place "$TPL/mcp.json.example"   ".mcp.json.example"      ".mcp.json.example"
   place "$TPL/mcp.json"           ".mcp.json"              ".mcp.json"
 
   # .gitignore — append our block only if it is not already there

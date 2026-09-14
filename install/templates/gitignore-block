@@ -1,5 +1,5 @@
 # --- QA Assistant ---
-# Real MCP credentials. The committed template is .mcp.json.example
+# Real MCP credentials.
 .mcp.json
 
 # Test evidence — heavy, constantly changing, may contain sensitive data

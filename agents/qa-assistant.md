@@ -94,14 +94,11 @@ mkdir -p .qa/knowledge/sources .qa/screenshots .qa/test-data qa-output
 then copy the starter files from `~/.claude/qa-assistant/workspace-templates/`, falling back to
 `install/templates/` in the repo.
 
-**Both MCP files land, not just the example.** `mcp.json` → `.mcp.json` is the working file the
-project actually loads; `mcp.json.example` → `.mcp.json.example` is the committed copy. Shipping
-only the example is a bug: it leaves the project with no MCP config at all. Copy both, then confirm
-both exist before moving on.
+**`mcp.json` → `.mcp.json` is the working file** the project actually loads. Copy it, then confirm
+it exists before moving on.
 
 ```bash
-cp ~/.claude/qa-assistant/workspace-templates/mcp.json         .mcp.json
-cp ~/.claude/qa-assistant/workspace-templates/mcp.json.example .mcp.json.example
+cp ~/.claude/qa-assistant/workspace-templates/mcp.json .mcp.json
 ```
 
 Also append the `gitignore-block` to `.gitignore`, creating that file if the project has none, so

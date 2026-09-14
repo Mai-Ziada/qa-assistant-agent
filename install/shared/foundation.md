@@ -221,7 +221,7 @@ long-term state: what is true about this product, and what has already happened.
   screenshots/          test evidence, foldered by story / test case / bug id
   test-data/            accounts, cards, seed records, reference values — no secret values
 qa-output/              deliverables, per story, per skill
-.mcp.json               MCP credentials (git-ignored; template is .mcp.json.example)
+.mcp.json               MCP credentials (git-ignored)
 ```
 
 ### Read these before you start — every run, every skill
@@ -275,15 +275,12 @@ user's next commit:
   `project-context.md`, `memory.md`, `index.md`, and `knowledge/` tracked. The block is in
   `gitignore-block` beside the templates. **Append, never rewrite** — every other rule in that file
   stays exactly as it is, and the block goes in once.
-- **`.mcp.json`** — copy it from `mcp.json`, its own template, never from `mcp.json.example`
-  (that one is the committed copy and describes itself as such). The template is server definitions, not
+- **`.mcp.json`** — copy it from `mcp.json`, its own template. The template is server definitions, not
   secrets: commands, package names and flags, with **every credential field left as an empty
   string**. Creating it saves the user assembling that by hand, and an empty field is obvious to
   fill. **Never write a credential value into it** — not one the user pasted, not one from the
   environment, not one you found in another project. Leave it empty and say which fields need
   filling.
-- **`.mcp.json.example`** — copy it as well, as the committed reference. `.mcp.json` is git-ignored,
-  so the example is what tells a teammate which servers this project expects.
 
 Say in one line what you created — and name any credential field left empty — then continue with
 the run. **Never overwrite an existing file**: a workspace that is partly there gets only its

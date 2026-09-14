@@ -28,8 +28,7 @@ Usage: ./uninstall.sh [options] [project-dir]
 With no project-dir, the current directory is used.
 
 By default your work is KEPT: .qa/ and qa-output/ stay exactly where they are.
-Only the agent, the skills, and the generated .mcp.json.example plus the
-.gitignore block are removed.
+Only the agent, the skills, and the .gitignore block are removed.
 USAGE
 }
 
@@ -67,7 +66,6 @@ head_ "This will remove:"
   say "~/.claude/skills/{$(echo $SKILLS | tr ' ' ',')}"
 }
 [ "$SKILLS_ONLY" -eq 0 ] && {
-  say "$PROJECT/.mcp.json.example"
   say "the QA Assistant block in $PROJECT/.gitignore"
   if [ "$PURGE_WORK" -eq 1 ]; then
     printf '\n'
@@ -137,8 +135,6 @@ fi
 if [ "$SKILLS_ONLY" -eq 0 ]; then
   head_ "Removing from $PROJECT"
   cd "$PROJECT"
-
-  drop ".mcp.json.example" ".mcp.json.example"
 
   # Strip our .gitignore block, leaving every other rule intact.
   if [ -f .gitignore ] && grep -qF "# --- QA Assistant ---" .gitignore; then

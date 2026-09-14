@@ -211,7 +211,6 @@ agent updates.
 | `screenshots-README.md` | `.qa/screenshots/README.md` | Foldering by story / case / bug, redaction rules |
 | `qa-output-README.md` | `qa-output/README.md` | The per-story, per-skill layout |
 | `mcp.json` | `.mcp.json` | MCP servers — Atlassian, GitHub, Playwright. **The working file**, git-ignored, credential fields empty |
-| `mcp.json.example` | `.mcp.json.example` | The committed copy, no secrets |
 | `gitignore-block` | appended to `.gitignore` | Ignores `.mcp.json`, `.qa/screenshots/`, `qa-output/` |
 
 ---

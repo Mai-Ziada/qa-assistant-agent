@@ -242,7 +242,6 @@ your-project/
     test-data/            accounts, cards, seed records — the agent asks before inventing one
   qa-output/              deliverables, per story, per skill
   .mcp.json               your MCP credentials (git-ignored)
-  .mcp.json.example       the template, safe to commit
   .gitignore              QA Assistant block appended
 ```
 
@@ -323,10 +322,10 @@ cd /path/to/your/project
 bash ~/qa-assistant-agent/uninstall.sh
 ```
 
-**Your work is kept by default.** It removes the agent and its skills from every host, deletes
-`.mcp.json.example`, and strips the QA Assistant block from `.gitignore` — leaving every other rule
-in that file untouched. `.qa/` and `qa-output/` stay exactly where they are, so reinstalling later
-picks up where you left off. `.mcp.json` is never touched.
+**Your work is kept by default.** It removes the agent and its skills from every host, and strips
+the QA Assistant block from `.gitignore` — leaving every other rule in that file untouched. `.qa/`
+and `qa-output/` stay exactly where they are, so reinstalling later picks up where you left off.
+`.mcp.json` is never touched.
 
 It prints what it will remove and what it will keep, then asks before doing anything.
 
@@ -433,7 +432,6 @@ uninstall.sh                      uninstaller — keeps your work unless --purge
 install/shared/                   shared references — not skills, never slash commands
   updating-the-workspace.md       the only writer to .qa/ — what every stage records
 install/templates/                workspace templates the installer copies
-                                  (mcp.json is the working file, mcp.json.example the committed copy)
 INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent

@@ -1,5 +1,5 @@
 {
-  "_comment": "MCP servers for this project. THIS is the working file your tools load. Secret values are left empty — fill them in, or point them at an environment variable. This file is git-ignored; .mcp.json.example beside it is the committed copy with no secrets. Delete any server you do not use.",
+  "_comment": "MCP servers for this project. THIS is the working file your tools load. Secret values are left empty — fill them in, or point them at an environment variable. This file is git-ignored. Delete any server you do not use.",
   "mcpServers": {
     "atlassian": {
       "command": "npx",
