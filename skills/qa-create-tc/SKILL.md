@@ -44,7 +44,7 @@ the approval gates, and the host-adaptation mechanics this skill depends on.
    | Option | Description |
    |---|---|
    | **Standard Test Cases** | Title, Preconditions, Test data, numbered Steps, Expected result — the Step 3 schema unchanged |
-   | **Gherkin Test Cases** | Given / When / Then, with every existing metadata, coverage, priority and expected-result obligation preserved — see Add-on C |
+   | **Gherkin Test Cases** | Given / When / Then, with every existing metadata, coverage, priority and expected-result obligation preserved — chained multi-variant scenarios, not `Scenario Outline`/`Examples`, whenever Azure DevOps is the publish target — see Add-on C |
 
    Without `AskUserQuestion`, ask in plain text with the same two choices and **wait**. Never choose
    silently.
@@ -541,7 +541,17 @@ Arabic description : <the Title above, translated into Arabic — nothing else>
 - Title UI cases `Scenario: UI | …`; other categories use their own name or a risk-oriented title. The `@Priority` tag carries the P-value; the full reason stays in the metadata.
 - **Every applicable expected-result layer becomes an explicit `Then`/`And`** with its layer clear — UI, API, Persisted, Audit/event, Downstream. **A rendering choice never discards a persisted or audit expectation**, and never licenses inventing a status code.
 - Keep the exact test data, the `[ASSUMED]` and `[MISSING-BLOCKING]` markers, the access prerequisites, and `[PROVISIONAL — depends on GAP-<n>]`. **A format choice never turns a provisional case final.**
-- Use `Scenario Outline` with `Examples` only where data-driven grouping fits. Every row states its input variation and expected outcome so a failed row stays diagnosable, and **every boundary class and rule inversion survives** — an outline is one case with several examples, not proof that one execution suffices.
+- **Never use `Scenario Outline` / `Examples` when Azure DevOps is the target tracker** — its Test
+  Case work items do not parse Gherkin's data-table syntax, and its own data-driven mechanism is a
+  different, incompatible format (`@parameter` steps + a separate Parameter Values grid). Write
+  every multi-value or boundary check as a single `Scenario` with each variant chained as
+  sequential `When`/`Then`/`And` blocks instead: `Given` the first case, `When`/`Then` its result,
+  then `When <condition> instead...>` / `And` / `Then` for each remaining variant, in the same
+  scenario body. This preserves every boundary class and rule inversion Edge and Step 1b owe —
+  nothing is dropped, only the container changes — and produces a scenario that pastes directly
+  into an Azure DevOps Test Case's Steps field without any conversion step at Gate 3. Reserve real
+  `Scenario Outline`/`Examples` only for a project explicitly confirmed to publish into a
+  Cucumber/Gherkin-native runner, never Azure DevOps.
 - Scenarios stay independent: none may rely on another having run. **Never generate automation code or run anything here** — that is `agentic-flow-builder` and `qa-run-tc`.
 - **A Gherkin case is English only, always — every field, not just the scenario.** `Title`,
   `Priority reason`, `Preconditions`, `Test data`, and every `Given`/`When`/`Then`/`And` line —
