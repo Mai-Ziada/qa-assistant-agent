@@ -493,7 +493,7 @@ record, readiness and provisional markings, the output path and every gate stay 
 
 ````markdown
 TC-<STORY-ID>-<NNN>
-Title           : <action + condition + expected outcome, in one line>
+Title           : <one plain sentence — action + condition + expected outcome, ~8–16 words>
 Category        : Functional-Positive | Functional-Negative | Edge | Integration | API | UI-UX | Security
 Priority        : P1 | P2 | P3
 Priority reason : <one clause — which of the four factors drove it>
@@ -503,7 +503,7 @@ Test data       : <exact values, or a labelled marker — see Step 3>
 
 ```gherkin
 @Priority=P2
-Scenario: UI | Verify that <specific condition produces the expected outcome>
+Scenario: UI | <one plain sentence — action + condition + expected outcome, ~8–16 words>
   Given <the required starting state, actor, and context>
   And <any other necessary precondition>
   When <the user performs the action>
@@ -515,6 +515,13 @@ Arabic description : <the Title above, translated into Arabic — nothing else>
 ````
 
 - **`Given` is state, `When` is action, `Then` is outcome.** `And` continues whichever keyword precedes it. Never put an action in a `Then` or an expectation in a `When`.
+- **The text after `Scenario: UI |` (or after the category name) describes the scenario, not a
+  label — same standard as `Title`.** State the action, the condition it happens under, and the
+  expected outcome in one plain sentence, roughly 8–16 words: long enough that the reader knows
+  what was tested without opening the steps, short enough to stay one line.
+  - Too short, not a scenario: `Scenario: UI | Invalid password`
+  - Too long, restates the steps: `Scenario: UI | Verify that when the user enters a valid email and then enters an incorrect password and then clicks the login button, an error message appears and the user stays on the login page`
+  - Right: `Scenario: UI | Login with an incorrect password shows an inline error and keeps the user on the login page`
 - Title UI cases `Scenario: UI | …`; other categories use their own name or a risk-oriented title. The `@Priority` tag carries the P-value; the full reason stays in the metadata.
 - **Every applicable expected-result layer becomes an explicit `Then`/`And`** with its layer clear — UI, API, Persisted, Audit/event, Downstream. **A rendering choice never discards a persisted or audit expectation**, and never licenses inventing a status code.
 - Keep the exact test data, the `[ASSUMED]` and `[MISSING-BLOCKING]` markers, the access prerequisites, and `[PROVISIONAL — depends on GAP-<n>]`. **A format choice never turns a provisional case final.**
