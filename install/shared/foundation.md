@@ -138,13 +138,13 @@ State it in **one line** — `Mode: full (files + shell + web)` or
 **Claude Code / Desktop / agents.** Native `Read`, `Write`, `Edit`, `Glob`, `Grep`, `Bash`,
 `WebFetch`, `WebSearch`. Prefer `Glob`/`Grep` over shelling out. Tracker access usually via MCP
 (Atlassian, GitHub, Linear) — check for a connected server before falling back to a CLI. Create the
-output directory (`./qa-output/<STORY-ID>/<skill-name>/`) before writing.
+output directory (`./qa-output/<STORY-FOLDER>/<skill-name>/`) before writing.
 
 **OpenAI Codex / Codex CLI.** Shell-first, sandboxed. Read with `cat` / `sed -n`, write with
 heredocs (`cat > file <<'EOF'`), search with `grep -rn` and `find`, call APIs with `curl`.
-`mkdir -p qa-output/<STORY-ID>/<skill-name>` first. **Network may be disabled by default** — if a call fails with a
+`mkdir -p "qa-output/<STORY-FOLDER>/<skill-name>"` first. **Network may be disabled by default** — if a call fails with a
 network error, say so once and continue with local sources rather than retrying. Verify writes
-landed (`ls -la qa-output/<STORY-ID>/<skill-name>/`) before reporting a deliverable as created.
+landed (`ls -la "qa-output/<STORY-FOLDER>/<skill-name>/"`) before reporting a deliverable as created.
 
 **IDE agents — Cursor, Windsurf, Cline, Continue, Copilot-style.** Use built-in file and
 codebase-search tools. Repository search is usually strong; tracker access usually absent — expect
@@ -169,41 +169,57 @@ only transport.
 
 ## 8. Portable output contract
 
-Every artifact lives under **`./qa-output/<STORY-ID>/<skill-name>/`** — the story is the root, and
-each skill owns a folder inside it. One story's whole trail sits together, each stage stays
+Every artifact lives under **`./qa-output/<STORY-FOLDER>/<skill-name>/`** — the story is the root,
+and each skill owns a folder inside it. One story's whole trail sits together, each stage stays
 separable, and a story can be archived or deleted as a single directory.
+
+**`<STORY-FOLDER>` is `<STORY-ID>-<STORY-SLUG>`**, not the bare id — a folder named just `US1` or
+`PROJ-142` forces anyone browsing `qa-output/` to look the id up before they know what it is.
+`<STORY-SLUG>` is the story title in kebab-case (lowercase, spaces and punctuation turned to
+hyphens, collapsed to single hyphens, no leading/trailing hyphen), trimmed to roughly the first 40
+characters at a word boundary. Example: `PROJ-142` titled "Allow guest checkout with saved card"
+becomes `PROJ-142-allow-guest-checkout-with-saved-card`.
+
+- Title not known yet: use `<STORY-ID>` alone until one is.
+- No id, title only: use `<STORY-SLUG>` alone, as before.
+- **Before creating the folder, check for one that already starts with `<STORY-ID>`**
+  (`qa-output/<STORY-ID>*/`) — reuse it as-is rather than creating a second folder for the same
+  story because the slug drifted (a retitled story, a slightly different truncation). Never rename
+  an existing story folder to match a newly derived slug.
 
 | Deliverable | Path when files are available | Fallback |
 |---|---|---|
-| Analysis | `./qa-output/<STORY-ID>/qa-story-review/analysis.md` | Inline Markdown, same sections |
-| Test cases | `./qa-output/<STORY-ID>/qa-create-tc/testcases.md` | Inline Markdown, same format |
-| CSV export | `./qa-output/<STORY-ID>/qa-create-tc/testcases.csv` | Inline CSV block |
-| Run report | `./qa-output/<STORY-ID>/qa-run-tc/run-<YYYY-MM-DD>.md` | Inline Markdown table |
-| API run report | `./qa-output/<STORY-ID>/api-testing/api-<mode>-<feature>-<env>-<timestamp>.md` | Inline Markdown, same sections |
+| Analysis | `./qa-output/<STORY-FOLDER>/qa-story-review/analysis.md` | Inline Markdown, same sections |
+| Test cases | `./qa-output/<STORY-FOLDER>/qa-create-tc/testcases.md` | Inline Markdown, same format |
+| CSV export | `./qa-output/<STORY-FOLDER>/qa-create-tc/testcases.csv` | Inline CSV block |
+| Run report | `./qa-output/<STORY-FOLDER>/qa-run-tc/run-<YYYY-MM-DD>.md` | Inline Markdown table |
+| API run report | `./qa-output/<STORY-FOLDER>/api-testing/api-<mode>-<feature>-<env>-<timestamp>.md` | Inline Markdown, same sections |
 | Retest report | `./qa-output/<BUG-ID>/Smart_ReTest/retest-<YYYY-MM-DD>.md` | Inline Markdown, same sections |
 
 Any further artifact a skill produces — a spreadsheet, an HTML report, evidence — goes in that same
-skill folder, named for what it is (`testcases.xlsx`, `evidence/`). The story id is already the
-parent directory, so **do not repeat it in filenames**: `testcases.md`, not
+skill folder, named for what it is (`testcases.xlsx`, `evidence/`). The story folder is already the
+parent directory, so **do not repeat the id or slug in filenames**: `testcases.md`, not
 `<STORY-ID>-testcases.md`.
 
-`<STORY-ID>` must be filesystem-safe: keep letters, digits, hyphens and underscores, replace
-anything else with a hyphen. With no id, use a short slug from the story title.
+`<STORY-ID>` and `<STORY-SLUG>` must be filesystem-safe: keep letters, digits, hyphens and
+underscores, replace anything else with a hyphen.
 
-Create the directory before writing (`mkdir -p qa-output/<STORY-ID>/<skill-name>`) and verify the
-write landed before reporting a deliverable as created.
+Create the directory before writing (`mkdir -p "qa-output/<STORY-FOLDER>/<skill-name>"`) and verify
+the write landed before reporting a deliverable as created.
 
 ### Finding a previous stage's artifact
 
 Artifacts must fit together across hosts and across skills. When a skill looks for an earlier
 stage's output, search in this order and **stop at the first hit**:
 
-1. `./qa-output/<STORY-ID>/<producing-skill>/` — the current layout
+1. `./qa-output/<STORY-ID>*/<producing-skill>/` — the current layout; match by id prefix since the
+   slug is derived and may not be spelled identically run to run
 2. `./ba-analysis/<STORY-ID>-*.md` — the pre-existing flat layout
 
 Older work therefore keeps chaining without being moved. If you continue from a legacy path, say so
 in one line and write your own output to the new layout — never migrate or delete the user's
-existing files unless they ask.
+existing files unless they ask. If step 1 finds a bare `<STORY-ID>/` folder from before this
+convention, treat it the same way: reuse it, do not rename it.
 
 **Read an artifact you find and continue from it** rather than starting over.
 

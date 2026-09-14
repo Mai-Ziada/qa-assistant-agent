@@ -21,7 +21,7 @@ the approval gates, and the host-adaptation mechanics this skill depends on.
 1. **Load the project workspace** — read `.qa/index.md` first (the map of every artifact: open what you need, do not sweep the tree), then `.qa/memory.md` (corrections, decisions, work log) and `.qa/project-context.md` (platforms, rules, roles, environments), and search `.qa/knowledge/` for material already supplied. Never repeat a recorded mistake, re-ask a settled decision, or ask for something the workspace already answers. If `.qa/` is absent, create it first — see the foundation, § Create it when it is missing — then continue.
 2. **Read the foundation** — `~/.claude/qa-assistant/foundation.md`.
 3. **Check capabilities** and state the mode in one line.
-4. **Find the approved analysis.** Look for `./qa-output/<STORY-ID>/qa-story-review/analysis.md`, then the legacy `./ba-analysis/<STORY-ID>-analysis.md` — if one exists, read it and use its gaps, dependencies, and acceptance criteria. Continue from it rather than re-deriving. **If it carries a Section F2 design review, that section feeds category 6** — see Step 1, category 6.
+4. **Find the approved analysis.** Look for `./qa-output/<STORY-FOLDER>/qa-story-review/analysis.md` (match the story folder by its id prefix — the slug may not be spelled identically), then the legacy `./ba-analysis/<STORY-ID>-analysis.md` — if one exists, read it and use its gaps, dependencies, and acceptance criteria. Continue from it rather than re-deriving. **If it carries a Section F2 design review, that section feeds category 6** — see Step 1, category 6.
 5. **Read the readiness score.** The analysis carries a Section G score and verdict.
 
    - **70% or above** — proceed normally.
@@ -514,7 +514,7 @@ Scenario: UI | Verify that <specific condition produces the expected outcome>
 
 ## Step 4 — Deliverables
 
-Write to `./qa-output/<STORY-ID>/qa-create-tc/testcases.md` (create the directory first):
+Write to `./qa-output/<STORY-FOLDER>/qa-create-tc/testcases.md` (create the directory first):
 
 - **Header line** — the story's readiness score and verdict from the analysis, and where the score was below 70%, the word `PROVISIONAL` with the unresolved blockers named. Where no analysis existed, say that instead.
 
@@ -591,7 +591,7 @@ Never merge this question into the gate above, and never treat silence as consen
 **If Push to the tracking tool** — confirm the exact destination (project, issue type, parent story, test-management tool
 if any) **before writing anything**. Push, then report exactly what was created with IDs and links.
 If the integration is unavailable, say so and offer a CSV export at
-`./qa-output/<STORY-ID>/qa-create-tc/testcases.csv` for manual import.
+`./qa-output/<STORY-FOLDER>/qa-create-tc/testcases.csv` for manual import.
 
 **If Keep local only** — stop. The files on disk are the deliverable.
 

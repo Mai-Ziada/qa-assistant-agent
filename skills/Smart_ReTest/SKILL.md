@@ -364,6 +364,6 @@ After all stages finish (Mode A: after the retest; Mode B: after Stage 4 and the
 Behavior:
 - Only generate the report **after** the user confirms and picks a format. If they decline, end without writing a file.
 - The report should compile what was actually done this run: bug ID/title · mode used (Quick / Deep) · final status · per-stage results (Mode B) · issues found (with severity + P-mapping) · evidence paths/screenshots · chain coverage (Mode B) · **time taken** · recommendation.
-- Save the report under `qa-output/<BUG-ID>/Smart_ReTest/` — or `qa-output/<STORY-ID>/Smart_ReTest/` when the retest belongs to a story — and **tell the user the file path**. Screenshots go in `.qa/screenshots/<BUG-ID>/`. For HTML, make it self-contained (inline styling; embed or link the evidence).
+- Save the report under `qa-output/<BUG-ID>/Smart_ReTest/` — or `qa-output/<STORY-FOLDER>/Smart_ReTest/` when the retest belongs to a story — and **tell the user the file path**. Screenshots go in `.qa/screenshots/<BUG-ID>/`. For HTML, make it self-contained (inline styling; embed or link the evidence).
 - If the user picks "Other", honor the requested format when feasible; if it isn't feasible in the current environment, say so and offer the closest available format.
 - This offer is in addition to (not a replacement for) the short status-only ticket comment from the Retest Status & Status-Update Rule.

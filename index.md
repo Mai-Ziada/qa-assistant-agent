@@ -55,7 +55,7 @@ Analyse a story before anything is built.
 **Step 4** the report, including a design-versus-story review and a scored readiness verdict ·
 **Step 5** approval gate 1 · **Step 6** chain to test cases.
 Under 70% readiness holds test-case generation until the gaps are closed.
-Writes `qa-output/<STORY-ID>/qa-story-review/analysis.md`.
+Writes `qa-output/<STORY-FOLDER>/qa-story-review/analysis.md`.
 
 ### `skills/qa-create-tc/SKILL.md` — stage 2
 Generate test cases from a story or an approved analysis.
@@ -65,21 +65,21 @@ security, with mobile lifecycle folded in for mobile stories ·
 targets, every raised gap owes the case that catches it ·
 **Step 2** priority by business impact · **Step 3** case format · **Step 4** deliverables ·
 **Steps 5–6** two separate gates — approving cases is not approval to publish.
-Writes `qa-output/<STORY-ID>/qa-create-tc/testcases.md`.
+Writes `qa-output/<STORY-FOLDER>/qa-create-tc/testcases.md`.
 
 ### `skills/qa-run-tc/SKILL.md` — stage 3
 Execute cases against a real environment.
 **Step 1** a ten-point feasibility check that runs before any case ·
 **Step 3** execution · **Step 4** the report · **Step 5** optional bug filing behind a confirmation.
 Never infers a pass; unobserved is never `PASS`.
-Writes `qa-output/<STORY-ID>/qa-run-tc/run-<date>.md`, evidence in `.qa/screenshots/`.
+Writes `qa-output/<STORY-FOLDER>/qa-run-tc/run-<date>.md`, evidence in `.qa/screenshots/`.
 
 ### `skills/api-testing/SKILL.md` — specialist
 Three modes: `API_SWEEP` endpoint bug-hunting · `API_JOURNEY` ordered business flows ·
 `API_CONTRACT` live behaviour versus documented spec.
 **Phase 1** intake · **URL Source Protocol** · **Shared Execution Rules** · a section per mode ·
 **Tracker Filing Rules**. Continues from a story's API cases when they exist.
-Writes `qa-output/<STORY-ID>/api-testing/`.
+Writes `qa-output/<STORY-FOLDER>/api-testing/`.
 
 ### `skills/Smart_ReTest/SKILL.md` — specialist
 Retest a bug after a fix. **Quick Retest** — verify, update status, comment.

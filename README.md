@@ -74,17 +74,17 @@ qa-run-tc        ──▶  feasibility check ▸ execute ▸ report
 | **2. Create TC** | `qa-create-tc` | Coverage matrix and test cases — functional, edge, integration, API, threat-based security |
 | **3. Run TC** | `qa-run-tc` | Executed results with redacted evidence, faithful statuses, optional bug filing |
 
-Artifacts land in `./qa-output/<STORY-ID>/<skill-name>/` and carry across stages, sessions, and
+Artifacts land in `./qa-output/<STORY-FOLDER>/<skill-name>/` and carry across stages, sessions, and
 hosts — stop after the analysis today, pick up test cases tomorrow. One story's whole trail sits in
-one folder:
+one folder, named `<story-id>-<story-title-slug>` so it reads at a glance instead of by lookup:
 
 ```
 qa-output/
-  US1/
+  US1-allow-guest-checkout-with-saved-card/
     qa-story-review/   analysis.md
     qa-create-tc/      testcases.md  testcases.csv
     qa-run-tc/         run-2026-08-27.md
-  US2/
+  US2-resend-verification-email/
     ...
 ```
 
@@ -460,6 +460,6 @@ reads. One copy each, installed beside the workspace templates. `foundation.md` 
 duplicated into all six skills, which meant six files to keep byte-identical for one edit.
 
 **Every skill here is self-contained.** The nine working skills read and write the same `.qa/` workspace, follow
-the same foundation, and write to `qa-output/<STORY-ID>/<skill-name>/`. None requires a skill
+the same foundation, and write to `qa-output/<STORY-FOLDER>/<skill-name>/`. None requires a skill
 outside this repository — the specialists included, so `api-testing` continues from a story's API
 cases when they exist and files bugs through its own tracker rules.

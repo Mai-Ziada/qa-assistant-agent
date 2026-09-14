@@ -22,7 +22,7 @@ specific domain or tech stack, and it depends on no skill outside this workflow.
 **Position in the workflow.** `qa-create-tc` writes API cases from what a story states;
 this skill goes deeper — hunting endpoint-level defects, validating ordered business flows, and
 checking live behaviour against a documented contract. It runs standalone, or continues from a
-story: when `qa-output/<STORY-ID>/qa-create-tc/testcases.md` exists, its API-category cases are the
+story: when `qa-output/<STORY-FOLDER>/qa-create-tc/testcases.md` exists, its API-category cases are the
 starting point rather than a fresh derivation.
 
 This skill tests APIs directly without relying on the UI and supports three modes:
@@ -60,8 +60,8 @@ Before asking the user anything — and before planning any run — load:
 - `.qa/memory.md` — Its Corrections section is binding: never repeat a mistake recorded there. Its Decisions section is settled: never re-ask a question already answered there. Its Work log tells you whether this API has been tested before, and its Recurring defects raise likelihood for the endpoints named there.
 - `.qa/project-context.md` — environments and their base URLs, roles and permissions, integrations, business rules, and where credentials live. Never re-derive what this file already states.
 - API documentation in `.qa/knowledge/` — OpenAPI/Swagger files, Postman collections, GraphQL schemas, HAR captures, and any API notes from earlier runs. Search `.qa/knowledge/sources/` for the originals as supplied.
-- Existing test cases in `qa-output/<STORY-ID>/qa-create-tc/testcases.md` — when this API work follows a story, its API-category cases are your starting point rather than a fresh derivation.
-- Previous API runs in `qa-output/<STORY-ID>/api-testing/` and in `.qa/memory.md` § Work log — filter by feature area and environment matching the current request.
+- Existing test cases in `qa-output/<STORY-FOLDER>/qa-create-tc/testcases.md` — when this API work follows a story, its API-category cases are your starting point rather than a fresh derivation.
+- Previous API runs in `qa-output/<STORY-FOLDER>/api-testing/` and in `.qa/memory.md` § Work log — filter by feature area and environment matching the current request.
 - Existing test data files
 
 If `.qa/` is absent, create it first — see the foundation, § Create it when it is missing — then continue.
@@ -1064,12 +1064,12 @@ this skill files correctly on its own and never depends on one being present.
 
 After every meaningful API testing run, save the run output to:
 
-`qa-output/<STORY-ID>/api-testing/api-{mode}-{feature}-{environment}-{YYYYMMDD-HHmm}.md`
+`qa-output/<STORY-FOLDER>/api-testing/api-{mode}-{feature}-{environment}-{YYYYMMDD-HHmm}.md`
 
-Example: `qa-output/KAN-42/api-testing/api-sweep-auth-staging-20260619-1430.md`
+Example: `qa-output/KAN-42-allow-guest-checkout/api-testing/api-sweep-auth-staging-20260619-1430.md`
 
-When the run is not tied to a story, use the feature area as the folder in place of the story id —
-`qa-output/auth-api/api-testing/…`. Create the directory before writing and verify the write landed.
+When the run is not tied to a story, use the feature area as the folder in place of the story
+folder — `qa-output/auth-api/api-testing/…`. Create the directory before writing and verify the write landed.
 
 Each run file must carry the QA Assistant's required metadata contract:
 
