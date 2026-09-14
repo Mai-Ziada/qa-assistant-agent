@@ -502,6 +502,8 @@ Scenario: UI | Verify that <specific condition produces the expected outcome>
   Then <the specific observable result>
   And <the additional assertion required by this case>
 ```
+
+Arabic description : <the Title above, translated into Arabic — nothing else>
 ````
 
 - **`Given` is state, `When` is action, `Then` is outcome.** `And` continues whichever keyword precedes it. Never put an action in a `Then` or an expectation in a `When`.
@@ -510,7 +512,22 @@ Scenario: UI | Verify that <specific condition produces the expected outcome>
 - Keep the exact test data, the `[ASSUMED]` and `[MISSING-BLOCKING]` markers, the access prerequisites, and `[PROVISIONAL — depends on GAP-<n>]`. **A format choice never turns a provisional case final.**
 - Use `Scenario Outline` with `Examples` only where data-driven grouping fits. Every row states its input variation and expected outcome so a failed row stays diagnosable, and **every boundary class and rule inversion survives** — an outline is one case with several examples, not proof that one execution suffices.
 - Scenarios stay independent: none may rely on another having run. **Never generate automation code or run anything here** — that is `agentic-flow-builder` and `qa-run-tc`.
-- The schema has no Arabic description field. Do not silently add or drop fields. If the user or a project convention requires one, add it **alongside** the existing fields, never in place of one.
+- **A Gherkin case is English only, always — every field, not just the scenario.** `Title`,
+  `Priority reason`, `Preconditions`, `Test data`, and every `Given`/`When`/`Then`/`And` line —
+  including any quoted UI label or error/validation message inside a step — are in English,
+  regardless of what language the story, the analysis, or the rest of the deliverable is in. This
+  overrides the foundation's "match the user's language" rule (§10) for this rendering only.
+  Translate rather than carry a word over verbatim — a story's Arabic error message becomes its
+  English equivalent (or a literal translation if no product copy exists yet), never a mix of
+  scripts in one field. The reason is the same one that keeps `Given/When/Then` English in the
+  base schema: the case is meant to paste straight into a ticket or automation step a developer
+  reads.
+- **`Arabic description` is the one exception — a single line, added after the scenario, on every
+  case.** It holds only the `Title` translated into Arabic: no steps, no restated outcome, no extra
+  commentary. It is present regardless of the deliverable's language — it exists so a case is
+  scannable in Arabic without reopening the English-only rule above for anything else. Do not add a
+  second Arabic field elsewhere in the case; if the user or a project convention needs more than
+  this, ask rather than inventing a second place for it.
 
 ## Step 4 — Deliverables
 
@@ -523,14 +540,17 @@ Write to `./qa-output/<STORY-FOLDER>/qa-create-tc/testcases.md` (create the dire
   case gets its own self-contained block — never one continuous run of cases:
 
   ```
-  ══════════════════════════════════════════════════════════
-   <N>. <CATEGORY NAME>          <count> cases · P1:<n> P2:<n> P3:<n>
-  ══════════════════════════════════════════════════════════
+  ── <N>. <CATEGORY NAME> · <count> cases · P1:<n> P2:<n> P3:<n> ──
 
   <the cases in this category>
 
-  ── end of <CATEGORY NAME> ─────────────────────────────────
+  ── end: <CATEGORY NAME> ──
   ```
+
+  **The header and the end marker are each one line, always** — no matter how long the category
+  name or the counts run, keep the whole thing on a single line rather than a boxed banner spanning
+  several. A multi-line divider wraps unpredictably in narrow viewers and chat panes and reads as
+  broken formatting, not structure.
 
   Order the frames as the categories are numbered in Step 1: Functional-Positive, Functional-Negative,
   Edge, Integration, API, UI/UX, Security. A category with zero cases gets **no frame** — it
