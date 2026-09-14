@@ -148,6 +148,13 @@ itself carries screenshots or a Figma/XD link, every design finding owes a case 
 | `Missing` | The case for the undrawn state — loading, empty, error, over-length, no-permission. Mark the rule `[MISSING-BLOCKING]` where the story never defined it. |
 | `Improvement` | **No case.** An improvement is a suggestion, never a requirement — testing against it would fail a build that met the spec. Leave it in the analysis. |
 
+**A Design Finding and the 6b pattern table govern two different questions for the same case, not
+two competing sources: the Finding decides WHETHER a case is owed for that element or rule; the 6b
+pattern table (when the element has a row there) decides WHAT that case must assert.** Before
+finalizing any case triggered by a design finding, look up its element type in the 6b table and
+fold in every check that pattern calls for — even when the finding's own text only mentioned one
+of them. A finding's wording is a trigger, never a scope ceiling.
+
 Where a design could not be opened, do not write cases describing its screens. Write the cases the
 story's own text supports and note the unreachable design as a prerequisite.
 
