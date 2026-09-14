@@ -543,6 +543,8 @@ Arabic description : <the Title above, translated into Arabic — nothing else>
   scannable in Arabic without reopening the English-only rule above for anything else. Do not add a
   second Arabic field elsewhere in the case; if the user or a project convention needs more than
   this, ask rather than inventing a second place for it.
+- **Modern Standard Arabic (الفصحى) only — never a colloquial dialect (العامية).** Write it the way
+  a formal document or news report would, not the way it would be said out loud.
 
 ## Step 4 — Deliverables
 
