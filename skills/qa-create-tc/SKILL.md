@@ -423,7 +423,7 @@ Do **not** mark every acceptance criterion P1. If everything is P1, nothing is.
 
 ```
 TC-<STORY-ID>-<NNN>
-Title           : <action + condition + expected outcome, in one line>
+Title           : <one plain sentence — action + condition + expected outcome, ~8–16 words>
 Category        : Functional-Positive | Functional-Negative | Edge | Integration | API | UI-UX | Security
 Priority        : P1 | P2 | P3
 Priority reason : <one clause — which of the four factors drove it>
@@ -440,6 +440,14 @@ Expected result :
   Audit/event : <log or event emitted — omit only if nothing is logged>
   Downstream  : <effect on a neighbouring system — omit if there is none>
 ```
+
+**Title.** State the scenario, not a label — the action, the condition it happens under, and the
+expected outcome, in one plain sentence. Long enough that the reader knows what was tested without
+opening the case; short enough to stay one line. Aim for roughly **8–16 words**.
+
+- Too short, not a scenario: `Invalid password` — names a field, tests nothing the reader can picture.
+- Too long, restates the steps: `Verify that when the user enters a valid email and then enters an incorrect password and then clicks the login button, an error message appears and the user stays on the login page` — a title is not the Steps section.
+- Right: `Login with an incorrect password shows an inline error and keeps the user on the login page.`
 
 **Test data.** **Check `.qa/test-data/README.md` first** — when it already records the account, card,
 seed record, reference value or invalid value a case needs, cite it by name rather than restating
