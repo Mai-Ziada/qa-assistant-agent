@@ -158,9 +158,17 @@ of them. A finding's wording is a trigger, never a scope ceiling.
 Where a design could not be opened, do not write cases describing its screens. Write the cases the
 story's own text supports and note the unreachable design as a prerequisite.
 
-**Do not duplicate — cross-reference.** Where a UI case overlaps a functional or edge case,
-write it once in whichever category owns the risk and name the other case's ID in `Covers`. The mobile
-presentation additions listed below land in this category too.
+**Do not duplicate — cross-reference, and verify the duplicate is actually gone.** This applies
+between any two categories, not only UI versus Functional/Edge — the same risk can just as easily
+resurface between Integration and Security, or Functional and API. Where a case overlaps another
+already-written case's risk, write the shared assertion once, in whichever category owns it, and
+name the other case's ID in `Covers`. **Citing the overlap is not the same as resolving it**: before
+finalizing the newer case, re-read its own body and confirm it no longer re-asserts what the
+cross-referenced case already covers — it should test only the angle its own category actually owns
+(e.g. Integration verifies the audit trail's completeness and correctness; Security verifies a
+specific harmful thing's absence from it). A `Covers` line naming another case's ID while the body
+still duplicates that case's assertion has not satisfied this rule. The mobile presentation
+additions listed below land in this category too.
 
 **Priority.** A UI case carries the impact of the action behind it. A confirmation dialog missing
 before a delete is `P1`; a truncated label on an admin screen is `P3`.
