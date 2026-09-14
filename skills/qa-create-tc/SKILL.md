@@ -227,6 +227,15 @@ several assertions; each must stay independently understandable and diagnosable.
 **Never merge unrelated rules, unrelated elements, or separate end-to-end outcomes to shorten the
 suite.** A grouped case must not depend on another case having run.
 
+**Grouping sibling elements' presence, labels, or setup is never license to group their distinct
+outcomes behind one summary line** — a shared basic-state check (they exist, they're enabled) and
+each element's actual execution behavior are different objectives, and a phrase standing in for an
+outcome you didn't write out ("performs its documented action", "works as expected") is the
+foundation's banned non-verifiable result wearing a grouping excuse. Before finalizing any grouped
+case, check it in both directions: does it omit a basic check its 6b pattern calls for
+(under-grouping), and does it fold a distinct, separately-diagnosable outcome into a vague shared
+line (over-grouping)?
+
 **Priority and traceability.** A grouped case inherits the **highest** priority among the risks it
 covers, critical-path AC obligations included. **If grouping would obscure a required P1, split it.**
 Keep every `Covers` reference, and map each individual check to a case and, where useful, to its
