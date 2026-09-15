@@ -18,4 +18,5 @@
 # Deliverables — remove this line if your team wants them versioned
 qa-output/
 
-# Kept in git on purpose: .qa/project-context.md, .qa/memory.md, .qa/knowledge/
+# Kept in git on purpose: .qa/project-context.md, .qa/memory.md, .qa/knowledge/,
+# and .qa/archive/ — aged rows moved out of memory.md, still worth reading later.

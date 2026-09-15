@@ -88,7 +88,7 @@ or invoked one of your skills directly:
 **If `.qa/` is absent, create it** rather than asking, or working without it:
 
 ```bash
-mkdir -p .qa/knowledge/sources .qa/screenshots .qa/test-data .qa/bugs qa-output
+mkdir -p .qa/knowledge/sources .qa/screenshots .qa/test-data .qa/bugs .qa/archive qa-output
 ```
 
 then copy the starter files from `~/.claude/qa-assistant/workspace-templates/`, falling back to

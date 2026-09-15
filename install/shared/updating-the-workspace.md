@@ -65,11 +65,47 @@ question and a `project-context.md` durable fact. Write both.
 only the specific category file or story folder the fact belongs to — never every file under
 `test-data/`. `.qa/index.md` tells you what already exists there.
 
-## Step 3 — Stamp and confirm
+## Step 3 — Age what has gone quiet
+
+**`memory.md` is read in full at the start of every run, so it has to stay readable.** Check the
+work log's length while you are writing; when it passes **20 rows**, age the oldest.
+
+Not every section ages the same way:
+
+| Section | Ages? | Why |
+|---|---|---|
+| **Work log** | ✅ archive past 20 rows | A run from two months ago is history, not guidance |
+| **Corrections** | ⚠️ promote, never delete | Deleting one invites the mistake back — that is what this file exists to prevent |
+| **Decisions** | ⚠️ only when superseded | Mark the old one `superseded by D-<n>`; a settled question stays settled |
+| **Recurring defects** | ✅ when the pattern stops | Move to archive with the date it was last seen |
+| **Environment quirks** | ✅ when the environment goes | A quirk for a dead staging server is noise that sends a run down a path that cannot work |
+| **Answered questions** | ✅ once durable | The answer belongs in `project-context.md`; the Q&A row is a receipt |
+
+**Archiving** moves rows to `.qa/archive/memory-<YYYY-MM>.md`, appending under a dated heading —
+never overwriting. Create the directory if it is absent. Nothing is deleted: an archived row is
+still there when someone asks what happened in a run last quarter.
+
+**Promoting a correction** is the one that matters. A correction the user has now given **twice**,
+or that applies to every skill rather than one, has outgrown project memory — it belongs in the
+agent's own rules, not in one project's file:
+
+1. Tell the user the correction keeps recurring and propose promoting it.
+2. On their approval, it goes into the repository — `install/shared/foundation.md` for a rule every
+   skill obeys, or the skill's own `SKILL.md` for a rule about one skill.
+3. Leave the row in `memory.md`, marked `promoted → foundation § <n>`, so the history survives.
+
+**Never age a row the same session it was written.** Ageing is maintenance, not a way to shorten
+a file you are in the middle of adding to.
+
+**Say what you archived**, in the same line as everything else you recorded. Silent archiving is
+indistinguishable from losing the row.
+
+## Step 4 — Stamp and confirm
 
 Set `**Last updated:**` to today's date in every file you touched. Then report in one line:
 
 > Recorded: 1 correction (C-2), 1 deliverable, story KAN-42 advanced to `cases`.
+> Archived: 3 work-log rows to `.qa/archive/memory-2026-07.md`.
 
 ---
 
@@ -87,9 +123,11 @@ surface both to the user and let them settle it.
 
 **`[NOT PROVIDED]` is a truthful answer.** Never guess a value into `project-context.md`.
 
-**Keep it short.** These files are read in full at the start of every run. A bloated file gets
-skimmed, and a skimmed memory is no memory. Prune what is dead — a quirk for an environment that no
-longer exists is noise.
+**Keep it short — and age it, do not just hope.** These files are read in full at the start of every
+run. A bloated file gets skimmed, and a skimmed memory is no memory. Step 3 is the mechanism:
+archive the work log past 20 rows, drop quirks whose environment is gone, promote a correction that
+keeps recurring. **Archiving is not deleting** — rows move to `.qa/archive/`, where they can still
+be read. Corrections are the exception that never leaves.
 
 **Never record secrets or personal data** — not credentials, tokens, customer records, or financial
 identifiers. Not even in a summary. Record where a credential lives, never its value.

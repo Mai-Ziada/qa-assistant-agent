@@ -146,8 +146,8 @@ if [ "$SKILLS_ONLY" -eq 0 ]; then
   head_ "Workspace -> $PROJECT"
   cd "$PROJECT"
 
-  mkdir -p .qa/knowledge/sources .qa/screenshots .qa/test-data .qa/bugs qa-output
-  say "created  .qa/knowledge/sources/  .qa/screenshots/  .qa/test-data/  .qa/bugs/  qa-output/"
+  mkdir -p .qa/knowledge/sources .qa/screenshots .qa/test-data .qa/bugs .qa/archive qa-output
+  say "created  .qa/knowledge/sources/  .qa/screenshots/  .qa/test-data/  .qa/bugs/  .qa/archive/  qa-output/"
 
   place "$TPL/index.md"           ".qa/index.md"           ".qa/index.md"
   place "$TPL/project-context.md" ".qa/project-context.md" ".qa/project-context.md"

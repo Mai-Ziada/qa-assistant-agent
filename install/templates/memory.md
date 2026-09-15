@@ -70,8 +70,17 @@ being asked the same question twice because a correction went unrecorded.
 
 The agent reads `~/.claude/qa-assistant/updating-the-workspace.md` and follows it: that file holds
 which fact belongs in which section here, and the rules that keep this file worth reading —
-corrections are mandatory, record the reasoning and not just the outcome, keep it short, prune what
-is dead, and never record a secret or a customer record.
+corrections are mandatory, record the reasoning and not just the outcome, and never record a secret
+or a customer record.
+
+**It stays short by ageing, not by hoping.** This file is read in full every run, so the agent
+archives the work log once it passes 20 rows, drops quirks whose environment no longer exists, and
+retires answered questions once the answer is durable in `project-context.md`. Archived rows move
+to `.qa/archive/memory-<YYYY-MM>.md` — **nothing is deleted**, and the agent says what it moved.
+
+**Corrections are the exception: they never leave.** A correction that keeps recurring gets
+*promoted* into the agent's own rules instead — you will be asked first, and the row stays here
+marked `promoted`, so the history survives.
 
 **You can edit it too.** It is a plain markdown file in your repository. Anything you write here the
 agent reads at the start of every run, and treats corrections and decisions as binding.
