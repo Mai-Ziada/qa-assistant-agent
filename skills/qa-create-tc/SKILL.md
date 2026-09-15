@@ -473,11 +473,13 @@ opening the case; short enough to stay one line. Aim for roughly **8–16 words*
 - Too long, restates the steps: `Verify that when the user enters a valid email and then enters an incorrect password and then clicks the login button, an error message appears and the user stays on the login page` — a title is not the Steps section.
 - Right: `Login with an incorrect password shows an inline error and keeps the user on the login page.`
 
-**Test data.** **Check `.qa/test-data/README.md` first** — when it already records the account, card,
-seed record, reference value or invalid value a case needs, cite it by name rather than restating
-it (`Admin account — see test-data § 2`). It is the project's standing answer; a value invented
-beside it will contradict it at execution time. When a case needs something that file does not have,
-note it there as a gap rather than inventing a value.
+**Test data.** **Check `.qa/test-data/` first** — `.qa/index.md` lists what exists there. When a
+category file already records the account, card, seed record, reference value or invalid value a
+case needs, cite it by file name rather than restating it (`Admin account — see users.md`). When
+the case needs something specific to this story only, check its `<STORY-FOLDER>/` folder under
+`test-data/` the same way. It is the project's standing answer; a value invented beside it will
+contradict it at execution time. When a case needs something none of this has, note it as a gap
+rather than inventing a value.
 
 Use concrete values when the field's contract, format, and permitted values are
 known. When they are not known, **do not invent them**. Either mark the requirement

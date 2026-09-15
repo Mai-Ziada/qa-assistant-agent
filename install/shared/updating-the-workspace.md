@@ -55,9 +55,15 @@ section) and then continue.
 | A file was deleted or replaced | Remove or update its row in `index.md` |
 | A durable fact about the product, platforms, environments, roles, business rules, integrations, tracker, or constraints | `project-context.md`, in its section |
 | A question asked but still unanswered | `project-context.md` § 9 Open questions |
+| A system-wide test-data fact (an account, a card, a seed record, a reference or known-invalid value, …) | `test-data/<category>.md` — find the matching category file, or create one named for what it holds if none exists yet |
+| A test-data fact that belongs to one story only (an uploaded file, an attachment, a value that will not apply anywhere else) | `test-data/<STORY-FOLDER>/` — create the folder if this is the first for that story |
 
 **A fact can route to more than one file.** An answered blocking gap is both a `memory.md` answered
 question and a `project-context.md` durable fact. Write both.
+
+**A test-data fact is read and written narrowly, not swept.** Unlike the three files above, open
+only the specific category file or story folder the fact belongs to — never every file under
+`test-data/`. `.qa/index.md` tells you what already exists there.
 
 ## Step 3 — Stamp and confirm
 

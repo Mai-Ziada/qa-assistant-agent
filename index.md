@@ -228,6 +228,7 @@ agent updates.
 | `memory.md` | `.qa/memory.md` | Work log, corrections, decisions, recurring defects, environment quirks, answered questions. **Corrections and decisions are binding.** |
 | `knowledge-README.md` | `.qa/knowledge/README.md` | What belongs there, naming, `sources/` for originals |
 | `screenshots-README.md` | `.qa/screenshots/README.md` | Foldering by story / case / bug, redaction rules |
+| `test-data-README.md` | `.qa/test-data/README.md` | Structure and naming only — one `.md` per system-wide category plus per-story folders, both created as needed |
 | `qa-output-README.md` | `qa-output/README.md` | The per-story, per-skill layout |
 | `mcp.json` | `.mcp.json` | MCP servers — Atlassian, GitHub, Playwright. **The working file**, git-ignored, credential fields empty |
 | `gitignore-block` | appended to `.gitignore` | Ignores `.mcp.json`, `.qa/screenshots/`, `qa-output/` |

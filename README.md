@@ -247,7 +247,7 @@ your-project/
     memory.md             work log, corrections, settled decisions, recurring defects
     knowledge/            source material — supplied docs, produced reports, live findings
     screenshots/          test evidence, foldered by story / test case / bug
-    test-data/            accounts, cards, seed records — the agent asks before inventing one
+    test-data/            system-wide data (one .md per category) + per-story folders — asks before inventing
   qa-output/              deliverables, per story, per skill
   .mcp.json               your MCP credentials (git-ignored)
   .gitignore              QA Assistant block appended
