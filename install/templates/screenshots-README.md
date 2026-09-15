@@ -8,20 +8,23 @@ One folder per subject, named for whatever the run is about:
 
 ```
 screenshots/
-  <STORY-ID>/          testing a story          e.g. US1/
-  <TC-ID>/             a specific test case     e.g. TC-042/
-  <BUG-ID>/            reproducing a bug        e.g. KAN-107/
+  <STORY-ID>-<STORY-TITLE-SLUG>/   testing a story          e.g. US1-allow-guest-checkout/
+  <TC-ID>/                         a specific test case     e.g. TC-042/
+  <BUG-ID>/                        reproducing a bug        e.g. KAN-107/
 ```
 
 Use whichever matches the work. A test run for a story goes under the story; a bug reproduction
-goes under the bug id.
+goes under the bug id. **A story's folder carries its title, not the bare id** — same reason as
+`qa-output/`: a listing should read at a glance instead of requiring a lookup. Before creating one,
+check for a folder that already starts with the story id (`screenshots/<STORY-ID>*/`) and reuse it
+rather than creating a second one because the slug drifted.
 
 ## Naming
 
 `<seq>-<what-it-shows>.png` — ordered so the sequence reads as the story of what happened.
 
 ```
-US1/
+US1-allow-guest-checkout/
   01-cart-with-two-items.png
   02-checkout-delivery-selected.png
   03-FAIL-total-mismatch.png

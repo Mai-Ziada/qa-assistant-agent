@@ -186,6 +186,9 @@ becomes `PROJ-142-allow-guest-checkout-with-saved-card`.
   (`qa-output/<STORY-ID>*/`) — reuse it as-is rather than creating a second folder for the same
   story because the slug drifted (a retitled story, a slightly different truncation). Never rename
   an existing story folder to match a newly derived slug.
+- **This is the one naming convention for a story's own folder, wherever one is created** — not
+  only `qa-output/`. `.qa/screenshots/<STORY-FOLDER>/` follows it too (§ Write to them as you
+  learn, below). Apply the same id-prefix reuse check there as well.
 
 | Deliverable | Path when files are available | Fallback |
 |---|---|---|
@@ -316,7 +319,7 @@ you can do without it.
 | The same defect appears again | `.qa/memory.md` § Recurring defects |
 | A `[MISSING-BLOCKING]` gap is answered | `.qa/memory.md` § Answered questions — and `project-context.md` when the answer is durable |
 | A document is supplied, a report is produced, a live journey yields findings | `.qa/knowledge/` |
-| A screenshot is captured | `.qa/screenshots/<STORY-ID or TC-ID or BUG-ID>/` |
+| A screenshot is captured | `.qa/screenshots/<STORY-FOLDER or TC-ID or BUG-ID>/` |
 | **Any artifact is created, moved, or superseded** | `.qa/index.md` — in the same turn that creates it, never later |
 
 Each file's own header carries its update rules — follow them. Four hold everywhere:
