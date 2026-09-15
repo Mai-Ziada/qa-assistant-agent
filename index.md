@@ -28,6 +28,7 @@ project, not this file.
 | Exploring a whole running system page by page | `skills/qa-system-explorer/SKILL.md` |
 | Mapping an unclear flow, then planning regression from it | `skills/flow-to-test-plan/SKILL.md` |
 | Automating a flow in Playwright, and keeping it working | `skills/agentic-flow-builder/SKILL.md` |
+| Writing up a defect and filing it to the tracker | `skills/bug-report-publisher/SKILL.md` |
 | Understanding what a skill does before running it | `skills/qa-coach/SKILL.md` |
 | Recording what a run learned — the only writer to `.qa/` | `install/shared/updating-the-workspace.md` |
 | Which skill handles a request | `skills/qa-assistant/SKILL.md` § Step 2, or `agents/qa-assistant.md` |
@@ -41,12 +42,12 @@ project, not this file.
 ## Skills
 
 Each skill is one `SKILL.md` with YAML frontmatter (`name`, `description`) that decides when it
-activates. The nine working skills read the shared `install/shared/foundation.md` — one copy, not
+activates. The ten working skills read the shared `install/shared/foundation.md` — one copy, not
 one per skill. Only `flow-to-test-plan` carries a `references/` directory of its own, for the flow
 schema.
 
 ### `skills/qa-assistant/SKILL.md`
-Entry point. Shows the eight modes and routes to one. **Step 1** menu · **Step 2** routing table
+Entry point. Shows the nine modes and routes to one. **Step 1** menu · **Step 2** routing table
 mapping numbers and phrases to skills · **Step 3** chaining rules. Routes rather than works.
 
 ### `skills/qa-story-review/SKILL.md` — stage 1
@@ -117,6 +118,24 @@ last-resort locators separately — and every failure is classified before anyth
 application bug is never hidden by a locator edit.
 Writes `<workspace>/agentic-flow-builder/flows/<flow>/` — map, flow, spec, and immutable `runs/`.
 
+### `skills/bug-report-publisher/SKILL.md` — specialist, owns bug filing for the agent
+Turns a manual description, failed case, screenshot, log or live observation into a filed ticket.
+**Step 0** workspace · **Input modes** four, with a failed automated test treated as suspect until
+diagnosed · **Workflow** 12 steps, draft → evidence → duplicates → approval → publish → verify ·
+**Minimum draft readiness** what blocks publication versus what merely warns ·
+**Finding decisions** five outcomes, only one of which is a bug — the others are
+`needs-business-clarification`, `likely automation issue`, `environment/test-data issue`,
+`duplicate candidate` · **Approval gate** a single external mutation, previewed in full ·
+**Safety**, **Final response**, **Hard rules**.
+Five reference files carry the detail: `bug-template.md` (the GIVEN/WHEN/Expected/Actual structure
+and its lint), `severity-priority.md` (impact versus urgency, `P1`–`P3`), `visual-evidence.md`
+(originals preserved, annotated copies published, quality gate), `tracking-tool.md` (destination,
+duplicate search, field mapping, idempotency, partial success), `draft-contract.md`
+(`bug-draft.json` as the source of truth, and the draft state machine).
+Never invents an Expected Result, never files over a duplicate without a decision, never claims an
+upload it did not verify. Writes `.qa/bugs/<draft-id>/` — draft, report, and `evidence/original/`
+alongside `evidence/annotated/`.
+
 ### `skills/qa-coach/SKILL.md` — explains the other skills, runs none of them
 A documentation layer over the agent. Reads a target skill's actual definition and translates it
 into an explanation: purpose, when to use it, required inputs, what it does, what it produces, and
@@ -155,7 +174,7 @@ Exists because those three files each used to carry their own update rules, so f
 wrong file or in none at all.
 
 ### `install/shared/foundation.md` — the rules every skill obeys, and not a skill
-One copy, read by all nine working skills. It has no `SKILL.md`, so it is never a slash command
+One copy, read by all ten working skills. It has no `SKILL.md`, so it is never a slash command
 and never listed. Installed to `~/.claude/qa-assistant/foundation.md` beside the workspace templates.
 Where a skill and this file differ on safety, **the foundation wins**.
 Until it moved here it was duplicated into all six skills — six files to keep byte-identical for

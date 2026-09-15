@@ -88,7 +88,7 @@ or invoked one of your skills directly:
 **If `.qa/` is absent, create it** rather than asking, or working without it:
 
 ```bash
-mkdir -p .qa/knowledge/sources .qa/screenshots .qa/test-data qa-output
+mkdir -p .qa/knowledge/sources .qa/screenshots .qa/test-data .qa/bugs qa-output
 ```
 
 then copy the starter files from `~/.claude/qa-assistant/workspace-templates/`, falling back to
@@ -151,6 +151,7 @@ the task matches — do not attempt their job with the core stages.
 | `qa-system-explorer` | The work starts from a running system rather than a story — what does it do, where does it break, what is the real coverage | Systematic page-by-page exploration behind an approved map, with page reports and a final coverage report |
 | `flow-to-test-plan` | A business flow is under-specified and needs mapping before it can be tested — from requirements, a rough idea, or a live URL | A typed flow model with per-node evidence, a Mermaid diagram, and a regression plan derived only from verified nodes, behind two approval gates |
 | `agentic-flow-builder` | A flow should be **automated** rather than run by hand — built, verified, re-run, diagnosed when it fails, and repaired without hiding the failure | Playwright automation behind a Flow Knowledge Map: primary, fallback and last-resort locators, three verification runs before `VERIFIED`, immutable run history, and diagnosis before any repair |
+| `bug-report-publisher` | A defect needs writing up and filing — from a failed case, a screenshot, a log, or something the user saw | The whole path: draft, annotated evidence, duplicate search, approval preview, publish, verify. **It owns bug filing for the agent** — no other skill writes a bug to the tracker |
 
 **Always work through the skills.** Do not reimplement their method inline — invoke the skill so
 the full instructions, safety rules, and gates load properly.
@@ -180,6 +181,7 @@ Enter the stage the user asked for. Go straight in when the intent is clear:
 - *"explore this system"*, *"test the whole app"*, *"sweep every page"*, *"what does this system do"*, *"what is our real coverage"* → `qa-system-explorer`
 - *"map this flow"*, *"chart this process"*, *"how does this feature work"*, *"build a regression plan"*, *"turn this URL into test coverage"* → `flow-to-test-plan`
 - *"automate this flow"*, *"write Playwright tests for this"*, *"run the automated flow"*, *"why did this test fail"*, *"fix this flaky test"*, *"update the automation, the requirement changed"* → `agentic-flow-builder`
+- *"report this bug"*, *"write this up as a ticket"*, *"file it"*, *"publish this to Jira"*, *"annotate this screenshot"*, *"is this already reported"* → `bug-report-publisher`
 
 **`flow-to-test-plan` and `agentic-flow-builder` are not the same job.** The first decides *what
 should be tested* and stops at a written plan; the second turns a known flow into *running code*.
@@ -204,7 +206,7 @@ request attached. When the intent is already clear, route straight in and say in
 stage you are entering.
 
 **Print it as text in the conversation. Never as a selectable prompt.** The menu is a list to read,
-not a question to answer — hosts cap a prompt at four options, so eight modes plus `qa-coach` cannot
+not a question to answer — hosts cap a prompt at four options, so nine modes plus `qa-coach` cannot
 fit without hiding some, and a mode the user cannot see is a mode they cannot choose. Print the
 whole list, every time.
 
@@ -231,6 +233,7 @@ Specialists:
 6. **System Explorer** — `/qa-system-explorer` — Explore a whole running system page by page: map it, test every field and action, report real coverage.
 7. **Flow to Test Plan** — `/flow-to-test-plan` — Map an under-specified flow from requirements, an idea, or a URL, then derive a regression plan from what is actually verified.
 8. **Agentic Flow Builder** — `/agentic-flow-builder` — Turn a known flow into Playwright automation: build it, verify it three ways, run it, diagnose failures, repair without hiding bugs.
+9. **Bug Report Publisher** — `/bug-report-publisher` — Write up a defect with annotated evidence, check for duplicates, and publish it to the tracker after approval.
 
 Not sure which to pick? **`/qa-coach <skill-name>`** explains any of them — what it does, what it needs, what it produces.
 
@@ -286,7 +289,7 @@ cost — the user decides whether to enter one.
 
 The user may also invoke any skill directly — `/qa-story-review`, `/qa-create-tc`, `/qa-run-tc`,
 `/api-testing`, `/Smart_ReTest`, `/qa-system-explorer`, `/flow-to-test-plan` and
-`/agentic-flow-builder`. Each works
+`/agentic-flow-builder` and `/bug-report-publisher`. Each works
 standalone. `/qa-coach <skill-name>` explains any of them without running it.
 
 If a later core stage is invoked without its prerequisite, say so and offer the earlier stage — but

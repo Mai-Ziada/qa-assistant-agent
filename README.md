@@ -24,7 +24,7 @@ workspace in the project you ran it from. [Install](#install) covers what lands 
 
 ## Use
 
-Start at the entry point — it shows all eight modes and routes you:
+Start at the entry point — it shows all nine modes and routes you:
 
 ```
 /qa-assistant
@@ -35,7 +35,8 @@ Or go straight to a mode — each works standalone:
 ```
 /qa-story-review   /qa-create-tc       /qa-run-tc
 /api-testing       /Smart_ReTest       /qa-system-explorer
-/flow-to-test-plan /agentic-flow-builder  /qa-coach
+/flow-to-test-plan /agentic-flow-builder  /bug-report-publisher
+/qa-coach
 ```
 
 You can also attach the work to the entry point and skip the menu:
@@ -141,6 +142,13 @@ them when the task matches, and offers them when the core stages hit their limit
 | **`qa-system-explorer`** | There is a running system rather than a story — you need to know what it does, where it breaks, and what your real coverage is | Systematic page-by-page exploration behind an approved map |
 | **`flow-to-test-plan`** | The flow itself is unclear — nobody can say what the steps are, or all you have is a URL or a feature name | Evidence-backed flow discovery behind two gates: a typed model and diagram, then a regression plan built only from verified nodes |
 | **`agentic-flow-builder`** | A flow is understood and should now run by itself — built as Playwright automation, then kept working as the app changes | `BUILD` · `RUN` · `VERIFY` · `ANALYZE FAILURE` · `REPAIR` · `UPDATE` · `LIST` · `SHOW` |
+| **`bug-report-publisher`** | A defect needs writing up and filing — from a failed case, a screenshot, a log, or something you just saw | Draft · annotated evidence · duplicate search · approval preview · publish · verify |
+
+**`bug-report-publisher` owns bug filing for the whole agent.** No other skill writes a bug to the
+tracker — `qa-run-tc` hands failures over to it rather than filing them itself, so every ticket gets
+the same duplicate search, the same annotated evidence, and the same post-publish verification. It
+also refuses to file what is not a product defect: an automation failure, an environment problem, or
+a missing business rule each stop with their own outcome instead of becoming a ticket.
 
 **`flow-to-test-plan` and `agentic-flow-builder` answer different questions.** The first asks *what
 should be tested* and stops at a written plan. The second takes a flow that is already understood
@@ -436,12 +444,14 @@ INSTALL-CODEX.md                  OpenAI Codex install guide
 agents/
   qa-assistant.md                 the routing agent
 skills/                           one SKILL.md each — nothing duplicated between them
-  qa-assistant/                   entry point — shows the eight modes and routes
+  qa-assistant/                   entry point — shows the nine modes and routes
   qa-story-review/                stage 1
   qa-create-tc/                   stage 2
   qa-run-tc/                      stage 3
   api-testing/                    specialist — API sweeps, journeys, contract checks
   Smart_ReTest/                   specialist — quick and deep bug retesting
+  bug-report-publisher/           specialist — bug drafting, annotated evidence, publishing
+    references/                   template, severity, evidence, tracker, draft contract
   qa-coach/                       explains any skill — reads its definition, runs nothing
   qa-system-explorer/             specialist — deep system exploration of a running app
   agentic-flow-builder/           specialist — Playwright automation, built, verified and repaired
@@ -459,7 +469,7 @@ skills/                           one SKILL.md each — nothing duplicated betwe
 reads. One copy each, installed beside the workspace templates. `foundation.md` used to be
 duplicated into all six skills, which meant six files to keep byte-identical for one edit.
 
-**Every skill here is self-contained.** The nine working skills read and write the same `.qa/` workspace, follow
+**Every skill here is self-contained.** The ten working skills read and write the same `.qa/` workspace, follow
 the same foundation, and write to `qa-output/<STORY-FOLDER>/<skill-name>/`. None requires a skill
 outside this repository — the specialists included, so `api-testing` continues from a story's API
 cases when they exist and files bugs through its own tracker rules.

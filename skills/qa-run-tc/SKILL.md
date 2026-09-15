@@ -1,6 +1,6 @@
 ---
 name: qa-run-tc
-description: Execute existing test cases against a real environment after a ten-point execution-feasibility check, capture redacted evidence, and report results faithfully — never inferring a pass. Offers to file failures as tracker bugs behind an explicit confirmation. Use when the user asks to run test cases, execute TCs, run a test pass, or continues from qa-create-tc.
+description: Execute existing test cases against a real environment after a ten-point execution-feasibility check, capture redacted evidence, and report results faithfully — never inferring a pass. Offers to file failures as tracker bugs behind an explicit confirmation, handing over to bug-report-publisher to do it. Use when the user asks to run test cases, execute TCs, run a test pass, or continues from qa-create-tc.
 ---
 
 # QA Run TC — Mode 3 of the QA Assistant workflow
@@ -115,12 +115,18 @@ For each failure, ask whether to file it as a bug using `AskUserQuestion` — he
 
 Present **Do not file** first: writing to the tracker is the irreversible choice.
 
-Same rule as publication: **one explicit confirmation before anything is written to the tracker.**
-If filing, confirm the destination (project, issue type, parent story) before writing, then report
-exactly what was created with IDs and links.
+**Filing hands over to `bug-report-publisher`** — do not write to the tracker from here. Invoke it
+with the failure, its evidence paths, and the test-case ID, and say so in one line:
+`Handing over to bug-report-publisher — it checks for duplicates and asks before anything is written.`
+
+That skill owns bug filing for the whole agent: it searches for duplicates first, prepares annotated
+evidence from the screenshots this run captured, separates a product defect from an automation or
+environment failure, and verifies the ticket and every attachment after publishing. Filing here
+instead would skip all of it and risk a second ticket for a failure already reported.
 
 If a failure looks like a specification gap rather than a defect, say so — it may belong back in
-`qa-story-review` as a gap, not in the tracker as a bug.
+`qa-story-review` as a gap, not in the tracker as a bug. `bug-report-publisher` stops on the same
+distinction with `needs-business-clarification`, so a gap does not become a bug by default.
 
 ---
 
