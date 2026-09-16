@@ -22,6 +22,10 @@ Read this file when creating or updating the local draft. `bug-draft.json` is th
   "status": "awaiting-approval",
   "title": "Feature — Specific incorrect behavior",
   "descriptionPath": "bug-report.md",
+  "reproduction": {
+    "status": "attempted-and-confirmed",
+    "notes": null
+  },
   "environment": {
     "application": null,
     "environment": null,
@@ -65,6 +69,11 @@ Read this file when creating or updating the local draft. `bug-draft.json` is th
 }
 ```
 
+`reproduction.status` is one of `attempted-and-confirmed`, `attempted-and-not-reproducible`,
+`skipped-no-access`, or `skipped-by-explicit-user-request` — see the skill's Reproduction section.
+Use `notes` for anything the status alone does not explain (what access was missing, why the user
+asked to skip it).
+
 ## States
 
 Main path:
@@ -96,6 +105,7 @@ cancelled
 
 - Regenerate `bug-report.md` after material draft changes.
 - Every evidence entry must point to an existing file.
+- Do not advance to `awaiting-approval` without a set `reproduction.status`.
 - Keep approval pending until the user approves the exact final action and upload list.
 - Save an issue ID immediately after successful creation, before uploading attachments.
 - Do not clear a saved issue ID when later attachment upload fails.
