@@ -41,10 +41,10 @@ actually exists here.
 
 ---
 
-## ⚠️ What never goes in any file here
+## ⚠️ Secrets — no value by default, unless the user who owns it says otherwise
 
-**No secret values.** Not a password, an API token, a card number, a CVV, an OTP, a session cookie,
-a private key, or a real customer's personal data.
+**By default, no secret values.** Not a password, an API token, a card number, a CVV, an OTP, a
+session cookie, a private key, or a real customer's personal data.
 
 Record **where the secret lives**, never what it is:
 
@@ -54,15 +54,25 @@ Record **where the secret lives**, never what it is:
 | Admin | qa.admin@test.local | `env: QA_ADMIN_PASS` |
 ```
 
-That row is useful and safe. `| Admin | qa.admin@test.local | Passw0rd! |` is neither.
+That row is useful and safe. `| Admin | qa.admin@test.local | Passw0rd! |` is neither — **unless
+the user who just supplied the password explicitly says to store it exactly like that.**
 
-**This whole folder is git-ignored by default**, because a folder of test accounts is still worth
-keeping out of a public repository. That is a second line of defence, not the first — the first is
-not writing the secret down at all.
+**When the user hands a credential to the agent directly, ask once before writing it: store it
+as-is, or not?**
+
+- **"As-is"** — the literal value goes in the category file. Their instruction overrides the
+  default; nothing further to check.
+- **Anything else** — offer `.env` at the project root instead (referenced here as
+  `env: <VAR_NAME>`, same as any other environment variable), or not storing the value at all.
+
+**This whole folder is git-ignored by default, and so is `.env`.** That is a second line of
+defence, not the first — the first is not writing the secret down at all, which stays the default
+until the person who owns the value says otherwise.
 
 Payment cards are the exception people get wrong: a **published provider test card** (Stripe's
 `4242 4242 4242 4242`, a sandbox PAN from your gateway's own docs) is documentation, not a secret,
-and belongs here. A card that can move real money never does, whatever environment it is for.
+and belongs here regardless. A card that can move real money never does, whatever environment it
+is for, with or without permission.
 
 ---
 

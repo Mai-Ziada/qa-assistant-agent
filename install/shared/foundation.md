@@ -48,9 +48,24 @@ file when it is system-wide, or into that story's folder when it belongs only th
 account, promo code or card number produces a failure that looks like a defect and is not — and
 costs more time to diagnose than the question would have taken.
 
-Every file here obeys § 2 like anything else: it records **where a secret lives**
-(`env: QA_ADMIN_PASS`), never the secret itself. A published provider test card from the gateway's
-own documentation is not a secret and belongs there; a card that can move real money never does.
+**The default is § 2's rule: record where a secret lives** (`env: QA_ADMIN_PASS`), never the secret
+itself. A published provider test card from the gateway's own documentation is not a secret and
+belongs there regardless; a card that can move real money never does, with or without permission.
+
+**Storing a credential the user hands over directly — ask, do not assume either way.** When the
+user supplies a password or other credential themselves, alongside test data, for the agent to
+store, ask once, plainly, before writing anything: store it exactly as given, or not?
+
+- **"Store it as-is"** — write the literal value into the category file. The user's explicit
+  instruction overrides the default; no further restriction applies.
+- **Anything else** — offer the two remaining options: write it to `.env` at the project root
+  (create it if absent, append rather than overwrite, and keep it git-ignored) and reference it
+  from the category file as `env: <VAR_NAME>`; or do not store it at all, leave the field
+  `[NOT PROVIDED]`, and ask again the next time it is needed.
+
+This consent is per value, not a standing decision for the whole project. If the user states a
+blanket preference instead ("just store them as I give them from now on"), record that as a
+`memory.md` decision and follow it without asking each time.
 
 ## 3. Honesty about access and coverage
 

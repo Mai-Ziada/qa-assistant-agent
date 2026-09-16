@@ -130,7 +130,9 @@ keeps recurring. **Archiving is not deleting** — rows move to `.qa/archive/`, 
 be read. Corrections are the exception that never leaves.
 
 **Never record secrets or personal data** — not credentials, tokens, customer records, or financial
-identifiers. Not even in a summary. Record where a credential lives, never its value.
+identifiers. Not even in a summary. Record where a credential lives, never its value. **Exception:**
+a test-data credential the user who owns it explicitly asked to store as-is, or in `.env` — see the
+foundation § 2a. That consent is per value; nothing else in this file relaxes.
 
 **Index in the same turn you create the artifact.** An index updated "later" drifts, and a drifted
 index sends the reader to a file that is not there.

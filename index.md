@@ -231,7 +231,7 @@ agent updates.
 | `test-data-README.md` | `.qa/test-data/README.md` | Structure and naming only — one `.md` per system-wide category plus per-story folders, both created as needed |
 | `qa-output-README.md` | `qa-output/README.md` | The per-story, per-skill layout |
 | `mcp.json` | `.mcp.json` | MCP servers — Atlassian, GitHub, Playwright. **The working file**, git-ignored, credential fields empty |
-| `gitignore-block` | appended to `.gitignore` | Ignores `.mcp.json`, `.qa/screenshots/`, `qa-output/` |
+| `gitignore-block` | appended to `.gitignore` | Ignores `.mcp.json`, `.env`, `.qa/screenshots/`, `qa-output/` |
 
 ---
 
