@@ -43,12 +43,31 @@ procedure. Never edit those three files directly. A bug filed for a failure that
 - **Manual description:** extract known details and ask only for essential missing information.
 - **Evidence-based finding:** analyze supplied screenshots, videos, logs, traces, designs, or requirements.
 - **Failed test:** use the test's preconditions, steps, expected result, actual result, and evidence. A failed automated test is not automatically a product bug; first check for an obvious automation, environment, or test-data failure.
-- **Live observation:** reproduce only when the user authorizes it and suitable access exists. Do not perform real payments, irreversible actions, production mutations, or external communications without specific authorization.
+- **Live observation:** the agent observes the failure directly, in a real environment, rather than working from a supplied description or evidence.
+
+## Reproduction
+
+**Attempt reproduction on a real, authorized environment before treating any report as
+confirmed — regardless of which input mode it arrived through.** A fully pre-written manual
+description is not an exception: a report that reads as complete can still describe a
+misunderstanding, a since-fixed defect, or a step that no longer applies.
+
+Only two reasons justify skipping it:
+
+- **Suitable access does not exist.** Say so once and continue from the supplied description,
+  flagged unverified rather than confirmed.
+- **The user explicitly asks to file or publish the report directly, without reproducing it
+  first.** Honor that — but the draft and the Approval Gate preview must still disclose that
+  reproduction was skipped by explicit request, so the report never reads as confirmed when it was
+  not.
+
+Do not perform real payments, irreversible actions, production mutations, or external
+communications without specific authorization.
 
 ## Workflow
 
 1. Collect the product, feature/page, environment, build, platform, role, preconditions, steps, expected result, actual result, and available evidence.
-2. Decide whether the information supports a bug draft. If the expected business behavior is unknown, stop with `needs-business-clarification`; do not invent it.
+2. Attempt reproduction per the Reproduction section, then decide whether the information supports a bug draft. If the expected business behavior is unknown, stop with `needs-business-clarification`; do not invent it.
 3. Before drafting, read [references/bug-template.md](references/bug-template.md) and create the title and description exactly as specified.
 4. If screenshots exist or can be captured, read [references/visual-evidence.md](references/visual-evidence.md), preserve originals, prepare annotated copies, and verify them.
 5. Before recommending Severity or Priority, read [references/severity-priority.md](references/severity-priority.md).
@@ -72,6 +91,7 @@ A publishable draft needs:
 - Environment and platform information when known.
 - Severity and its rationale.
 - Attachment entries that match real files, or an explicit no-attachment statement.
+- Reproduction status: `attempted-and-confirmed`, `attempted-and-not-reproducible`, `skipped-no-access`, or `skipped-by-explicit-user-request`.
 
 Missing optional metadata does not block drafting. Missing information that prevents reproduction or a reliable expected result blocks publication.
 
@@ -93,6 +113,7 @@ Creating or changing a tracking ticket is an external mutation. Immediately befo
 - Final title and exact description.
 - Severity and Priority recommendation.
 - Environment metadata.
+- Reproduction status — especially `skipped-by-explicit-user-request` — so it is seen immediately before publish, not only recorded in the draft file.
 - Duplicate-search result.
 - Annotated evidence previews and exact filenames to upload.
 - Any assumptions, omissions, or warnings.
