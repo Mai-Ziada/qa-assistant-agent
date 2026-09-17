@@ -12,13 +12,10 @@ For every screenshot, preserve:
 Store them under:
 
 ```text
-.qa/bugs/<DRAFT-FOLDER>/evidence/
+.qa/bugs/<draft-id>/evidence/
 ├── original/
 └── annotated/
 ```
-
-`<DRAFT-FOLDER>` is `<draft-id>-<title-slug>` — see `draft-contract.md`. File names below still key
-off the bare `<draft-id>`, not the folder name.
 
 ## Evidence Count
 

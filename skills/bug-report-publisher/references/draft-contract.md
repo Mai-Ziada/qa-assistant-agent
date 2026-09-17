@@ -5,7 +5,7 @@ Read this file when creating or updating the local draft. `bug-draft.json` is th
 ## Storage
 
 ```text
-.qa/bugs/<DRAFT-FOLDER>/
+.qa/bugs/<draft-id>/
 ├── bug-draft.json
 ├── bug-report.md
 └── evidence/
@@ -13,30 +13,13 @@ Read this file when creating or updating the local draft. `bug-draft.json` is th
     └── annotated/
 ```
 
-**`<DRAFT-FOLDER>` is `<draft-id>-<title-slug>`**, not the bare draft id — same reason as
-`qa-output/`'s `<STORY-FOLDER>`: a listing of `.qa/bugs/` should read at a glance instead of
-forcing a lookup into each `bug-draft.json`. `<title-slug>` is the draft's title (already decided
-in Workflow step 3, before this folder is created in step 6 — see `bug-template.md`) in kebab-case
-(lowercase, spaces and punctuation turned to hyphens, collapsed to single hyphens, no
-leading/trailing hyphen), trimmed to roughly the first 40 characters at a word boundary. Example:
-`BUG-DRAFT-20260917-001` titled "Scheduled Orders — Internal Server Error Appears When Confirming
-the Selected Time" becomes `BUG-DRAFT-20260917-001-scheduled-orders-internal-server-error`.
-
-`draftId` itself — the value stored in `bug-draft.json` and used to prefix evidence filenames (see
-`visual-evidence.md`) — never carries the slug; only the folder name does.
-
-- **Before creating the folder, check for one that already starts with `<draft-id>`**
-  (`.qa/bugs/<draft-id>*/`) and reuse it rather than creating a second one because the slug drifted
-  (a reworded title, a slightly different truncation). Never rename an existing draft folder to
-  match a newly derived slug.
-
 ## Screenshot Storage
 
 **Every screenshot produced while working this draft — regardless of whether it ends up
 supporting the reported defect, is neutral, or contradicts/disproves it** (e.g. a reproduction
 attempt that shows the behavior no longer occurs) **— once annotated, is saved under
-`.qa/bugs/<DRAFT-FOLDER>/evidence/`.** This applies even if the draft is ultimately cancelled or
-never published.
+`.qa/bugs/<draft-id>/evidence/`.** This applies even if the draft is ultimately cancelled or never
+published.
 
 This overrides `foundation.md`'s general screenshot-routing rule for this skill: bug-related
 visual evidence always stays colocated with its own draft folder, not the general
