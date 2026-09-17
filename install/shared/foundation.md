@@ -340,7 +340,7 @@ you can do without it.
 | The same defect appears again | `.qa/memory.md` § Recurring defects |
 | A `[MISSING-BLOCKING]` gap is answered | `.qa/memory.md` § Answered questions — and `project-context.md` when the answer is durable |
 | A document is supplied, a report is produced, a live journey yields findings | `.qa/knowledge/` |
-| A screenshot is captured | `.qa/screenshots/<STORY-FOLDER or TC-ID or BUG-ID>/` |
+| A screenshot is captured | `.qa/screenshots/<STORY-FOLDER or TC-ID or BUG-ID>/` — except screenshots produced while `bug-report-publisher` is working an active draft, which always go to that draft's own `evidence/` folder instead (see `draft-contract.md`) |
 | A system-wide test-data fact is learned (an account, a card, a seed record, …) | `.qa/test-data/<category>.md` — create the file if this is the first of its kind |
 | A test-data fact belongs to one story only (a file, an attachment, a value that applies nowhere else) | `.qa/test-data/<STORY-FOLDER>/` — create the folder if this is the first for that story |
 | **Any artifact is created, moved, or superseded** | `.qa/index.md` — in the same turn that creates it, never later |

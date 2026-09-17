@@ -13,6 +13,18 @@ Read this file when creating or updating the local draft. `bug-draft.json` is th
     └── annotated/
 ```
 
+## Screenshot Storage
+
+**Every screenshot produced while working this draft — regardless of whether it ends up
+supporting the reported defect, is neutral, or contradicts/disproves it** (e.g. a reproduction
+attempt that shows the behavior no longer occurs) **— once annotated, is saved under
+`.qa/bugs/<draft-id>/evidence/`.** This applies even if the draft is ultimately cancelled or never
+published.
+
+This overrides `foundation.md`'s general screenshot-routing rule for this skill: bug-related
+visual evidence always stays colocated with its own draft folder, not the general
+`.qa/screenshots/<BUG-ID>/` path.
+
 ## Required Shape
 
 ```json
