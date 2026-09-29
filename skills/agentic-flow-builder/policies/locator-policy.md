@@ -245,7 +245,58 @@ Do not use positional selection merely to silence strict-mode ambiguity.
 
 ---
 
-# 13. Final Rule
+# 13. Text Inside a Nested Descendant
+
+Some component libraries render a control's accessible text inside a nested descendant rather than
+as a direct text-node child of the interactive element itself.
+
+Confirmed example — Fluent UI (Microsoft):
+
+```text
+<button>
+  <span class="ms-Button-flexContainer">
+    <span class="ms-Button-label">Add User</span>
+  </span>
+</button>
+```
+
+This affects locator tiers differently:
+
+```text
+Primary/Fallback using getByRole()/getByText()
+  → generally unaffected — accessible-name computation walks the full subtree
+
+Last Resort using raw CSS/XPath
+  → affected whenever it depends on direct text-node matching
+```
+
+Confirmed failures from a raw CSS/XPath Last Resort assuming direct text-node matching:
+
+```text
+XPath text()='0%' (normalize-space) matched nothing — "0%" lived in a nested <span>, not a
+  direct text node
+
+CSS sibling combinator (~) assumed a page-level sibling — the menu was actually a genuine
+  DOM descendant
+```
+
+Once this pattern is confirmed for one element of a component library, treat it as a prior to
+**check first** for other elements of the same library in the same app — the library renders
+consistently app-wide, so the same shape is likely to recur. This is a prior to verify against the
+actual DOM, not an assumption to apply without checking — a different app, or a different library,
+may not share it.
+
+When writing a CSS/XPath Last Resort locator against a library with this behavior, prefer the
+element's own stable `id` attribute over text matching where one exists — it sidesteps the
+nested-text problem entirely. Confirmed pattern: Fluent UI Dropdown options expose ids like
+`{field}-list{index}`.
+
+Separately, this DOM shape can also produce an *actionability* problem, not a locator-resolution
+one — see `interaction-policy.md` § Dispatched Click for a Wrapped Target.
+
+---
+
+# 14. Final Rule
 
 Locator resilience must never become silent self-healing.
 

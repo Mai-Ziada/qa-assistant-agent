@@ -620,6 +620,12 @@ replace all locator strategies
 
 without evidence.
 
+Investigating more than one element in a single MCP reproduction (see `analyze-failure.md` § Scope
+of Investigation — When Reproduction Is Already Required) does not relax this principle. Widening
+what gets *inspected* while a reproduction is already active is an investigation-efficiency
+decision, not a repair-scope decision — each element found still requires its own confirmed
+evidence before it is repaired. One element's evidence never justifies repairing another.
+
 ---
 
 # 24. No Blind Self-Healing

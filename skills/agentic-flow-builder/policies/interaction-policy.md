@@ -940,7 +940,29 @@ Screenshot and Trace are retained according to Evidence Policy.
 
 ---
 
-# 34. Final Interaction Rule
+# 34. Dispatched Click for a Wrapped Target
+
+Playwright's pre-click actionability/visibility wait can hang until timeout on a target that IS
+genuinely visible and clickable, when the resolved role/name locator points at an inner element
+(e.g. a `<span>` label) wrapped by the actual clickable ancestor (e.g. a `<button>`) — common with
+component libraries that render accessible text inside a nested descendant (see
+`locator-policy.md` § Text Inside a Nested Descendant).
+
+`click({ force: true })` remains prohibited by § 8. The approved escape hatch for this specific,
+confirmed case is:
+
+```ts
+await locator.dispatchEvent('click');
+```
+
+This is a raw DOM click that bypasses Playwright's actionability pre-check — narrower than
+`force: true`, which still runs the click through Playwright's normal action pipeline once its
+pre-check is skipped. Use it only when diagnosis confirms the hang is caused by this
+wrapped-target shape, not as a general substitute for a failing or slow click.
+
+---
+
+# 35. Final Interaction Rule
 
 Never ask:
 

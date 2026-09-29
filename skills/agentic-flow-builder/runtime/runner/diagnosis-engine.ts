@@ -9,9 +9,14 @@ export class DiagnosisEngine {
       classification === 'automation_code_failure' ||
       (automationOwned && ['interaction_failure', 'assertion_failure', 'navigation_failure'].includes(classification));
 
+    const testCaseId = signal.testCaseId ?? 'UNKNOWN-TC';
     return {
-      id: `FAIL-${String(index + 1).padStart(3, '0')}`,
-      test_case: signal.testCaseId ?? 'UNKNOWN-TC',
+      // Scoped to testCaseId, not just the index: `index` only counts failures within one TC's
+      // own execution (see flow-runner.ts afterEach), so two TCs each independently produce
+      // index 0. An id built from the index alone collides across TCs in the same run, and
+      // RunWriter requires run.failures[].id to be unique for the whole run.
+      id: `FAIL-${testCaseId}-${String(index + 1).padStart(3, '0')}`,
+      test_case: testCaseId,
       step: signal.stepId ?? 'UNKNOWN-STEP',
       element: signal.elementId ?? null,
       classification,

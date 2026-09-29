@@ -218,45 +218,55 @@ export class FlowRunController {
     this.session = session;
     if (!session.isComplete()) return;
 
-    const preliminarySummary = this.buildAgentSummary(session.snapshotForPreview({
-      map: this.map,
-      agentSummary: this.defaultAgentSummary(),
-    }));
-    const preview = session.snapshotForPreview({ map: this.map, agentSummary: preliminarySummary });
-    const state = this.stateManager.applyRun(this.map, preview);
-    const finalAgentSummary = this.buildAgentSummary({
-      ...preview,
-      run: {
-        ...preview.run,
-        map_status_after: state.map.flow.metadata.status,
-        status_transition: state.transition,
-      },
-    });
-    const finalRecord = session.buildRunRecord({
-      map: state.map,
-      mapStatusAfter: state.map.flow.metadata.status,
-      transition: state.transition,
-      agentSummary: finalAgentSummary,
-    });
+    const runId = this.runId;
+    const lock = this.lock;
 
-    const writer = new RunWriter(join(this.options.flowDir, 'runs'));
-    await writer.write(finalRecord);
-    await this.mapStore.write(state.map);
-    this.map = state.map;
+    try {
+      const preliminarySummary = this.buildAgentSummary(session.snapshotForPreview({
+        map: this.map,
+        agentSummary: this.defaultAgentSummary(),
+      }));
+      const preview = session.snapshotForPreview({ map: this.map, agentSummary: preliminarySummary });
+      const state = this.stateManager.applyRun(this.map, preview);
+      const finalAgentSummary = this.buildAgentSummary({
+        ...preview,
+        run: {
+          ...preview.run,
+          map_status_after: state.map.flow.metadata.status,
+          status_transition: state.transition,
+        },
+      });
+      const finalRecord = session.buildRunRecord({
+        map: state.map,
+        mapStatusAfter: state.map.flow.metadata.status,
+        transition: state.transition,
+        agentSummary: finalAgentSummary,
+      });
 
-    await this.options.authManager?.cleanup?.(state.map, {
-      runId: this.runId,
-      flowId: state.map.flow.metadata.id,
-      mapRevision: state.map.flow.metadata.revision,
-      runType: finalRecord.run.type,
-      executionMode: finalRecord.run.execution_mode,
-    });
-    await session.remove();
-    await this.removeActiveRun(this.runId);
-    await this.lock.release(this.runId);
-    this.finalized = true;
-    this.session = undefined;
-    this.lock = undefined;
+      const writer = new RunWriter(join(this.options.flowDir, 'runs'));
+      await writer.write(finalRecord);
+      await this.mapStore.write(state.map);
+      this.map = state.map;
+
+      await this.options.authManager?.cleanup?.(state.map, {
+        runId,
+        flowId: state.map.flow.metadata.id,
+        mapRevision: state.map.flow.metadata.revision,
+        runType: finalRecord.run.type,
+        executionMode: finalRecord.run.execution_mode,
+      });
+      await session.remove();
+      await this.removeActiveRun(runId);
+      this.finalized = true;
+    } finally {
+      // The Run has genuinely completed (session.isComplete() above) once we reach this point --
+      // release the lock regardless of whether writing/persisting the final record threw, so a
+      // run-validation failure never leaves a stale .flow.lock behind. The throw itself still
+      // propagates after this block runs.
+      await lock.release(runId);
+      this.session = undefined;
+      this.lock = undefined;
+    }
   }
 
   private extractRecoveries(signals: RuntimeSignal[], testCaseId: string): LocatorRecoveryRecord[] {

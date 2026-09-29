@@ -295,6 +295,19 @@ MCP refs remain temporary.
 
 Do not modify the Flow while executing `ANALYZE FAILURE`.
 
+## Scope of Investigation — When Reproduction Is Already Required
+
+If reproducing the failure requires driving the application into a specific state via MCP, before
+closing the investigation: check the current Flow Map for other elements reachable from that same
+state whose locator `validation_status` is `pending` for the tier under test (e.g. all
+`last_resort` locators for the TC downstream of the current step, when diagnosing a
+`last_resort_only` failure). Inspect those in the same session if reaching them requires no
+meaningfully different setup.
+
+This does not license repairing anything without evidence — Classification still applies per
+element — it only extends what gets *investigated* in one reproduction, since reaching the state is
+the expensive part, not checking one extra element once there.
+
 ## Classification
 
 Return one primary classification:
