@@ -59,6 +59,27 @@ export class MapStore {
     await rename(temp, this.mapPath);
   }
 
+  /**
+   * Only the nth strategy applies a positional index. Any other strategy
+   * silently ignores an "index" key and resolves every match, so a Map that
+   * carries one there is rejected instead of failing later as an ambiguous
+   * target. Nested scope/target/base locators are checked too.
+   */
+  private assertNoPositionalIndex(locator: unknown, label: string): void {
+    if (!locator || typeof locator !== 'object') return;
+    const { strategy, value } = locator as { strategy?: unknown; value?: Record<string, unknown> };
+    if (!value || typeof value !== 'object') return;
+    if (strategy !== 'nth' && 'index' in value) {
+      throw new MapValidationError(
+        `${label} uses "index" with strategy "${String(strategy)}", which ignores it. ` +
+          'Use strategy "nth" with this locator as its base instead.',
+      );
+    }
+    for (const nested of ['scope', 'target', 'base'] as const) {
+      if (nested in value) this.assertNoPositionalIndex(value[nested], `${label} (${nested})`);
+    }
+  }
+
   validate(map: FlowMap): void {
     if (!map?.flow?.metadata?.id) {
       throw new MapValidationError('Flow Map is missing flow.metadata.id.');
@@ -158,6 +179,7 @@ export class MapStore {
             `Element "${elementId}" has unsupported ${tier} locator strategy "${String(locator.strategy)}".`,
           );
         }
+        this.assertNoPositionalIndex(locator, `Element "${elementId}" ${tier} locator`);
         if (!LOCATOR_QUALITIES.has(locator.quality)) {
           throw new MapValidationError(
             `Element "${elementId}" has invalid ${tier} locator quality.`,
@@ -225,6 +247,9 @@ export class MapStore {
         throw new MapValidationError(
           `Assertion "${assertionId}" references unknown element "${assertion.target.element}".`,
         );
+      }
+      if (assertion.target.locator) {
+        this.assertNoPositionalIndex(assertion.target.locator, `Assertion "${assertionId}" target locator`);
       }
     }
 
