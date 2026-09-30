@@ -469,6 +469,10 @@ agentic-flow-builder/
         ├── create-user.map.yaml
         ├── create-user.flow.ts
         ├── create-user.spec.ts
+        ├── helpers/
+        │   ├── auth.ts
+        │   ├── data.ts
+        │   └── state.ts
         └── runs/
             ├── 2026-09-04T18-10-03+03-00.yaml
             └── ...
@@ -486,9 +490,20 @@ Responsibilities:
 <flow>.spec.ts
 = Playwright Test wrapper / orchestration
 
+helpers/
+= optional, flow-specific supporting code (e.g. an auth adapter, data
+  lookup, runtime state, file builders) that the flow's own
+  implementation needs but that isn't itself Flow Knowledge, business
+  implementation, or test orchestration
+
 runs/
 = immutable execution history
 ```
+
+The three standard files (`<flow>.map.yaml`, `<flow>.flow.ts`, `<flow>.spec.ts`) always stay at the
+flow's root; `helpers/` exists only when the flow's own implementation needs supporting code that
+doesn't belong in any of them. Per § 1.1 Flow Independence, helper code is scoped to its own flow —
+it is not a place to share code across flows.
 
 Failure evidence belongs to the project's existing evidence architecture, not inside the flow folder unless the existing project architecture explicitly requires otherwise.
 
