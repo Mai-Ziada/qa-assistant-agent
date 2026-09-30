@@ -14,8 +14,9 @@ export class DiagnosisEngine {
       // Scoped to testCaseId, not just the index: `index` only counts failures within one TC's
       // own execution (see flow-runner.ts afterEach), so two TCs each independently produce
       // index 0. An id built from the index alone collides across TCs in the same run, and
-      // RunWriter requires run.failures[].id to be unique for the whole run.
-      id: `FAIL-${testCaseId}-${String(index + 1).padStart(3, '0')}`,
+      // RunWriter requires run.failures[].id to be unique for the whole run. testCaseId is
+      // sanitized since it can otherwise carry characters unsafe to embed in a generated id.
+      id: `FAIL-${testCaseId.replace(/[^A-Za-z0-9_-]/g, '-')}-${String(index + 1).padStart(3, '0')}`,
       test_case: testCaseId,
       step: signal.stepId ?? 'UNKNOWN-STEP',
       element: signal.elementId ?? null,
