@@ -9,6 +9,7 @@
   "notes": [
     "pressSequentially requires Playwright 1.38 or newer.",
     "Playwright trace should be configured with retain-on-failure when trace evidence is desired.",
+    "The retained trace is written after the worker finishes with the test, so evidence-manager.ts records it by its known path under the project's per-run output directory rather than copying it -- see build-flow.md's Required Playwright Configuration and run-output-retention.ts.",
     "The workspace runtime must not be silently overwritten after initialization.",
     "compatibility-check.ts is the executable readiness gate and must remain aligned with this manifest."
   ],

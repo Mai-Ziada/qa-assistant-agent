@@ -220,6 +220,10 @@ To investigate ambiguous failures when structured Run data and screenshots are i
 
 Trace is secondary evidence for the agent.
 
+Playwright writes a retained trace only after the worker finishes with the test — later than
+failure-evidence capture — so it is recorded by its known path under the test's per-run output
+directory rather than copied next to the screenshot. See § 20.
+
 ---
 
 # 10. Trace Retention
@@ -467,9 +471,15 @@ Preferred hierarchy:
     └── <flow-name>/
         └── <run-id>/
             ├── <failed-tc>.png
-            ├── trace.zip
             └── <other relevant diagnostic artifact>
 ```
+
+Trace does not normally live here. Playwright only writes the retained trace after the worker
+finishes with the test — later than this folder is written — so the Run record points to it by its
+known path under the project's own per-run output directory (e.g. `test-results/<run-id>/trace.zip`
+when `playwright.config.ts` keys `outputDir` by run id) instead of a copy landing beside the
+screenshot. A `globalSetup` keeps the newest N of those per-run output folders (default 10,
+`AFB_KEEP_RUN_OUTPUTS` overrides) — do not delete one by hand assuming it is disposable.
 
 This provides:
 
@@ -523,10 +533,16 @@ evidence:
     - type: trace
 
       path: >
-        ../../evidences/agentic-flow-builder/create-user/
-        2026-09-04T20-15-41+03-00/
+        test-results/2026-09-04T20-15-41+03-00/
         trace.zip
+
+      description: >
+        Written by Playwright (trace: retain-on-failure) after the test ends;
+        kept until this run's output folder is pruned.
 ```
+
+The trace path points into the project's own per-run output directory (§ 20), not the evidence
+root — do not treat it as missing just because it sits outside `<evidence-root>/agentic-flow-builder/`.
 
 Do not require the agent to search the filesystem blindly.
 

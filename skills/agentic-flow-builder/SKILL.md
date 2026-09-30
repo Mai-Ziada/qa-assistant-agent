@@ -1388,8 +1388,7 @@ Preferred structure:
 └── agentic-flow-builder/
     └── <flow-name>/
         └── <run-id>/
-            ├── <failed-tc>.png
-            └── trace.zip
+            └── <failed-tc>.png
 ```
 
 ---
@@ -1411,6 +1410,13 @@ Run YAML
 Prefer retaining Trace on failures.
 
 Do not retain traces for every successful execution by default.
+
+Playwright writes the retained trace only after the worker finishes with the test, later than
+failure-evidence capture, so it does not land in the evidence folder above. The Run record points
+to it by its known path under the project's own per-run output directory instead
+(`test-results/<run-id>/trace.zip` when `playwright.config.ts` keys `outputDir` by run id) — see
+`evidence-policy.md` § 20. A `globalSetup` prunes old per-run output folders to the newest 10 by
+default.
 
 ---
 

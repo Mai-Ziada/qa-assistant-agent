@@ -331,6 +331,24 @@ Respect the existing project architecture.
 
 Do not create duplicate data/evidence systems.
 
+## 11.1 Required Playwright Configuration
+
+Trace-based evidence (§ 29 of `SKILL.md`) depends on each Flow Run getting its own Playwright
+output directory, and on that directory not growing without bound. The project's
+`playwright.config.ts` must set:
+
+```ts
+outputDir: `test-results/${process.env.AFB_RUN_ID ?? 'local'}`,
+globalSetup: './agentic-flow-builder/runtime/run-output-retention.ts',
+use: {
+  trace: 'retain-on-failure', // or another retaining mode
+},
+```
+
+If any of these are missing when generating or initializing a Flow, add them. Merge into the
+existing config file rather than overwriting it wholesale — an existing `outputDir`, `globalSetup`,
+or `use` block gets these fields added, not replaced.
+
 ---
 
 # 12. Discover Project Data
