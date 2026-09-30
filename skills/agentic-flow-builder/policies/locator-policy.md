@@ -243,6 +243,12 @@ For `nth()`:
 
 Do not use positional selection merely to silence strict-mode ambiguity.
 
+A positional pick must be written as `strategy: nth` with a base locator, not as an `index` key
+tucked under `css`, `xpath`, or any other strategy — those ignore it silently and resolve every
+match, which surfaces later as an ambiguous-target failure instead of a clear error when the Map is
+written. MapStore rejects `index` under any strategy but `nth`, including inside a nested
+`scope`/`target`/`base` locator.
+
 ---
 
 # 13. Text Inside a Nested Descendant
