@@ -207,20 +207,28 @@ export class FlowRunController {
     if (this.finalized) return;
     if (!this.session || !this.map || !this.runId || !this.lock) return;
 
+    const runId = this.runId;
+    const lock = this.lock;
+    const runType = this.options.runType ?? this.readRunType();
+    const executionMode = this.options.executionMode ?? this.readExecutionMode();
     const session = await RunSession.openOrCreate({
-      path: this.sessionPath(this.runId),
-      runId: this.runId,
+      path: this.sessionPath(runId),
+      runId,
       map: this.map,
-      runType: this.options.runType ?? this.readRunType(),
-      executionMode: this.options.executionMode ?? this.readExecutionMode(),
+      runType,
+      executionMode,
       expectedTestCases: this.session.expectedTestCases,
     });
     this.session = session;
     if (!session.isComplete()) return;
 
-    const runId = this.runId;
-    const lock = this.lock;
-
+    // From here on the Run has genuinely completed: whatever happens while building or writing
+    // it, the session file, the active-run marker and the Flow lock are all released below, so a
+    // failed finalization (e.g. a run-validation throw) never blocks the next Run. The original
+    // error -- or the first cleanup error if finalization itself succeeded -- is rethrown
+    // afterwards so the Run still fails visibly.
+    let finalizationError: unknown;
+    let mapForCleanup = this.map;
     try {
       const preliminarySummary = this.buildAgentSummary(session.snapshotForPreview({
         map: this.map,
@@ -247,26 +255,36 @@ export class FlowRunController {
       await writer.write(finalRecord);
       await this.mapStore.write(state.map);
       this.map = state.map;
-
-      await this.options.authManager?.cleanup?.(state.map, {
-        runId,
-        flowId: state.map.flow.metadata.id,
-        mapRevision: state.map.flow.metadata.revision,
-        runType: finalRecord.run.type,
-        executionMode: finalRecord.run.execution_mode,
-      });
-      await session.remove();
-      await this.removeActiveRun(runId);
-      this.finalized = true;
-    } finally {
-      // The Run has genuinely completed (session.isComplete() above) once we reach this point --
-      // release the lock regardless of whether writing/persisting the final record threw, so a
-      // run-validation failure never leaves a stale .flow.lock behind. The throw itself still
-      // propagates after this block runs.
-      await lock.release(runId);
-      this.session = undefined;
-      this.lock = undefined;
+      mapForCleanup = state.map;
+    } catch (error) {
+      finalizationError = error;
     }
+
+    const cleanupErrors: unknown[] = [];
+    const cleanup = async (action: () => Promise<unknown> | undefined): Promise<void> => {
+      try {
+        await action();
+      } catch (error) {
+        cleanupErrors.push(error);
+      }
+    };
+    await cleanup(() => this.options.authManager?.cleanup?.(mapForCleanup, {
+      runId,
+      flowId: mapForCleanup.flow.metadata.id,
+      mapRevision: mapForCleanup.flow.metadata.revision,
+      runType,
+      executionMode,
+    }));
+    await cleanup(() => session.remove());
+    await cleanup(() => this.removeActiveRun(runId));
+    await cleanup(() => lock.release(runId));
+
+    this.finalized = true;
+    this.session = undefined;
+    this.lock = undefined;
+
+    if (finalizationError !== undefined) throw finalizationError;
+    if (cleanupErrors.length > 0) throw cleanupErrors[0];
   }
 
   private extractRecoveries(signals: RuntimeSignal[], testCaseId: string): LocatorRecoveryRecord[] {
