@@ -52,8 +52,25 @@ export class EvidenceManager {
       );
 
       if (!traceAttachment?.path) {
-        errors.trace =
-          'Trace retention was requested by the Flow Map, but Playwright did not expose a trace attachment. Configure Playwright trace retention for failed tests.';
+        // Playwright writes the retained trace only after the worker has
+        // finished with the test — later than this afterEach-time capture
+        // (confirmed locally, 2026-09-30) — so it cannot be copied here.
+        // Record where Playwright will write it instead. That path stays
+        // valid because each Flow Run gets its own output folder (the
+        // project's playwright.config.ts keys outputDir by AFB_RUN_ID).
+        const mode = this.traceMode(input.testInfo);
+        if (mode === 'off') {
+          errors.trace =
+            'Trace retention was requested by the Flow Map, but Playwright tracing is off. Set use.trace (e.g. retain-on-failure) in playwright.config.ts.';
+        } else {
+          items.push({
+            type: 'trace',
+            test_case: input.testCaseId,
+            path: this.referencePath(join(input.testInfo.outputDir, 'trace.zip')),
+            reason: 'test_failure',
+            description: `Written by Playwright (trace: ${mode}) after the test ends; kept until this run's output folder is pruned.`,
+          });
+        }
       } else {
         const target = join(
           dir,
@@ -77,6 +94,15 @@ export class EvidenceManager {
     }
 
     return { items, errors };
+  }
+
+  private traceMode(testInfo: TestInfo): string {
+    const trace = (testInfo.project.use as { trace?: unknown }).trace;
+    if (typeof trace === 'string') return trace;
+    if (trace && typeof trace === 'object' && typeof (trace as { mode?: unknown }).mode === 'string') {
+      return (trace as { mode: string }).mode;
+    }
+    return 'off';
   }
 
   private referencePath(path: string): string {
