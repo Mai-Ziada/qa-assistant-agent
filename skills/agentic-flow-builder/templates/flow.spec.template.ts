@@ -1,5 +1,6 @@
 import { resolve, join } from 'node:path';
 import { test } from '@playwright/test';
+import type { FlowRuntime } from '../../runtime';
 
 import { createFlowRunController } from '../../runtime';
 import { runTemplateFlowTc01 } from './template-flow.flow';
@@ -44,6 +45,23 @@ function isSelected(testCaseId: string): boolean {
   return selectedTestCases.size === 0 || selectedTestCases.has(testCaseId);
 }
 
+/**
+ * Unselected TCs are not declared at all, so Playwright never creates a page
+ * (or any other fixture) for them. The runtime still knows the selection
+ * from AFB_SELECTED_TCS and finalizes the Run on the selected TCs only.
+ */
+function flowTest(
+  testCaseId: string,
+  title: string,
+  body: (runtime: FlowRuntime) => Promise<void>,
+): void {
+  if (!isSelected(testCaseId)) return;
+  test(title, async ({ page }, testInfo) => {
+    const runtime = await controller.runtimeFor(page, testInfo, testCaseId);
+    await body(runtime);
+  });
+}
+
 test.describe('Template Flow', () => {
   test.beforeAll(async ({ browser }) => {
     await controller.beforeAll(browser);
@@ -57,18 +75,5 @@ test.describe('Template Flow', () => {
     await controller.finalizeIfComplete();
   });
 
-  test('TC-TEMPLATE-01 - Execute primary business action successfully', async ({ page }, testInfo) => {
-    const testCaseId = 'TC-TEMPLATE-01';
-
-    // Skip before runtimeFor() so unselected TCs never join the Flow Run Session.
-    test.skip(!isSelected(testCaseId), `TC ${testCaseId} was not selected for this Flow Run.`);
-
-    const runtime = await controller.runtimeFor(
-      page,
-      testInfo,
-      testCaseId,
-    );
-
-    await runTemplateFlowTc01(runtime);
-  });
+  flowTest('TC-TEMPLATE-01', 'TC-TEMPLATE-01 - Execute primary business action successfully', runTemplateFlowTc01);
 });

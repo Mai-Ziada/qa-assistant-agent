@@ -93,6 +93,17 @@ AFB_SELECTED_TCS=<comma-separated selected TC IDs>   # only for a subset
 
 For an all-TC Run, omit `AFB_SELECTED_TCS`.
 
+When selecting a subset, also pass Playwright `--grep "<TC-ID> -"` (alternate with `|` for more
+than one TC id), so a spec generated before TCs were declared through `flowTest(...)` still skips
+instantiating the unselected TCs' fixtures:
+
+```text
+AFB_SELECTED_TCS=TC05 npx playwright test <flow-dir> --grep "TC05 -"
+```
+
+Never pass `--grep` without `AFB_SELECTED_TCS` set to the same TCs -- the runtime would still
+expect every TC in the Map, the Run would never finalize, and the session/lock would be left behind.
+
 Never reuse an `AFB_RUN_ID` for another logical Run. The same Run ID may be observed again only by Playwright worker replacement/retry processes belonging to that same Run.
 
 For V1, select one Playwright project/browser for the command. Browser/project matrices are separate sequential Flow Runs.

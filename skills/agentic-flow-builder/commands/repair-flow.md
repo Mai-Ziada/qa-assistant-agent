@@ -307,6 +307,18 @@ AFB_EXECUTION_MODE=<primary_only | fallback_only | last_resort_only>
 AFB_SELECTED_TCS=<comma-separated impacted TC IDs>   # optional subset
 ```
 
+When `AFB_SELECTED_TCS` selects a subset, also pass Playwright `--grep "<TC-ID> -"` (alternate with
+`|` for more than one TC id) so a spec generated before TCs were declared through `flowTest(...)`
+still skips instantiating the unselected TCs' fixtures:
+
+```text
+AFB_RUN_ID=<id> AFB_RUN_TYPE=repair_validation AFB_EXECUTION_MODE=primary_only \
+AFB_SELECTED_TCS=TC10 npx playwright test <flow-dir> --grep "TC10 -"
+```
+
+Never pass `--grep` without `AFB_SELECTED_TCS` set to the same TCs -- the runtime would still
+expect every TC in the Map, the Run would never finalize, and the session/lock would be left behind.
+
 `repair_validation` is targeted evidence only and never replaces official revalidation proofs.
 
 ## Repair Validation

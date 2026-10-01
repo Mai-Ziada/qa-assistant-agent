@@ -826,7 +826,17 @@ const controller = createFlowRunController({
 
 Do not include unused placeholder adapters.
 
-Each TC becomes a real Playwright test.
+Each TC becomes a real Playwright test, added with one `flowTest(...)` call -- never with
+`test(...)` plus an in-body `test.skip()`:
+
+```ts
+flowTest('TC01', 'TC01 - Create user with valid data', runCreateUserTc01);
+```
+
+`flowTest` (defined once per spec, from `templates/flow.spec.template.ts`) declares the test only
+when its TC is selected, so Playwright never creates a page or any other fixture for a TC the
+current Run did not select. The in-body-skip pattern still works for selection bookkeeping, but it
+instantiates every unselected TC's fixtures before skipping -- do not generate it.
 
 TC steps may use:
 

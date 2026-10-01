@@ -200,11 +200,9 @@ The Map must remain understandable as a business journey before technical detail
 
 ## Modify Test Cases
 
-Each resulting TC remains a real:
-
-```ts
-test(...)
-```
+Each resulting TC remains a real Playwright test, added with one `flowTest(...)` call (see
+`templates/flow.spec.template.ts`) -- never `test(...)` plus an in-body `test.skip()`, which would
+instantiate the TC's page fixture even when it is not selected for the current Run.
 
 Add/remove/update TCs based on intended coverage.
 

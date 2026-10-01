@@ -842,6 +842,10 @@ Each TC inside a flow MUST be a real Playwright:
 test(...)
 ```
 
+declared through one `flowTest(...)` call (`templates/flow.spec.template.ts`) so that a TC not
+selected for the current Run is never declared at all, rather than declared and skipped inside its
+body -- the latter still instantiates the TC's `page` fixture before the skip takes effect.
+
 A flow may use:
 
 ```ts
@@ -1181,6 +1185,11 @@ Rules:
 - Targeted repair check: `AFB_RUN_TYPE=repair_validation`.
 - Official verification/revalidation MUST omit `AFB_SELECTED_TCS` (or set it to the complete TC set).
 - Selected normal/repair runs may set `AFB_SELECTED_TCS` as a comma-separated TC-ID list.
+- When `AFB_SELECTED_TCS` selects a subset, ALSO pass Playwright `--grep "<TC-ID> -"` (one
+  alternation per selected TC, e.g. `--grep "TC05 -|TC06 -"`), so a spec generated before TCs were
+  declared through `flowTest(...)` still skips instantiating the unselected TCs' fixtures. Never
+  pass `--grep` without `AFB_SELECTED_TCS`: the runtime would still expect every TC, never finalize
+  the Run, and leave the session/lock behind. Official verification/revalidation runs use neither.
 - Set the environment for the Playwright child process; do not edit generated source files merely to change run mode.
 
 For V1, execute one Playwright project/browser per logical Flow Run. If the workspace has a browser/project matrix, execute those as separate sequential Flow Runs so same-Flow locking and Run history remain deterministic.
