@@ -60,6 +60,8 @@ Screenshot folders, by subject.
 |---|---|---|---|
 | | | | |
 
+Last screenshot housekeeping: never run.
+
 ## 6. Open threads
 
 Work that is unfinished, and gaps still blocking. This is what a new session needs first.

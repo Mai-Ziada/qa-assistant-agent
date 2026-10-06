@@ -53,6 +53,7 @@ section) and then continue.
 | Work ended unfinished, or a gap still blocks | `index.md` § 6 Open threads |
 | A gap closed or work completed | Remove the row from `index.md` § 6 |
 | A file was deleted or replaced | Remove or update its row in `index.md` |
+| Screenshot housekeeping removed folders | Remove their rows from `index.md` § 5, and set the `Last screenshot housekeeping` line there to today with the removed/kept counts |
 | A durable fact about the product, platforms, environments, roles, business rules, integrations, tracker, or constraints | `project-context.md`, in its section |
 | A question asked but still unanswered | `project-context.md` § 9 Open questions |
 | A system-wide test-data fact (an account, a card, a seed record, a reference or known-invalid value, …) | `test-data/<category>.md` — find the matching category file, or create one named for what it holds if none exists yet |

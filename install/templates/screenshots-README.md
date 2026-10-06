@@ -44,3 +44,4 @@ Mark the failure frame with `FAIL` so it is findable without opening every file.
 2. **A screenshot is evidence, not proof of a pass.** It shows what the screen displayed; it does not show what was persisted. Do not report a pass on a screenshot alone when the case has a `Persisted` expectation.
 3. **Capture the failure, and the state just before it.** One frame of an error rarely explains the cause.
 4. **This folder is git-ignored** — heavy, changes constantly, and can carry sensitive data. Attach what matters to the bug report instead.
+5. **Old folders are removed automatically.** A subject folder whose files are all older than 14 days is deleted at workspace load, unless an open bug draft or an open thread still refers to it (see foundation § 8b). Copy anything you need to keep before then.

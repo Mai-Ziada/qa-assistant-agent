@@ -277,6 +277,26 @@ qa-output/              deliverables, per story, per skill
 
 **Asking the user something these files already answer is the failure this workspace prevents.**
 
+### Screenshot housekeeping — once a day, at workspace load
+
+`.qa/screenshots/` would otherwise grow without bound. Every skill that loads the workspace runs this
+check before writing any screenshot, and skips it if it already ran today (the date is recorded in
+`.qa/index.md` § 5; if that line is missing, treat it as never run and add it):
+
+1. Look only under `.qa/screenshots/`. Never touch `.qa/bugs/`, `.qa/knowledge/`, `runs/`, or anything
+   outside the workspace.
+2. A **subject folder** (`<STORY-FOLDER>/`, `<TC-ID>/`, or `<BUG-ID>/`) is a removal candidate only
+   when every file in it was last modified more than 14 days ago.
+3. A candidate is **kept** when its subject is still referenced by an open item: a bug draft in
+   `.qa/bugs/` whose status is not `published` or `cancelled`, or an open thread in `.qa/index.md` § 6.
+   Protection applies to the whole folder, so a bug's evidence is never split across a kept and a
+   removed set.
+4. Remove the remaining candidates, then follow `updating-the-workspace.md` to drop their rows from
+   `.qa/index.md` § 5 and write the one-line summary (how many folders removed, how many kept, the date).
+
+Run records under `runs/` are history and are never edited. An old Run may still name a screenshot
+that no longer exists; that is expected, and the Run is not repaired to hide it.
+
 ### Create it when it is missing
 
 If `.qa/` is absent, **create it before you start** — do not ask, and never treat its absence as a
