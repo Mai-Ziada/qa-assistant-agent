@@ -15,8 +15,7 @@
 # your team wants it shared, after checking it holds no secret values.
 .qa/test-data/
 
-# Bug drafts and their evidence. Original screenshots are kept here unredacted
-# for evidence integrity — only the sanitised annotated copies are ever uploaded.
+# Bug drafts and their evidence. Only sanitised annotated copies are kept here.
 .qa/bugs/
 
 # Deliverables — remove this line if your team wants them versioned

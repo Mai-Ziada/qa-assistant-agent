@@ -69,7 +69,7 @@ communications without specific authorization.
 1. Collect the product, feature/page, environment, build, platform, role, preconditions, steps, expected result, actual result, and available evidence.
 2. Attempt reproduction per the Reproduction section, then decide whether the information supports a bug draft. If the expected business behavior is unknown, stop with `needs-business-clarification`; do not invent it.
 3. Before drafting, read [references/bug-template.md](references/bug-template.md) and create the title and description exactly as specified.
-4. If screenshots exist or can be captured, read [references/visual-evidence.md](references/visual-evidence.md), preserve originals, prepare annotated copies, and verify them.
+4. If screenshots exist or can be captured, read [references/visual-evidence.md](references/visual-evidence.md), prepare annotated sanitized copies, and verify them.
 5. Before recommending Severity or Priority, read [references/severity-priority.md](references/severity-priority.md).
 6. Create or update the internal draft according to [references/draft-contract.md](references/draft-contract.md).
 7. Before any tracking-tool search or mutation, read [references/tracking-tool.md](references/tracking-tool.md).
@@ -130,7 +130,7 @@ Approval for drafting is not approval to publish. Approval to create a ticket is
 - Use authorized accounts, environments, projects, and evidence only.
 - Never store or expose passwords, tokens, payment data, or unnecessary personal information.
 - Sanitize logs and redact screenshots before publication.
-- Preserve original evidence locally and publish only approved sanitized copies.
+- Never store the unredacted screenshot in the draft; keep only annotated sanitized copies, and publish only approved ones.
 - Do not claim a successful ticket or attachment upload until verified.
 - Do not retry successful mutations or create a second ticket when an attachment fails.
 - Stop when the destination, authorization, expected business behavior, or mutation scope is unclear.

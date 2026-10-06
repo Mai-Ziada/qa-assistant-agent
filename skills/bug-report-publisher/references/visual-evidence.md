@@ -4,16 +4,14 @@ Read this file only when screenshots are supplied, can be captured, or are neede
 
 ## Evidence Set
 
-For every screenshot, preserve:
+For every screenshot, keep only the annotated and sanitized copy. The unredacted source is never
+saved under the draft folder — annotation and redaction happen before anything is written to
+`evidence/`, so nothing sensitive sits there waiting to be uploaded by mistake.
 
-- The original unmodified image for evidence integrity.
-- A separate annotated and sanitized copy for user review and possible upload.
-
-Store them under:
+Store it under:
 
 ```text
 .qa/bugs/<draft-id>/evidence/
-├── original/
 └── annotated/
 ```
 
@@ -21,7 +19,7 @@ Store them under:
 
 Use one screenshot when it shows the page, affected component, incorrect result, and sufficient context. Use multiple screenshots only when each proves a distinct point, such as before/after, source/result, Admin/application, design/implementation, platforms, roles, or UI/Network evidence.
 
-Do not upload redundant images. For comparisons, retain the separate originals even if a combined comparison image is produced.
+Do not upload redundant images. For comparisons, save the single combined annotated image only.
 
 ## Annotation Types
 
@@ -50,13 +48,12 @@ Do not upload redundant images. For comparisons, retain the separate originals e
 Use:
 
 ```text
-<draft-id>_<sequence>_<page>_<short-description>_<original|annotated>.png
+<draft-id>_<sequence>_<page>_<short-description>_annotated.png
 ```
 
 Examples:
 
 ```text
-BUG-DRAFT-014_01_checkout_schedule-error_original.png
 BUG-DRAFT-014_01_checkout_schedule-error_annotated.png
 BUG-DRAFT-014_02_network_failed-response_annotated.png
 ```
@@ -67,7 +64,6 @@ For every proposed attachment, record:
 
 - Evidence ID.
 - Purpose.
-- Original path.
 - Annotated path.
 - Caption explaining what it proves.
 - Annotation summary.
@@ -87,7 +83,7 @@ An image is ready only when:
 - The filename is valid.
 - It maps to a specific Actual Result.
 
-If annotation tools are unavailable, preserve the original, mark visual preparation as blocked, and ask the user whether to continue without annotation. Never claim an annotated file exists when it does not.
+If annotation tools are unavailable, mark visual preparation as blocked and ask the user whether to continue without annotation. Never save an unannotated copy as a stand-in, and never claim an annotated file exists when it does not.
 
 ## Upload Rules
 

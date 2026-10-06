@@ -129,12 +129,11 @@ diagnosed · **Workflow** 12 steps, draft → evidence → duplicates → approv
 **Safety**, **Final response**, **Hard rules**.
 Five reference files carry the detail: `bug-template.md` (the GIVEN/WHEN/Expected/Actual structure
 and its lint), `severity-priority.md` (impact versus urgency, `P1`–`P3`), `visual-evidence.md`
-(originals preserved, annotated copies published, quality gate), `tracking-tool.md` (destination,
+(annotated sanitized copies only, quality gate), `tracking-tool.md` (destination,
 duplicate search, field mapping, idempotency, partial success), `draft-contract.md`
 (`bug-draft.json` as the source of truth, and the draft state machine).
 Never invents an Expected Result, never files over a duplicate without a decision, never claims an
-upload it did not verify. Writes `.qa/bugs/<draft-id>/` — draft, report, and `evidence/original/`
-alongside `evidence/annotated/`.
+upload it did not verify. Writes `.qa/bugs/<draft-id>/` — draft, report, and `evidence/annotated/`.
 
 ### `skills/qa-coach/SKILL.md` — explains the other skills, runs none of them
 A documentation layer over the agent. Reads a target skill's actual definition and translates it

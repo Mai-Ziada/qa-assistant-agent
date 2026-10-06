@@ -9,7 +9,6 @@ Read this file when creating or updating the local draft. `bug-draft.json` is th
 ├── bug-draft.json
 ├── bug-report.md
 └── evidence/
-    ├── original/
     └── annotated/
 ```
 
