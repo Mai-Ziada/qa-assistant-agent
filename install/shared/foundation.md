@@ -281,7 +281,18 @@ qa-output/              deliverables, per story, per skill
 
 `.qa/screenshots/` would otherwise grow without bound. Every skill that loads the workspace runs this
 check before writing any screenshot, and skips it if it already ran today (the date is recorded in
-`.qa/index.md` § 5; if that line is missing, treat it as never run and add it):
+`.qa/index.md` § 5):
+
+0. **Make sure the record line exists.** Projects scaffolded before this rule have no housekeeping
+   line in `.qa/index.md`. If § 5 does not contain a line beginning `Last screenshot housekeeping:`,
+   insert one directly after § 5's table, before the `## 6.` heading:
+
+   ```
+   Last screenshot housekeeping: never run.
+   ```
+
+   Then continue. Do this even when the folder is empty or missing, so the check is never skipped
+   for lack of a record.
 
 1. Look only under `.qa/screenshots/`. Never touch `.qa/bugs/`, `.qa/knowledge/`, `runs/`, or anything
    outside the workspace.
